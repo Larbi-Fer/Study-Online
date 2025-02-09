@@ -1,0 +1,96 @@
+.button-container {
+    position: relative;
+}
+
+.button {
+    padding: 5px 50px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    outline: none;
+    border: none;
+    position: relative;
+    color: white;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 10%);
+    transition: .3s;
+}
+
+.button.transparent {
+    background-color: transparent;
+    color: #000;
+    box-shadow: none;
+}
+
+.button.transparent:hover {
+    box-shadow: 0 0 5px #0002;
+    background-color: #6662;
+}
+
+.button p {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: .5px;
+    z-index: 1;
+}
+
+/* click efface */
+.button-container span {
+    position: absolute;
+    background: #fff5;
+    background-size: 400%;
+    border-radius: 50%;
+    transition: .3s;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    animation: button-click 1s ease;
+}
+
+.button.transparent span {
+    background-color: #2224;
+}
+
+@keyframes button-click {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    90% {
+        width: 500px;
+        height: 500px;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.button:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 25%);
+}
+
+.button.primary {
+    background-color: #0059FF;   
+}
+
+.button.primary:hover {
+    background-color: #0554E7;
+}
+
+.button:disabled, .button:disabled:hover {
+    background-color: #7779 !important;
+    color: #ddd !important;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.button.transparent:disabled, .button.transparent:disabled:hover {
+    background-color: transparent !important;
+    color: #7779 !important;
+    cursor: not-allowed;
+}
