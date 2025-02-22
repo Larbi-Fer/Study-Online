@@ -4,7 +4,6 @@ import './style.css'
 
 type ButtonProps = {
   children: React.ReactNode,
-  onClick?: () => void,
   background?: string,
   fullWidth?: boolean,
   transparent?: boolean
@@ -15,7 +14,7 @@ const Button = ({ children, transparent, onClick, background, fullWidth, ...prop
   const [spans, setSpans] = useState<React.ReactNode[]>([])
 
   const handelClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick && onClick()
+    onClick && onClick(e)
 
     const mouseX = e.clientX;
     const mouseY = e.clientY;
