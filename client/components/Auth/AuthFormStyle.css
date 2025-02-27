@@ -1,0 +1,83 @@
+.auth-container {
+  width: 100%;
+  height: 100vh;
+  background-image: url(/images/auth-bg.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.auth {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  color: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  padding-top: 0;
+  background-color: #3333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: .3s;
+}
+
+/* Animation between log and reg */
+
+.auth .auth-form {
+  display: flex;
+  width: 200%;
+  gap: 10px;
+  transition: .3s;
+}
+
+.auth .auth-form .auth-fields {
+  width: 100%;
+  height: max-content;
+}
+.auth .auth-form .auth-fields.reg {
+  transform: translateX(20px);
+}
+
+.auth .auth-form.reg {
+  transform: translateX(calc(-50% - 20px))  ;
+}
+
+/* Auth form */
+
+.auth .title-container {
+  width: 150px;
+  margin: auto;
+  overflow: hidden;
+  background-color: #17f;
+  border-radius: 0 0 20px 20px;
+}
+
+.auth .title {
+  display: flex;
+  width: 300px;
+  transition: .3s;
+}
+
+.auth .title.reg {
+  transform: translateX(-50%);
+}
+
+.auth .title div {
+  flex: 1;
+  text-align: center;
+  padding: 5px 20px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.auth .auth-form {
+  margin-top: 20px;
+}
+
+.auth .action {
+  margin: 10px 7px;
+}
