@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "OSTE",
+  title: {
+    default: 'OSTE',
+    template: '%s | OSTE'
+  },
   description: "Online study and testing environment",
 };
 

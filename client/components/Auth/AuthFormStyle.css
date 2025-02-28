@@ -48,12 +48,38 @@
 
 /* Auth form */
 
-.auth .title-container {
+.auth .auth-header {
+  position: relative;
   width: 150px;
   margin: auto;
-  overflow: hidden;
   background-color: #17f;
   border-radius: 0 0 20px 20px;
+}
+
+.auth .auth-header::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: -20px;
+  top: 0;
+  box-shadow: 7px -4px 0px #17f;
+  border-radius: 10px;
+}
+
+.auth .auth-header::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: -20px;
+  top: 0;
+  box-shadow: -7px -4px 0px #17f;
+  border-radius: 10px;
+}
+
+.auth .auth-header .title-container {
+  overflow: hidden;
 }
 
 .auth .title {
