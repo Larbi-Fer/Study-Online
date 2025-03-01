@@ -78,7 +78,16 @@ export class AuthService {
     if (user.isActive) throw new ForbiddenException('Your account is already active')
 
     if (new Date() > user.otp.limit) {
-      // resend new number
+      // generate new number
+      const otp = Math.floor(100000 + Math.random() * 900000)
+      let date = new Date();
+      date.setDate(date.getDate() + 1);
+
+      // update the user
+      await this.prisma.otp.update({
+        data: {otp, limit: date},
+        where: {userId: user.id}
+      })
 
       throw new ForbiddenException('Invalid number, we sent a new number')
     }
@@ -93,8 +102,6 @@ export class AuthService {
       data: {isActive: true},
       where: {id: user.id}
     })
-
-    console.log(a);
 
     // return user
     return user;
