@@ -5,7 +5,7 @@ import React from 'react'
 
 const Signup = () => {
   return (
-    <>
+    <form>
       <div className="input">
         <Input label='Fullname' type="text" placeholder="Enter your first & last name" name='fullname' required />
       </div>
@@ -22,7 +22,7 @@ const Signup = () => {
       <div>
         You already have account? <Link href='/login'>Go to login</Link>
       </div>
-    </>
+    </form>
   )
 }
 

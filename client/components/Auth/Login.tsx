@@ -5,7 +5,7 @@ import React from 'react'
 
 const Login = () => {
   return (
-    <>
+    <form>
       <div className="input">
         <Input label='Email' type="email" placeholder="example@service.domain" name='email' required />
       </div>
@@ -19,7 +19,7 @@ const Login = () => {
       <div>
         You don't have account? <Link href='/signup'>Create account</Link>
       </div>
-    </>
+    </form>
   )
 }
 

@@ -7,8 +7,8 @@ import Signup from './Signup';
 
 const AuthForm = () => {
   const path = usePathname();
-  const loginRef = useRef<HTMLFormElement>(null)
-  const regRef = useRef<HTMLFormElement>(null)
+  const loginRef = useRef<HTMLDivElement>(null)
+  const regRef = useRef<HTMLDivElement>(null)
   const authRef = useRef<HTMLDivElement>(null)
   const titlesRef = useRef<HTMLDivElement>(null)
 
@@ -39,14 +39,14 @@ const AuthForm = () => {
         <div className={"auth-form" + (path === '/login' ? '' : ' reg')}>
 
           {/* Login */}
-          <form className="auth-fields login" ref={loginRef}>
+          <div className="auth-fields login" ref={loginRef}>
             <Login />
-          </form>
+          </div>
 
           {/* Register */}
-          <form className="auth-fields reg" ref={regRef}>
+          <div className="auth-fields reg" ref={regRef}>
             <Signup />
-          </form>
+          </div>
         </div>
       </div>
     </div>
