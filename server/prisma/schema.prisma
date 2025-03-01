@@ -18,6 +18,15 @@ model User {
   email     String   @unique
   fullname  String?
   password  String
+  isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  otp Otp?
+}
+
+model Otp {
+  userId    String   @unique
+  otp       Int
+  limit     DateTime
+  user      User     @relation(fields: [userId], references: [id])
 }
