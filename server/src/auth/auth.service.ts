@@ -33,7 +33,7 @@ export class AuthService {
       select: {email: true}
     })
 
-    if (u) return { message: ['Existing email'] }
+    if (u) throw new ForbiddenException('this email is already exist')
 
     // generate the password hash
     const hash = await argon.hash(dto.password);

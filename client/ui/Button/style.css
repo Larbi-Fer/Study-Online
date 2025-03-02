@@ -2,6 +2,23 @@
     position: relative;
 }
 
+.button-container.loading .button {
+    pointer-events: none;
+    color: transparent;
+}
+
+.button-container.loading .button:after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 10px);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    animation: button-loading 1s linear infinite;
+}
+
 .button {
     padding: 5px 50px;
     border-radius: 5px;
@@ -70,6 +87,15 @@
     }
 }
 
+@keyframes button-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .button:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 25%);
 }
@@ -84,7 +110,7 @@
 
 .button:disabled, .button:disabled:hover {
     background-color: #7779 !important;
-    color: #ddd !important;
+    color: #ddd;
     cursor: not-allowed;
     box-shadow: none;
 }

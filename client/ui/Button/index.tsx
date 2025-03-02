@@ -6,10 +6,11 @@ type ButtonProps = {
   children: React.ReactNode,
   background?: string,
   fullWidth?: boolean,
+  loading?: boolean,
   transparent?: boolean
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button = ({ children, transparent, onClick, background, fullWidth, ...props } : ButtonProps) => {
+const Button = ({ children, transparent, onClick, background, fullWidth, loading, ...props } : ButtonProps) => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const [spans, setSpans] = useState<React.ReactNode[]>([])
 
@@ -40,8 +41,8 @@ const Button = ({ children, transparent, onClick, background, fullWidth, ...prop
   if (fullWidth) btnStyle.width = '100%'
 
   return (
-    <div className="button-container">
-      <button {...props} className={'button' + ( transparent ? ' transparent' : ' primary' )} onClick={handelClick} ref={btnRef} style={btnStyle}>
+    <div className={"button-container" + (loading ? ' loading' : '')}>
+      <button {...props} className={'button' + ( transparent ? ' transparent' : ' primary' )} onClick={handelClick} ref={btnRef} style={btnStyle} disabled={loading}>
         <p>{children}</p>
         { spans.map(span => span) }
       </button>
