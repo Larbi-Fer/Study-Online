@@ -34,7 +34,8 @@ const Login = () => {
         <Input label='Email' type="email" placeholder="example@service.domain" name='email' value={flds.email} onChange={handleChange} required />
       </div>
       <div className="input">
-        <Input label='Password' type="password" placeholder="Type Strong Password" name='password' value={flds.password} onChange={handleChange} required />
+        <Input label='Password' type="password" placeholder="Type Strong Password" name='password' required />
+        <Link href='/reset'>Forgot password?</Link>
       </div>
       <div className="action">
         <Button type='submit' fullWidth loading={isLoading}>Login</Button>
