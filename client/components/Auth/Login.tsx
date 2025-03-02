@@ -11,6 +11,7 @@ const Login = () => {
       </div>
       <div className="input">
         <Input label='Password' type="password" placeholder="Type Strong Password" name='password' required />
+        <Link href='/reset'>Forgot password?</Link>
       </div>
       <div className="action">
         <Button type='submit' fullWidth>Login</Button>
