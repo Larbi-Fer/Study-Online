@@ -1,35 +1,28 @@
 import { IsEmail, IsInt, IsNotEmpty, IsString } from "class-validator";
+import { CODES } from "lib/codes";
 
 export class LoginDto {
-  @IsEmail()
-  @IsNotEmpty()
+  @IsEmail({}, {message: CODES.AUTH.INVALID_EMAIL})
+  @IsNotEmpty({message: CODES.AUTH.EMPTY_EMAIL})
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({message: CODES.AUTH.INVALID_PASSWORD})
+  @IsNotEmpty({message: CODES.AUTH.EMPTY_PASSWORD})
   password: string;
 }
 
-export class SignupDto {
-  @IsString()
-  @IsNotEmpty()
+export class SignupDto extends LoginDto {
+  @IsString({message: CODES.AUTH.INVALID_FULLNAME})
+  @IsNotEmpty({message: CODES.AUTH.EMPTY_FULLNAME})
   fullname: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-  
-  @IsString()
-  @IsNotEmpty()
-  password: string;
 }
 
 export class ActDto {
-  @IsInt()
-  @IsNotEmpty()
+  @IsInt({message: CODES.AUTH.INVALID_OTD})
+  @IsNotEmpty({message: CODES.AUTH.EMPTY_OTD})
   otd: number;
   
-  @IsEmail()
-  @IsNotEmpty()
+  @IsEmail({}, {message: CODES.AUTH.INVALID_EMAIL})
+  @IsNotEmpty({message: CODES.AUTH.EMPTY_EMAIL})
   email: string;
 }

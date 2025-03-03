@@ -7,6 +7,7 @@ import { loginAction } from '@/actions/auth.actions'
 import { useEffect, useState } from 'react'
 import Toast from '@/ui/Toast'
 import { useRouter } from 'next/navigation'
+import CODES from '@/lib/CODES'
 
 const Login = () => {
   const [flds, setFlds] = useState({ email: '', password: '' })
@@ -23,7 +24,14 @@ const Login = () => {
     setIsLoading(true)
     const response = await loginAction(flds.email, flds.password)
     setIsLoading(false)
-    if (response.type === 'ERROR') return Toast(response.payload, 'error')
+
+    if (response.type === 'ERROR') {
+      console.log(response);
+
+      Toast(response.payload, 'error')
+      if (response.code === 'INACTIVE_ACCOUNT') router.push('/activate')
+      return
+    }
     Toast('Login Success', 'success')
     router.push('/profile')
   }
@@ -34,7 +42,7 @@ const Login = () => {
         <Input label='Email' type="email" placeholder="example@service.domain" name='email' value={flds.email} onChange={handleChange} required />
       </div>
       <div className="input">
-        <Input label='Password' type="password" placeholder="Type Strong Password" name='password' required />
+        <Input label='Password' type="password" placeholder="Type Strong Password" name='password' value={flds.password} onChange={handleChange} required />
         <Link href='/reset'>Forgot password?</Link>
       </div>
       <div className="action">

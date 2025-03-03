@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ActDto, LoginDto, SignupDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CODES } from 'lib/codes';
 
 @Injectable()
 export class AuthService {
@@ -13,11 +14,11 @@ export class AuthService {
     })
     
     // Verify data
-    if (!user) throw new ForbiddenException('Email doesn\'t exist')
+    if (!user) throw new ForbiddenException(CODES.AUTH.EMAIL_NOT_FOUND)
     const pwMatches = await argon.verify(user.password, dto.password)
 
-    if(!pwMatches) throw new ForbiddenException('Wrong password')
-    if (!user.isActive) throw new ForbiddenException('The account is not activated yet.')
+    if(!pwMatches) throw new ForbiddenException(CODES.AUTH.WRONG_PASSWORD)
+    if (!user.isActive) throw new ForbiddenException(CODES.AUTH.INACTIVE_ACCOUNT)
 
     // return user
     delete user.isActive
@@ -33,7 +34,7 @@ export class AuthService {
       select: {email: true}
     })
 
-    if (u) throw new ForbiddenException('this email is already exist')
+    if (u) throw new ForbiddenException(CODES.AUTH.EXIST_EMAIL)
 
     // generate the password hash
     const hash = await argon.hash(dto.password);
@@ -74,8 +75,8 @@ export class AuthService {
     })
 
     // Verify data
-    if (!user) throw new ForbiddenException('Email doesn\'t exist')
-    if (user.isActive) throw new ForbiddenException('Your account is already active')
+    if (!user) throw new ForbiddenException(CODES.AUTH.EMAIL_NOT_FOUND)
+    if (user.isActive) throw new ForbiddenException(CODES.AUTH.ACTIVE_ACCOUNT)
 
     if (new Date() > user.otp.limit) {
       // generate new number
@@ -89,10 +90,10 @@ export class AuthService {
         where: {userId: user.id}
       })
 
-      throw new ForbiddenException('Invalid number, we sent a new number')
+      throw new ForbiddenException(CODES.AUTH.NEW_OTD_GENERATED)
     }
 
-    if (dto.otd !== user.otp.otp) throw new ForbiddenException('Wrong number')
+    if (dto.otd !== user.otp.otp) throw new ForbiddenException(CODES.AUTH.WRONG_OTD)
 
     // Delete
     const a = await this.prisma.otp.delete({
