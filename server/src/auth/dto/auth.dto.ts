@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
 import { CODES } from "lib/codes";
 
 export class LoginDto {
@@ -19,6 +19,8 @@ export class SignupDto extends LoginDto {
 
 export class ActDto {
   @IsInt({message: CODES.AUTH.INVALID_OTD})
+  @Max(999999, { message: CODES.AUTH.INVALID_OTD })
+  @Min(100000, { message: CODES.AUTH.INVALID_OTD })
   @IsNotEmpty({message: CODES.AUTH.EMPTY_OTD})
   otd: number;
   

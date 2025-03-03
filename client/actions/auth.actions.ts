@@ -48,15 +48,14 @@ export const signupAction = async (fullname: string, email: string, password: st
   }
 }
 
-export const activateAction = async (code: string) : Promise<AuthActionProps> => {
+export const activateAction = async (code: string, email: string) : Promise<AuthActionProps> => {
   try {
     const response = await fetch(process.env.URL + '/auth/activate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      // temporary email
-      body: JSON.stringify({ otd: parseInt(code), email: 'test1@gmail.com' })
+      body: JSON.stringify({ otd: parseInt(code), email })
     })
     const data = await response.json()
     if (data.error) {

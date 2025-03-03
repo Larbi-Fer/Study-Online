@@ -71,7 +71,7 @@ const AuthForm = () => {
           </div>
 
           <div className="auth-fields act" ref={actRef}>
-            <Activate />
+            <Activate isActive={page == ' act'} />
           </div>
         </div>
       </div>

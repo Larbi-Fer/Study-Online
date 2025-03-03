@@ -1,16 +1,28 @@
 'use client'
 
 import { activateAction } from '@/actions/auth.actions'
+import { setUser } from '@/lib/features/user'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import Toast from '@/ui/Toast'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Activate = () => {
+const Activate = ({isActive}: {isActive: boolean}) => {
   const [code, setCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  const email = useAppSelector(state => state.user?.email)
+  const dispatch = useAppDispatch()
+  
+
+  useEffect(() => {
+    if (email || !isActive) return
+    Toast('Please login first', 'warning')
+    router.push('/login')
+  }, [isActive])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value)
@@ -21,10 +33,13 @@ const Activate = () => {
 
     if (isLoading) return
     setIsLoading(true)
-    const res = await activateAction(code)
+    const res = await activateAction(code, email!)
+
     setIsLoading(false)
     if (res.type === 'ERROR') return Toast(res.payload, 'error')
     Toast('Account activated', 'success')
+
+    dispatch(setUser(res.payload))
     // router.push('/home')
   }
 

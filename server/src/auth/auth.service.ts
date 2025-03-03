@@ -105,6 +105,8 @@ export class AuthService {
     })
 
     // return user
+    delete user.otp
+    delete user.isActive
     return user;
   }
 }

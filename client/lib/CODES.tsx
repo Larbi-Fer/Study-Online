@@ -17,7 +17,7 @@ const CODES = {
     
     EMPTY_OTD: 'One-time password cannot be empty.',
     INVALID_OTD: 'Invalid one-time password.',
-    NEW_OTD_GENERATED: 'A new one-time password has been generated.',
+    NEW_OTD_GENERATED: 'We have sent you a new one-time password.',
     WRONG_OTD: 'Wrong one-time password.',
   }
 }

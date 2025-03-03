@@ -4,15 +4,18 @@ import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import Link from 'next/link'
 import { loginAction } from '@/actions/auth.actions'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Toast from '@/ui/Toast'
 import { useRouter } from 'next/navigation'
-import CODES from '@/lib/CODES'
+import { useAppDispatch } from '@/lib/hooks'
+import { setUser } from '@/lib/features/user'
 
 const Login = () => {
   const [flds, setFlds] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  const dispatch = useAppDispatch()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFlds({ ...flds, [e.target.name]: e.target.value })
@@ -29,10 +32,15 @@ const Login = () => {
       console.log(response);
 
       Toast(response.payload, 'error')
-      if (response.code === 'INACTIVE_ACCOUNT') router.push('/activate')
+      if (response.code === 'INACTIVE_ACCOUNT') {
+        dispatch( setUser({ email: flds.email }) )
+        return router.push('/activate')
+      }
       return
     }
     Toast('Login Success', 'success')
+    
+    dispatch( setUser(response.payload) )
     router.push('/profile')
   }
 
