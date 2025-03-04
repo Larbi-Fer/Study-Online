@@ -118,3 +118,20 @@
 .auth .action {
   margin: 10px 7px;
 }
+
+
+.auth .email-place {
+  margin: auto;
+  margin-bottom: 20px;
+  width: max-content;
+  padding: 0px 10px;
+  border: 1px #fff8 solid;
+  border-radius: 20px;
+  background-color: #fff2;
+}
+
+.auth .email-options {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}

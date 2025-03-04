@@ -1,5 +1,6 @@
 const CODES = {
   AUTH: {
+    ERROR: 'error!!',
     INVALID_EMAIL: 'Invalid email address.',
     EMPTY_EMAIL: 'Email address cannot be empty.',
     EXIST_EMAIL: 'Email address already exists.',
@@ -15,10 +16,16 @@ const CODES = {
     EMPTY_FULLNAME: 'Full name cannot be empty.',
     INVALID_FULLNAME: 'Invalid full name.',
     
-    EMPTY_OTD: 'One-time password cannot be empty.',
-    INVALID_OTD: 'Invalid one-time password.',
-    NEW_OTD_GENERATED: 'We have sent you a new one-time password.',
-    WRONG_OTD: 'Wrong one-time password.',
+    EMPTY_OTP: 'One-time password cannot be empty.',
+    INVALID_OTP: 'Invalid one-time password.',
+    NEW_OTP_GENERATED: 'We have sent you a new one-time password.',
+    WRONG_OTP: 'Wrong one-time password.',
+
+    CORRECT_OTP: 'CORRECT_OTP',
+
+    PASSWORD_NOT_MATCH: 'PASSWORD_NOT_MATCH',
+    PASSWORD_RESET: 'PASSWORD_RESET',
+    OTP_NOT_FOUND: 'OTP_NOT_FOUND',
   }
 }
 

@@ -10,7 +10,7 @@
 .button-container.loading .button:after {
     content: '';
     position: absolute;
-    top: calc(50% - 10px);
+    top: calc(50% - 9px);
     width: 15px;
     height: 15px;
     border-radius: 50%;

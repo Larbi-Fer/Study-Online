@@ -45,6 +45,7 @@ const Activate = ({isActive}: {isActive: boolean}) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <p>Enter the 6-digit code we sent to your email</p>
       <Input label='Code' type="number" placeholder="Enter the code we sent you" name='fullname' value={code} onChange={handleChange} required />
       <Button loading={isLoading} fullWidth>Submit</Button>
     </form>

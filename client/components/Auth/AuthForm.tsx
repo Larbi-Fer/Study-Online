@@ -35,11 +35,16 @@ const AuthForm = () => {
       const h = actRef.current?.clientHeight!+ titlesRef.current?.clientHeight! + 20
       authRef.current.style.height = h + 'px'
   } else {
-      const h = resRef.current?.clientHeight!+ titlesRef.current?.clientHeight! + 20
-      authRef.current.style.height = h + 'px'
+      changeHigh()
     }
   }
   ,[path])
+
+  const changeHigh = () => {
+    if(!authRef.current) return
+    const h = resRef.current?.clientHeight!+ titlesRef.current?.clientHeight! + 20
+    authRef.current.style.height = h + 'px'
+  }
 
   return (
     <div className='auth-container'>
@@ -57,7 +62,7 @@ const AuthForm = () => {
         <div className={"auth-form" + page}>
 
           <div className="auth-fields reset" ref={resRef}>
-            <Reset />
+            <Reset changeHigh={changeHigh} />
           </div>
 
           {/* Login */}
