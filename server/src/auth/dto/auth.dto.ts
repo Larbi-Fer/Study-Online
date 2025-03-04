@@ -1,5 +1,5 @@
 import { IsEmail, IsInt, IsNotEmpty, IsString, Max, Min, Validate, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import { CODES } from "lib/codes";
+import { CODES } from "src/lib/codes";
 
 export class EmailDto {
   @IsEmail({}, {message: CODES.AUTH.INVALID_EMAIL})

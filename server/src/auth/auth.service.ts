@@ -2,8 +2,8 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ActDto, LoginDto, SignupDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CODES } from 'lib/codes';
-import { sendEmailVerification } from 'lib/sendMail';
+import { CODES } from 'src/lib/codes';
+import { sendEmailVerification } from 'src/lib/sendMail';
 
 @Injectable()
 export class AuthService {
