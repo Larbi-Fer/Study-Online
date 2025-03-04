@@ -12,7 +12,5 @@ async function bootstrap() {
   }));
   app.enableCors({origin: process.env.CORS_ORIGIN});
   await app.listen(process.env.PORT ?? 5000);
-  console.log(process.env.CORS_ORIGIN);
-
 }
 bootstrap();
