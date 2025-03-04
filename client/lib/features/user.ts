@@ -10,7 +10,6 @@ interface UserProps {
 
 export const counterSlice = createSlice({
   name: 'user',
-  // initialState: { user: null as UserProps | null },
   initialState: null as UserProps | null,
   reducers: {
     setUser: (state, action: { payload: UserProps }) => {

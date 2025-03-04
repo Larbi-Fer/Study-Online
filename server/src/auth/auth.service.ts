@@ -3,6 +3,7 @@ import { ActDto, LoginDto, SignupDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CODES } from 'lib/codes';
+import { sendEmailVerification } from 'lib/sendMail';
 
 @Injectable()
 export class AuthService {
@@ -61,6 +62,8 @@ export class AuthService {
     })
 
     // Send a confirmation email
+    sendEmailVerification(dto.email, otp, dto.fullname)
+
     // return the user
     return user;
   }
@@ -89,6 +92,8 @@ export class AuthService {
         data: {otp, limit: date},
         where: {userId: user.id}
       })
+
+      sendEmailVerification(dto.email, otp, user.fullname)
 
       throw new ForbiddenException(CODES.AUTH.NEW_OTD_GENERATED)
     }

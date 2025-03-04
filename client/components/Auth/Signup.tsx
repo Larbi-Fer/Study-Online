@@ -69,7 +69,7 @@ const Signup = () => {
         />
       </div>
       <div className="action">
-        <Button type='submit' fullWidth>Sign up</Button>
+        <Button type='submit' fullWidth loading={isLoading}>Sign up</Button>
       </div>
 
       <div>

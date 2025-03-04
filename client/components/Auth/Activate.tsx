@@ -34,13 +34,13 @@ const Activate = ({isActive}: {isActive: boolean}) => {
     if (isLoading) return
     setIsLoading(true)
     const res = await activateAction(code, email!)
-
     setIsLoading(false)
+
     if (res.type === 'ERROR') return Toast(res.payload, 'error')
     Toast('Account activated', 'success')
 
     dispatch(setUser(res.payload))
-    // router.push('/home')
+    router.push('/home')
   }
 
   return (
