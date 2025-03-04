@@ -39,9 +39,8 @@ export class AuthService {
 
     // generate the password hash
     const hash = await argon.hash(dto.password);
-    const otp = Math.floor(100000 + Math.random() * 900000)
-    let date = new Date();
-    date.setDate(date.getDate() + 1);
+
+    const {otp, date} = generateOtp()
 
     // save the user to the database
     const user = await this.prisma.user.create({
@@ -83,9 +82,7 @@ export class AuthService {
 
     if (new Date() > user.otp.limit) {
       // generate new number
-      const otp = Math.floor(100000 + Math.random() * 900000)
-      let date = new Date();
-      date.setDate(date.getDate() + 1);
+      const {otp, date} = generateOtp();
 
       // update the user
       await this.prisma.otp.update({
@@ -95,10 +92,10 @@ export class AuthService {
 
       sendEmailVerification(dto.email, otp, user.fullname)
 
-      throw new ForbiddenException(CODES.AUTH.NEW_OTD_GENERATED)
+      throw new ForbiddenException(CODES.AUTH.NEW_OTP_GENERATED)
     }
 
-    if (dto.otd !== user.otp.otp) throw new ForbiddenException(CODES.AUTH.WRONG_OTD)
+    if (dto.otd !== user.otp.otp) throw new ForbiddenException(CODES.AUTH.WRONG_OTP)
 
     // Delete
     const a = await this.prisma.otp.delete({
@@ -114,4 +111,113 @@ export class AuthService {
     delete user.isActive
     return user;
   }
+
+
+  async searchEmail(email: string) {
+    // Get data
+    const user = await this.prisma.user.findUnique({
+      where: {email},
+      select: {id: true, fullname: true}
+    })
+
+    // Verify data
+    if (!user) throw new ForbiddenException(CODES.AUTH.EMAIL_NOT_FOUND)
+
+    return {message: CODES.AUTH.EXIST_EMAIL, payload: {id: user.id}}
+  }
+
+  async sendOtp(id: string) {
+    // Get data
+    const user = await this.prisma.user.findUnique({
+      where: {id},
+      select: {email: true, fullname: true}
+    })
+
+    // Verify data
+    if (!user) throw new ForbiddenException(CODES.AUTH.EMAIL_NOT_FOUND)
+
+    // generate new number
+    const {otp, date} = generateOtp()
+
+    // update the user
+    await this.prisma.otp.upsert({
+      create: {otp, limit: date, userId: id},
+      update: {otp, limit: date},
+      where: {userId: id}
+    })
+
+    // Send a confirmation email
+    sendEmailVerification(user.email, otp, user.fullname)
+
+    return {message: CODES.AUTH.NEW_OTP_GENERATED}
+  }
+
+  async verifyOtp(id: string, otp: number) {
+    // Get data
+    const user = await this.prisma.user.findUnique({
+      where: {id},
+      include: {otp: {
+        select: {otp: true, limit: true}
+      }}
+    })
+
+    // Verify data
+    if (!user) throw new ForbiddenException(CODES.AUTH.EMAIL_NOT_FOUND)
+    if (new Date() > user.otp.limit) {
+      // generate new number
+      const {otp, date} = generateOtp();
+
+      // update the user
+      await this.prisma.otp.update({
+        data: {otp, limit: date},
+        where: {userId: id}
+      })
+
+      sendEmailVerification(user.email, otp, user.fullname)
+
+      throw new ForbiddenException(CODES.AUTH.NEW_OTP_GENERATED)
+    }
+    if (otp !== user.otp.otp) throw new ForbiddenException(CODES.AUTH.WRONG_OTP)
+
+    // return user
+    delete user.otp
+    return {message: CODES.AUTH.CORRECT_OTP};
+  }
+
+  async resetPassword(id: string, password: string, otp: number) {
+    // Check otp
+    const otpTable = await this.prisma.otp.findUnique({
+      where: {userId: id},
+      select: {limit: true, otp: true}
+    })
+
+    if (!otpTable) throw new ForbiddenException(CODES.AUTH.OTP_NOT_FOUND)
+    if (otpTable.otp !== otp) throw new ForbiddenException(CODES.AUTH.WRONG_OTP)
+    if (new Date() > otpTable.limit) throw new ForbiddenException(CODES.AUTH.INVALID_OTP)
+
+    // generate the password hash
+    const hash = await argon.hash(password);
+
+    // update the user
+    const user = await this.prisma.user.update({
+      data: {password: hash},
+      where: {id}
+    })
+
+    // Delete otp
+    await this.prisma.otp.deleteMany({
+      where: {userId: id}
+    })
+
+    // return user
+    delete user.password
+    return {message: CODES.AUTH.PASSWORD_RESET};
+  }
+}
+
+const generateOtp = () => {
+  const otp = Math.floor(100000 + Math.random() * 900000)
+  let date = new Date();
+  date.setDate(date.getDate() + 1);
+  return {otp, date}
 }

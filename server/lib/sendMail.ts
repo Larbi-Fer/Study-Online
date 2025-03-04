@@ -16,12 +16,10 @@ export async function sendEmailVerification(to: string, code: number, fullname: 
       from: process.env.EMAIL_USER,
       to,
       subject: "Verification",
-      // html: ReactDOMServer.renderToStaticMarkup(<EmailForm code={code} username={username} />),
       html: EmailForm({code, fullname})
     });
     return info
   } catch (error) {
-    // throw new Error(error)
     console.error(error);
   }
 
