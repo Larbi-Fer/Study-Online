@@ -40,14 +40,21 @@ const Activate = ({isActive}: {isActive: boolean}) => {
     Toast('Account activated', 'success')
 
     dispatch(setUser(res.payload))
-    router.push('/home')
+    router.push('/dashboard')
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <p>Enter the 6-digit code we sent to your email</p>
-      <Input label='Code' type="number" placeholder="Enter the code we sent you" name='fullname' value={code} onChange={handleChange} required />
-      <Button loading={isLoading} fullWidth>Submit</Button>
+      <div className="email-place">{email}</div>
+      <p style={{textAlign: 'center'}}>Enter the 6-digit code we sent to your email</p>
+
+      <div className="input">
+        <Input label='Code' type="number" placeholder="Enter the code we sent you" name='fullname' value={code} onChange={handleChange} required />
+      </div>
+
+      <div className="action">
+        <Button loading={isLoading} fullWidth>Submit</Button>
+      </div>
     </form>
   )
 }
