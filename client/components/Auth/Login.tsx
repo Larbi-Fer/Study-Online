@@ -41,7 +41,7 @@ const Login = () => {
     Toast('Login Success', 'success')
     
     dispatch( setUser(response.payload) )
-    router.push('/profile')
+    router.push('/dashboard')
   }
 
   return (
