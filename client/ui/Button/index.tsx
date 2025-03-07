@@ -43,7 +43,7 @@ const Button = ({ children, transparent, onClick, background, fullWidth, loading
   return (
     <div className={"button-container" + (loading ? ' loading' : '')}>
       <button {...props} className={'button' + ( transparent ? ' transparent' : ' primary' )} onClick={handelClick} ref={btnRef} style={btnStyle} disabled={loading || props.disabled}>
-        <p>{children}</p>
+        <div>{children}</div>
         { spans.map(span => span) }
       </button>
     </div>

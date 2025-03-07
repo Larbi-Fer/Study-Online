@@ -1,0 +1,87 @@
+body {
+  background-color: #363d45;
+}
+
+.coding-space {
+  --panel-bg: #292c2d;
+  --panel-color: #ddd;
+  --output-bg: #282b27;
+  --seperator: #555961;
+
+  color: var(--panel-color);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.coding-space > div {
+  width: 100%;
+  padding: 10px;
+}
+
+.coding-space .part-2 > div {
+  height: 50%;
+}
+
+.coding-space .part-2 > div:first-child {
+  padding-bottom: 10px;
+}
+
+.editor-workspace {
+  background-color: var(--panel-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.editor-workspace .panel-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--seperator);
+}
+
+.editor-workspace .panel-header .code-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editor-workspace .panel-header .code-header .left {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.editor-workspace .panel-header .code-header .left .left-img {
+  margin-top: 5px;
+}
+
+.editor-workspace .panel-header .code-header .left .left-content p {
+  font-size: 12px;
+  color: var(--panel-color);
+  opacity: 0.7;
+}
+
+.editor-workspace .panel-header .code-header .right {
+  display: flex;
+  align-items: center;
+}
+
+.editor-workspace .panel-header .code-header .right .action {
+  margin: 0 5px;
+}
+
+.editor-workspace .panel-header .code-header .right .action.reset button {
+  padding:  10px;
+  color: var(--panel-color);
+  border-radius: 50%;
+}
+
+
+@media (max-width: 800px) {
+  .coding-space {
+    display: block;
+  }
+
+  .code-space .part-2 {
+    display: grid;
+  }
+}

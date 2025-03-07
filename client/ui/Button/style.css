@@ -44,13 +44,16 @@
     background-color: #6662;
 }
 
-.button p {
+.button > div {
     margin: 0;
     padding: 0;
     position: relative;
     font-size: 17px;
     font-weight: bold;
     letter-spacing: .5px;
+
+    display: flex;
+    align-items: center;
     z-index: 1;
 }
 
