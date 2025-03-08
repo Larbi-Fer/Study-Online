@@ -11,3 +11,9 @@ body {
   color: #333;
   line-height: 1.5;
 }
+
+.text-icon {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}

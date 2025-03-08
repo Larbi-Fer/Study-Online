@@ -1,5 +1,6 @@
 'use client'
 
+import { TerminalIcon, TextIcon } from 'lucide-react'
 import EditorPanel from './EditorPanel'
 import Workspace from './Workspace'
 import './style.css'
@@ -14,11 +15,21 @@ const CodingSapce = () => {
 
       <div className='part-2'>
         <div>
-          <Workspace header={'Description'}>Description will be displayed here</Workspace>
+          <Workspace header={
+            <div className='text-icon'>
+              <TextIcon color='#59ff7c' />
+              <div>Description</div>
+            </div>
+          }>Description will be displayed here</Workspace>
         </div>
 
         <div>
-          <Workspace header={'Outputs'}>Run your code to see the output</Workspace>
+          <Workspace header={
+            <div className='text-icon'>
+              <TerminalIcon color='#59ff7c' />
+              <div className="text">Outputs</div>
+            </div>
+          }>Run your code to see the output</Workspace>
         </div>
       </div>
     </div>
