@@ -13,7 +13,7 @@ const EditorPanel = () => {
           defaultLanguage='javascript'
           defaultValue={`// code is here`}
           theme='vs-dark'
-          height={600}
+          height='calc(100vh - 70px)'
           options={{
             minimap: { enabled: false },
             cursorBlinking: "smooth",

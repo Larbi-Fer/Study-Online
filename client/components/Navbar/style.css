@@ -1,0 +1,110 @@
+body {
+  --nav-bg: #eee7;
+  --nav-pd: 65px;
+  padding-top: var(--nav-pd);
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 3%;
+  background-color: var(--nav-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 3px 20px #0005;
+  z-index: 5;
+}
+
+nav a {
+  color: var(--color);
+}
+
+nav li, nav a, .buttons button {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+}
+
+.nav-links li {
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
+}
+
+.nav-links li a::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background-color: var(--primary-bg);
+  transition: all .3s ease 0s;
+}
+
+.nav-links li a:hover::before, .nav-links li.select a::before {
+  width: 75%;
+}
+
+
+.nav-links li a {
+  transition: all .3s ease 0s;
+}
+
+.nav-links li a:hover, .nav-links li.select a {
+  color: var(--primary-bg);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons button, .buttons .text-icon {
+  margin: 0 10px;
+}
+
+.buttons .text-icon {
+  cursor: pointer;
+}
+
+header .buttons input, input.search {
+  outline: none;
+  padding: 5px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #eee;
+  width: 150px;
+  margin-left: calc(40vh - 150px);
+  transition: all .3s;
+}
+
+input.search {
+  margin-left: 0px;
+}
+
+header .buttons input:hover, header .buttons input:focus, input.search:hover, input.search:focus {
+  background-color: #ddd;
+}
+
+header .buttons input:focus {
+  width: 40vh;
+  margin-left: 0;
+}

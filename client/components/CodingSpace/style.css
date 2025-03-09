@@ -12,6 +12,7 @@ body {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: calc(100vh - var(--nav-pd) - 5px);
 }
 
 .coding-space > div {
