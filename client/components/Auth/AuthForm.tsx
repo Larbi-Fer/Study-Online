@@ -4,8 +4,6 @@ import './AuthFormStyle.css'
 import React, { useEffect, useRef } from 'react'
 import Login from './Login';
 import Signup from './Signup';
-import Input from '@/ui/Input';
-import Button from '@/ui/Button';
 import Activate from './Activate';
 import Reset from './Reset';
 
