@@ -1,6 +1,7 @@
 'use server'
 
 import CODES, { AuthCodeProps } from "@/lib/CODES";
+import { cookies } from "next/headers";
 
 type AuthActionProps = {
   type: string,
@@ -17,11 +18,14 @@ export const loginAction = async (email: string, password: string): Promise<Auth
         },
         body: JSON.stringify({ email, password })
       })
-      const data = await response.json()
-      console.log(data);
+      const data = await response.json();
+      
+      
       if (data.error) {
         throw new Error(data.message + '|' + CODES.AUTH[data.message as AuthCodeProps])
       }
+
+      (await cookies()).set('user', JSON.stringify(data))
       return { type: 'LOGIN', payload: data }
     } catch (error: any) {
       const message = error.message.split('|')

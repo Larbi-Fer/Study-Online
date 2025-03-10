@@ -21,6 +21,10 @@ model User {
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  lesson Lesson? @relation(fields: [lessonId], references: [id])
+  lessonId String?
+
   otp Otp?
 }
 
@@ -39,14 +43,19 @@ model Lesson {
   data Json
   topicId String
   tags String
+
   topic Topic @relation(fields: [topicId], references: [id])
   programmes Programme[]
+  users User[]
+
+  @@unique([topicId, number])
 
   @@map("lessons")
 }
 
 model Topic {
   id String @id @default(cuid())
+  number Int
   title String
   lessons Lesson[]
 
@@ -63,6 +72,9 @@ model Programme {
   requiredLvl Int? @map("required_lvl")
 
   lessonId String?
+
+  code String @db.LongText
+  goal String
 
   lesson Lesson? @relation(fields: [lessonId], references: [id])
 
