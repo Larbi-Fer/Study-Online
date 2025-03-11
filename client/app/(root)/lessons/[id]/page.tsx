@@ -1,4 +1,5 @@
 import { getLesson } from "@/actions/lessons.actions"
+import LessonPreview from "@/components/LessonsList/LessonPreview"
 
 export async function generateMetadata({ params }: {params: Promise<{ id: string }>}) {
   const lesson = await getLesson((await params).id)
@@ -8,9 +9,14 @@ export async function generateMetadata({ params }: {params: Promise<{ id: string
   }
 }
 
-const Lesson = () => {
+const Lesson = async({ params }: {params: Promise<{ id: string }>}) => {
+  const lesson = await getLesson((await params).id)
+  // console.log(lesson);
+  
+
   return (
-    <div>Lesson</div>
+    <LessonPreview lesson={lesson.payload} />
+    // 'Hello'
   )
 }
 
