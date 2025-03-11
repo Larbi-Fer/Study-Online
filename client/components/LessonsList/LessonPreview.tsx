@@ -2,12 +2,15 @@
 
 import * as motion from 'motion/react-client'
 import Button from "@/ui/Button"
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 import ReactMarkdown from 'react-markdown'
 
 import './LessonPreviewStyle.css'
 import { AnimatePresence } from "motion/react"
 import Link from 'next/link'
+import { useAppDispatch } from '@/lib/hooks'
+import { setProgrammes } from '@/lib/features/programmes'
+import { useRouter } from 'next/navigation'
 
 const slideVariant = {
   hidden: {
@@ -26,8 +29,16 @@ const slideVariant = {
 
 const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const changeSlide = (callback: (prev: number) => number) => () => setCurrentSlide(callback)
+
+  const goToProgramming = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    dispatch(setProgrammes(lesson.programmes))
+    router.push(e.currentTarget.href)
+  }
 
   return (
     <>
@@ -45,7 +56,7 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
         <div className="actions">
           <Button onClick={changeSlide(prev => prev - 1)} disabled={currentSlide == 0} transparent>{'<'} Previous</Button>
           {lesson.data.lesson.length == currentSlide+1 ?
-            <Link href={`/lessons/${lesson.id}/programming-space`}>
+            <Link href={`/lessons/${lesson.id}/programming-space`} onClick={goToProgramming}>
               <Button>Go to programming</Button>
             </Link>
           :
@@ -53,8 +64,6 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
           }
         </div>
       </div>
-
-      <div className="navbar-hidden"></div>
       <div className="lesson-progress">
         <span style={{width: (currentSlide + 1) / lesson.data.lesson.length * 100 + '%'}}></span>
       </div>

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './features/user'
+import programmesReducer from './features/programmes'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
+      programmes: programmesReducer
     }
   })
 }

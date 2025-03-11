@@ -7,16 +7,18 @@ interface LessonArg {
     lesson: LessonSlidesProps
   };
   topicId: string;
-  programmes: {
-    code: string;
-    description: string;
-    goal: string;
-    title: string;
-  }[]
+  programmes: ProgrammeArgs[]
 
   _count: {
     programmes: number
   }
+}
+
+interface ProgrammeArgs {
+  code: string;
+  description: string;
+  goal: string;
+  title: string;
 }
 
 interface LessonSlideProps {
