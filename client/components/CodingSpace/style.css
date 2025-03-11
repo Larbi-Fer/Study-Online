@@ -1,9 +1,11 @@
-.coding-space {
+:root {
   --panel-bg: #292c2d;
   --panel-color: #ddd;
   --output-bg: #282b27;
   --seperator: #555961;
+}
 
+.coding-space {
   color: var(--panel-color);
   display: flex;
   justify-content: space-between;
@@ -72,6 +74,46 @@
   border-radius: 50%;
 }
 
+/* Message box */
+
+.congration-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.congration-message .msg {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  color: var(--panel-color);
+  background-color: var(--seperator);
+  padding: 20px;
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.congration-message .bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #5555;
+  backdrop-filter: blur(3px);
+}
+
+.congration-message .actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: end;
+}
 
 @media (max-width: 800px) {
   .coding-space {
