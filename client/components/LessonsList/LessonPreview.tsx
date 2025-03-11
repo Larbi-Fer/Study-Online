@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { useAppDispatch } from '@/lib/hooks'
 import { setProgrammes } from '@/lib/features/programmes'
 import { useRouter } from 'next/navigation'
+import useHotkeys from '@/lib/useHotkeys'
 
 const slideVariant = {
   hidden: {
@@ -31,13 +32,31 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const dispatch = useAppDispatch()
   const router = useRouter()
+  useHotkeys(
+    [{key: 'ArrowLeft'}],
+    () => changeSlide('decrease')()
+  )
 
-  const changeSlide = (callback: (prev: number) => number) => () => setCurrentSlide(callback)
+  useHotkeys(
+    [{key: 'ArrowRight'}],
+    () => changeSlide('increase')()
+  )
 
-  const goToProgramming = (e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
+  useHotkeys(
+    [{key: 'enter'}],
+    () => changeSlide('increase')()
+  )
+
+  const changeSlide = (type: 'increase' | 'decrease') => () => {
+    if (type == 'decrease' && currentSlide == 0) return
+    if (type == 'increase' && currentSlide == lesson.data.lesson.length-1) return goToProgramming()
+    setCurrentSlide(prev => type == 'increase' ? (prev+1) : (prev-1))
+  }
+
+  const goToProgramming = (e?: MouseEvent<HTMLAnchorElement>) => {
+    e?.preventDefault()
     dispatch(setProgrammes(lesson.programmes))
-    router.push(e.currentTarget.href)
+    router.push(`/lessons/${lesson.id}/programming-space`)
   }
 
   return (
@@ -54,13 +73,13 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
         </div>
 
         <div className="actions">
-          <Button onClick={changeSlide(prev => prev - 1)} disabled={currentSlide == 0} transparent>{'<'} Previous</Button>
+          <Button onClick={changeSlide('decrease')} disabled={currentSlide == 0} transparent>{'<'} Previous</Button>
           {lesson.data.lesson.length == currentSlide+1 ?
             <Link href={`/lessons/${lesson.id}/programming-space`} onClick={goToProgramming}>
               <Button>Go to programming</Button>
             </Link>
           :
-            <Button onClick={changeSlide(prev => prev + 1)}>Next {'>'}</Button>
+            <Button onClick={changeSlide('increase')}>Next {'>'}</Button>
           }
         </div>
       </div>
