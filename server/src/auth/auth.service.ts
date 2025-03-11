@@ -12,7 +12,7 @@ export class AuthService {
     // Get data
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
-      include: {lesson: {select: {topicId: true}}}
+      include: {lesson: {select: {topicId: true, number: true}}}
     })
 
     // Verify data

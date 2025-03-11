@@ -1,20 +1,25 @@
+import * as motion from "motion/react-client"
+import List from "./List"
+
+import './style.css'
 
 type LessonsProps = {
-  list: any[]
+  list: any[][]
 }
 
 const LessonsList = ({ list }: LessonsProps) => {
-  console.log(list);
-  
+  // console.log(list);
+
   return (
-    <div>
-      {list.map((lesson, i) => (
-        <div key={i}>
-          {lesson.title}
-          {lesson._count.programmes}
-        </div>
+    <motion.div
+      variants={{ hidden: {opacity: 0, y: 5}, show: {opacity: 1, y: 0, transition: { staggerChildren: 0.20 }} }}
+      initial='hidden'
+      animate='show'
+    >
+      {list.map((lessons, i) => (
+        <List list={lessons} key={'lessons-group' + i} />
       ))}
-    </div>
+    </motion.div>
   )
 }
 

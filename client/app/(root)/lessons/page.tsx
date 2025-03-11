@@ -17,7 +17,14 @@ const Lessons = async () => {
   )
 
   const user = JSON.parse(data)
-  const lessons = (await getLessons(user.lesson.topicId)).payload
+  const jsonLessons = (await getLessons(user.lesson.topicId)).payload
+
+  const lessons: any[] = []
+
+  for (let i = 0; i < jsonLessons.length; i += 3) {
+    lessons.push(jsonLessons.slice(i, i + 3));
+  }
+
   return (
     <div>
       <LessonsList list={lessons} />

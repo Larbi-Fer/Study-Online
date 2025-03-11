@@ -1,0 +1,64 @@
+
+.list {
+  width: calc(100% - 10px);
+  max-width: 1300px;
+  margin: 10px auto;
+  background-color: #eee;
+
+  border-radius: 10px;
+}
+
+.list .element {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #fff;
+}
+
+/* level place */
+
+.list .element .level {
+  margin: 5px 10px;
+  border-right: 1px solid #222;
+  padding-right: 10px;
+}
+
+.list .element .level .num {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.list .element .level .level-name {
+  font-size: 14px;
+  color: #2228;
+}
+
+/* Details */
+
+.list .details {
+  width: 100%;
+  margin: 5px 10px;
+}
+
+.list .details .title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.list .details .info {
+  display: flex;
+  justify-content: space-around;
+  font-size: 14px;
+}
+
+.list .details .info div span:first-child {
+  color: #2228;
+}
+
+/* Action */
+
+.list .action {
+  display: flex;
+  align-items: center;
+}
