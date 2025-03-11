@@ -6,6 +6,11 @@ interface UserProps {
   email: string;
   createdAt?: string;
   updatedAt?: string;
+  lesson?: {
+    topicId: string;
+    number: number;
+  }
+  lessonId?: string;
 }
 
 export const counterSlice = createSlice({

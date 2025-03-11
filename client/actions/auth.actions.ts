@@ -70,3 +70,13 @@ export const activateAction = async (code: string, email: string) : Promise<Auth
     return { type: 'ERROR', payload: error.message }
   }
 }
+
+export const getUserFromCookies = async () => {
+  const data = (await cookies()).get('user')?.value
+  
+  if(!data) return null
+
+  const user = JSON.parse(data)
+
+  return user
+}
