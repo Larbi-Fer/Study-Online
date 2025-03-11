@@ -63,13 +63,3 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
 }
 
 export default LessonPreview
-
-/*
-<AnimatePresence onExitComplete={() => setIsShow(true)}>
-          {isShow && <motion.div key={'slide-' + currentSlide} variants={slideVariant} initial='hidden' animate='show' exit='exit' className="lesson">
-            {lesson.data.lesson[currentSlide].map((content, i) => (
-              <div key={i}>{content.type == 'markdown' ? <ReactMarkdown>{content.markdown}</ReactMarkdown> : content.list.join(' | ')}</div>
-            ))}
-          </motion.div>}
-        </AnimatePresence>
-*/
