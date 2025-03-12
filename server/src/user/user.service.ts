@@ -7,8 +7,6 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async nextLesson(id: string) {
-    console.log('open');
-    
     const user = (await this.prisma.user.findUnique({
       where: { id },
       select: {lesson: {select: {number: true, topicId: true}}}
