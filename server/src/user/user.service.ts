@@ -7,6 +7,8 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async nextLesson(id: string) {
+    console.log('open');
+    
     const user = (await this.prisma.user.findUnique({
       where: { id },
       select: {lesson: {select: {number: true, topicId: true}}}
@@ -16,7 +18,7 @@ export class UserService {
 
     const { lesson: { number, topicId } } = user
 
-    await this.prisma.user.update({
+    const {lesson: newLesson} = await this.prisma.user.update({
       data: {
         lesson: { connect: {
           topicId_number: {
@@ -25,9 +27,10 @@ export class UserService {
           }
         } }
       },
-      where: {id}
+      where: {id},
+      select: { lesson: { select: {id: true, number: true, topicId: true} } }
     })
 
-    return { message: 'SUCCESS' }
+    return { message: 'SUCCESS', payload: newLesson }
   }
 }

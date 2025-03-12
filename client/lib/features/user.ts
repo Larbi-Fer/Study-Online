@@ -22,11 +22,16 @@ export const counterSlice = createSlice({
     },
     clearUser: (state) => {
       state = null;
+    },
+    nextLessonUser: (state, {payload}: {payload: { lesson?: {topicId: string, number: number}, lessonId?: string }}) => {
+      if(!state) return
+      state.lesson = payload.lesson
+      state.lessonId = payload.lessonId
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, clearUser } = counterSlice.actions
+export const { setUser, clearUser, nextLessonUser } = counterSlice.actions
 
 export default counterSlice.reducer

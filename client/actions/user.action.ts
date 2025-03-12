@@ -11,12 +11,12 @@ type UserActionProps = {
 
 export const nextLesson = async (id: string): Promise<UserActionProps> => {
   try {
-    const res = await api(`${path}/${id}/nextlevel`, 'POST')
+    const res = await api(`${path}/${id}/next-lesson`, 'PATCH')
     const data = await res.json()
 
     if (data.message != 'SUCCESS') return {message: data.message}
-
-    return {message: 'SUCCESS'}
+    
+    return {message: 'SUCCESS', payload: data.payload}
   } catch (error) {
     return {message: 'ERROR'}
   }
