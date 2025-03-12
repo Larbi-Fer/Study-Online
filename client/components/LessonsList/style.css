@@ -34,6 +34,13 @@
   color: #2228;
 }
 
+.list .complete-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 13px;
+}
+
 /* Details */
 
 .list .details {

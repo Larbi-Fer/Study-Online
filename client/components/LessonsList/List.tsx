@@ -2,6 +2,7 @@
 
 import { useAppSelector } from '@/lib/hooks'
 import Button from '@/ui/Button'
+import { CheckCircleIcon } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import Link from 'next/link'
 
@@ -22,10 +23,16 @@ const List = ({ list, key }: ListProps) => {
     <motion.div key={key} variants={listVariant} className='list'>
       {list.map((lesson, i) => (
         <motion.div key={'lesson-' + i} className='element'>
-          <div className="level">
-            <div className="num">{lesson.number}</div>
-            <div className='level-name'>Level</div>
-          </div>
+          {user?.lesson?.number! > lesson.number ?
+            <div className='level complete-icon'>
+              <div><CheckCircleIcon size={30} color='#1f1' /></div>
+            </div>
+          :
+            <div className="level">
+              <div className="num">{lesson.number}</div>
+              <div className='level-name'>Lesson</div>
+            </div>
+          }
 
           <div className="details">
             <div className="title">{lesson.title}</div>
@@ -43,7 +50,14 @@ const List = ({ list, key }: ListProps) => {
 
           <div className="action">
             <Link href={`/lessons/${lesson.id}`}>
-              <Button disabled={user?.lesson?.number! < lesson.number}>Start</Button>
+              {user?.lesson?.number! < lesson.number ?
+                <Button disabled>Start</Button>
+                : ( user?.lesson?.number! == lesson.number ?
+                    <Button>Start</Button>
+                  :
+                    <Button>Retake</Button>
+               )
+              }
             </Link>
           </div>
         </motion.div>
