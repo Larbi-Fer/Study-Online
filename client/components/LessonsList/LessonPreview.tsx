@@ -9,9 +9,11 @@ import './LessonPreviewStyle.css'
 import { AnimatePresence } from "motion/react"
 import Link from 'next/link'
 import { useAppDispatch } from '@/lib/hooks'
-import { setProgrammes } from '@/lib/features/programmes'
+import { setCongrationMsg, setProgrammes } from '@/lib/features/programmes'
 import { useRouter } from 'next/navigation'
 import useHotkeys from '@/lib/useHotkeys'
+import CongratulationsMsg from './CongratulationsMsg'
+import { useAfterComplete } from '@/lib/utils'
 
 const slideVariant = {
   hidden: {
@@ -32,6 +34,8 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const afterComplete = useAfterComplete(lesson.id)
+
   useHotkeys(
     [{key: 'ArrowLeft'}],
     () => changeSlide('decrease')()
@@ -55,6 +59,11 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
 
   const goToProgramming = (e?: MouseEvent<HTMLAnchorElement>) => {
     e?.preventDefault()
+    if (lesson.programmes.length == 0) {
+      dispatch(setCongrationMsg(true))
+      return
+    }
+
     dispatch(setProgrammes(lesson.programmes))
     router.push(`/lessons/${lesson.id}/programming-space`)
   }
@@ -86,6 +95,8 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
       <div className="lesson-progress">
         <span style={{width: (currentSlide + 1) / lesson.data.lesson.length * 100 + '%'}}></span>
       </div>
+
+      <CongratulationsMsg handleNext={afterComplete} />
     </>
   )
 }

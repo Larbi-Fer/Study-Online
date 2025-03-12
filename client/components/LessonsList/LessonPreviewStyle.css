@@ -1,3 +1,8 @@
+:root {
+  --panel-color: #222;
+  --seperator: #d6ffca;
+}
+
 .slide {
   position: fixed;
   top: 50%;
