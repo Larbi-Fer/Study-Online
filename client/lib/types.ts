@@ -40,8 +40,16 @@ interface QuizArgs {
     choices: string[];
     correct: number;
     tags: string[];
-    time: number;
+    time?: number;
   }[]
+}
+
+interface userQuizStatistics {
+  [tag: string]: {
+    correct: number;
+    wrong: number;
+    timeOut: number;
+  }
 }
 
 type LessonSlidesProps = LessonSlideProps[][]

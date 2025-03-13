@@ -57,3 +57,24 @@
 .quiz-slide .actions {
   justify-content: end;
 }
+
+/* Countdown */
+
+.countdown {
+  position: fixed;
+  top: calc(var(--nav-pd) - 16px);
+  width: 0;
+  height: 3px;
+  background: var(--primary-bg);
+  transition: 0.1s linear;
+  /* animation: linear countdown; */
+}
+
+@keyframes countdown {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}

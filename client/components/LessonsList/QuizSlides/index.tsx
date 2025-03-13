@@ -3,9 +3,10 @@
 import Button from "@/ui/Button"
 import { AnimatePresence } from "motion/react"
 import * as motion from 'motion/react-client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import '../LessonPreviewStyle.css'
 import './style.css'
+import Countdown from "./Countdown"
 
 const slideVariant = {
   hidden: {
@@ -23,17 +24,42 @@ const slideVariant = {
 }
 
 const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
-  const [currentSlide, setCurrentSlide] = useState({ slide: 0, selected: -1 })
+  const [currentSlide, setCurrentSlide] = useState({ slide: 0, selected: -1, stop: false })
   const qst = quiz.questions[currentSlide.slide]
+  const [isTimeOut, setIsTimeOut] = useState(false)
+  const [timeoutVal, setTimeoutVal] = useState<NodeJS.Timeout>()
+  const [statistics, setStatistics] = useState<userQuizStatistics>({})
+
+  useEffect(() => {
+    if (!qst.time) return
+    setTimeoutVal(setTimeout(() => setIsTimeOut(true), qst.time * 1000))
+  }, [currentSlide])
   
 
   const changeSlide = () => {
-    setCurrentSlide(prev => ({ slide: prev.slide+1, selected: -1 }))
+    if (timeoutVal) {
+      clearTimeout(timeoutVal)
+      setIsTimeOut(false)
+      setTimeoutVal(undefined)
+    }
+    setCurrentSlide(prev => ({ slide: prev.slide+1, selected: -1, stop: false }))
   }
 
   const onChoose = (i: number) => () => {
     if (currentSlide.selected !== -1) return
-    setCurrentSlide(prev => ({...prev, selected: i}))
+    setCurrentSlide(prev => ({...prev, selected: i, stop: true}))
+
+    const prev = statistics
+    qst.tags.forEach(tag => {
+      const type = isTimeOut ? 'timeOut' : (i == qst.correct ? 'correct' : 'wrong')
+      if (!prev[tag]) prev[tag] = {
+        correct: 0, wrong: 0, timeOut: 0
+      }
+      prev[tag][type] += 1
+    })
+
+    console.log(prev);
+    setStatistics(prev)
   }
 
   const choseClass = (i: number) => {
@@ -77,9 +103,9 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
           }
         </div>
       </div>
-      <div className="countdown">
-        <span></span>
-      </div>
+      {qst.time &&
+        <Countdown  seconds={qst.time} stop={currentSlide.stop} />
+      }
     </div>
   )
 }
