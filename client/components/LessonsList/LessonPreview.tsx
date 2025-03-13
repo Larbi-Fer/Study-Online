@@ -72,9 +72,9 @@ const LessonPreview = ({ lesson }: {lesson: LessonArg}) => {
     <>
       <div className="slide">
         <div className="lesson">
-          <AnimatePresence mode='wait'>
+          <AnimatePresence mode='popLayout'>
             {lesson.data.lesson[currentSlide].map((content, i) => (
-              <motion.div key={currentSlide + '-' + i} variants={slideVariant} initial='hidden' animate='show' exit='exit' transition={{delay: i/15}}>
+              <motion.div key={content.key || currentSlide + '-' + i} layout variants={slideVariant} initial='hidden' animate='show' exit='exit' transition={{delay: i/15}}>
                 {content.type == 'markdown' ? <ReactMarkdown>{content.markdown}</ReactMarkdown> : content.list.join(' | ')}
               </motion.div>
             ))}

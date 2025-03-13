@@ -26,6 +26,7 @@ interface LessonSlideProps {
   markdown: string;
   list: string[];
   img: string;
+  key?: string;
 }
 
 type LessonSlidesProps = LessonSlideProps[][]

@@ -5,12 +5,19 @@ import { useAppSelector } from '@/lib/hooks'
 import { useAfterComplete } from '@/lib/utils'
 
 const ProgrammingSpace = () => {
-  const lessonId = useAppSelector(state => state.user?.lessonId)
+  const {lessonId, codes} = useAppSelector(state => ({lessonId: state.user?.lessonId, codes: state.programmes.codes}))
+  
 
   const afterComplete = useAfterComplete(lessonId!)
 
   return (
-    <CodingSapce afterComplete={afterComplete} />
+    codes.length ?
+      <CodingSapce afterComplete={afterComplete} />
+    : (
+      <div style={{textAlign: 'center'}}>
+        <h2>You have to pass the lesson in order.</h2>
+      </div>
+    )
   )
 }
 
