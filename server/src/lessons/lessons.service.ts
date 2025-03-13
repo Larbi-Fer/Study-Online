@@ -10,7 +10,10 @@ export class LessonsService {
       where: {topicId},
       omit: {data: true, topicId: true},
       include: {
-        _count: {select: {programmes: true}}
+        _count: {select: {programmes: true}},
+        quiz: {
+          select: {id: true }
+        }
       }
     })
 

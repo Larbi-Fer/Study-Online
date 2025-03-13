@@ -10,7 +10,10 @@ interface LessonArg {
   programmes: ProgrammeArgs[]
 
   _count: {
-    programmes: number
+    programmes: number,
+  }
+  quiz?: {
+    id: string
   }
 }
 

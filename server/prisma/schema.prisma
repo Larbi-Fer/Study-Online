@@ -22,53 +22,55 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  lesson Lesson? @relation(fields: [lessonId], references: [id])
+  lesson   Lesson? @relation(fields: [lessonId], references: [id])
   lessonId String?
 
   otp Otp?
 }
 
 model Otp {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  otp       Int
-  limit     DateTime
-  user      User     @relation(fields: [userId], references: [id])
+  id     String   @id @default(cuid())
+  userId String   @unique
+  otp    Int
+  limit  DateTime
+  user   User     @relation(fields: [userId], references: [id])
 }
 
 model Lesson {
-  id String @id @default(cuid())
-  number Int
-  title String
-  data Json
+  id      String @id @default(cuid())
+  number  Int
+  title   String
+  data    Json
   topicId String
-  tags String
+  tags    String
 
-  topic Topic @relation(fields: [topicId], references: [id])
+  topic      Topic       @relation(fields: [topicId], references: [id])
   programmes Programme[]
-  users User[]
+  users      User[]
+  quiz Quiz?
 
   @@unique([topicId, number])
-
   @@map("lessons")
 }
 
 model Topic {
-  id String @id @default(cuid())
-  number Int
-  title String
-  lessons Lesson[]
+  id           String   @id @default(cuid())
+  number       Int
+  title        String
+  lessons      Lesson[]
+
+  finalQuiz Quiz?
 
   @@map("topics")
 }
 
 model Programme {
-  id String @id @default(cuid())
-  type String
-  title String
+  id          String @id @default(cuid())
+  type        String
+  title       String
   description String
 
-  points Int?
+  points      Int?
   requiredLvl Int? @map("required_lvl")
 
   lessonId String?
@@ -79,4 +81,39 @@ model Programme {
   lesson Lesson? @relation(fields: [lessonId], references: [id])
 
   @@map("programmes")
+}
+
+// Quizzes
+
+model Quiz {
+  id        String     @id @default(cuid())
+  type      QuizType
+  questions Question[]
+
+  topicId  String? @unique
+  lessonId String? @unique
+
+  topic Topic? @relation(fields: [topicId], references: [id])
+  lesson Lesson? @relation(fields: [lessonId], references: [id])
+
+  @@map("Quizzes")
+}
+
+model Question {
+  id       String @id @default(cuid())
+  question String
+  Choices  Json
+  correct  Int // Strart from 0
+  tags     Json // ['variables, 'lists']
+  time     Int?
+  quizId   String
+
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  @@map("Questions")
+}
+
+enum QuizType {
+  global
+  miniQuiz
 }

@@ -67,7 +67,7 @@ export class AuthService {
     })
 
     // Send a confirmation email
-    // sendEmailVerification(dto.email, otp, dto.fullname)
+    sendEmailVerification(dto.email, otp, dto.fullname)
 
     // return the user
     return user;
