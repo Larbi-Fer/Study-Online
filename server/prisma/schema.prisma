@@ -102,7 +102,7 @@ model Quiz {
 model Question {
   id       String @id @default(cuid())
   question String
-  Choices  Json
+  choices  Json
   correct  Int // Strart from 0
   tags     Json // ['variables, 'lists']
   time     Int?

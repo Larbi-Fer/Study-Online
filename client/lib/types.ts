@@ -32,4 +32,16 @@ interface LessonSlideProps {
   key?: string;
 }
 
+interface QuizArgs {
+  id: string;
+  questions: {
+    id: string;
+    question: string;
+    choices: string[];
+    correct: number;
+    tags: string[];
+    time: number;
+  }[]
+}
+
 type LessonSlidesProps = LessonSlideProps[][]

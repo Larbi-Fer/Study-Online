@@ -1,0 +1,59 @@
+.quiz-slide .lesson > div {
+  width: 100%;
+  text-align: center;
+}
+
+.quiz-slide .choices {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.quiz-slide .choices .choice {
+  position: relative;
+  background-color: #bac3d4;
+  border-radius: 20px;
+  padding: 10px 30px 10px 40px;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.quiz-slide .choices .choice:hover {
+  background-color: #a9b1c1;
+}
+
+.quiz-slide .choices .choice::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  border: 1px solid gray;
+  border-radius: 100%;
+}
+
+.quiz-slide .choices .choice.correct {
+  background-color: #b3ffaf;
+}
+
+.quiz-slide .choices .choice.correct::before {
+  border: none;
+  background-image: url(/icons/check.png);
+  background-size: cover;
+}
+
+.quiz-slide .choices .choice.wrong {
+  background-color: #ffafaf;
+}
+
+.quiz-slide .choices .choice.wrong::before {
+  border: none;
+  background-image: url(/icons/cross.png);
+  background-size: cover;
+}
+
+.quiz-slide .actions {
+  justify-content: end;
+}
