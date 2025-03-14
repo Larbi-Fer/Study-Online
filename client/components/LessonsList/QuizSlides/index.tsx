@@ -61,9 +61,9 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
 
     const prev = statistics
     qst.tags.forEach(tag => {
-      const type = isTimeOut ? 'timeOut' : (i == qst.correct ? 'correct' : 'wrong')
+      const type = isTimeOut ? 'timeout' : (i == qst.correct ? 'correct' : 'incorrect')
       if (!prev[tag]) prev[tag] = {
-        correct: 0, wrong: 0, timeOut: 0
+        correct: 0, incorrect: 0, timeout: 0
       }
       prev[tag][type] += 1
     })

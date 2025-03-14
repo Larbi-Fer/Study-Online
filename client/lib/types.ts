@@ -47,16 +47,21 @@ interface QuizArgs {
 interface userQuizStatistics {
   [tag: string]: {
     correct: number;
-    wrong: number;
-    timeOut: number;
+    incorrect: number;
+    timeout: number;
   }
 }
 
 interface QuizStatistics {
   label: string;
   correct: string;
-  wrong: string;
+  incorrect: string;
   timeout: string;
+}
+
+interface QuizGeneralResults {
+  label: string;
+  value: number;
 }
 
 type LessonSlidesProps = LessonSlideProps[][]
