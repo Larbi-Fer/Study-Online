@@ -52,4 +52,11 @@ interface userQuizStatistics {
   }
 }
 
+interface QuizStatistics {
+  label: string;
+  correct: string;
+  wrong: string;
+  timeout: string;
+}
+
 type LessonSlidesProps = LessonSlideProps[][]

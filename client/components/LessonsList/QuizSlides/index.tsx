@@ -7,6 +7,8 @@ import { useEffect, useState } from "react"
 import '../LessonPreviewStyle.css'
 import './style.css'
 import Countdown from "./Countdown"
+import { setQuizResult } from "@/actions/user.action"
+import { useAppSelector } from "@/lib/hooks"
 
 const slideVariant = {
   hidden: {
@@ -29,6 +31,8 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const [isTimeOut, setIsTimeOut] = useState(false)
   const [timeoutVal, setTimeoutVal] = useState<NodeJS.Timeout>()
   const [statistics, setStatistics] = useState<userQuizStatistics>({})
+  const [rate, setRate] = useState(0)
+  const userId = useAppSelector(state => state.user?.id)
 
   useEffect(() => {
     if (!qst.time) return
@@ -49,6 +53,8 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
     if (currentSlide.selected !== -1) return
     setCurrentSlide(prev => ({...prev, selected: i, stop: true}))
 
+    if (i == qst.correct) setRate(prevRate => prevRate + Math.round( 1 / quiz.questions.length * ( isTimeOut ? 50 : 100 ) ))
+
     const prev = statistics
     qst.tags.forEach(tag => {
       const type = isTimeOut ? 'timeOut' : (i == qst.correct ? 'correct' : 'wrong')
@@ -58,7 +64,6 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
       prev[tag][type] += 1
     })
 
-    console.log(prev);
     setStatistics(prev)
   }
 
@@ -70,6 +75,17 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
     }
     if (qst.correct == i) return ' correct'
     return ''
+  }
+
+  const uploadAnswers = async() => {
+    const answers: QuizStatistics[] = []
+    for (const field in statistics) {
+      if (Object.prototype.hasOwnProperty.call(statistics, field)) {
+        answers.push({ ...statistics[field] as any, label: field })
+      }
+    }
+    const res = await setQuizResult(userId!, quiz.id, answers, rate)
+    console.log(res);
   }
 
   return (
@@ -96,7 +112,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
 
           {currentSlide.selected !== -1 && (
             quiz.questions.length == currentSlide.slide+1 ?
-              <Button>Finish</Button>
+              <Button onClick={uploadAnswers}>Finish</Button>
             :
               <Button onClick={changeSlide}>Next {'>'}</Button>
             )

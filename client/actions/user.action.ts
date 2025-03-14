@@ -21,3 +21,19 @@ export const nextLesson = async (id: string): Promise<UserActionProps> => {
     return {message: 'ERROR'}
   }
 }
+
+export const setQuizResult = async (userId: string, quizId: string, answers: QuizStatistics[], percent: number): Promise<UserActionProps> => {
+  try {
+    const res = await api(`${path}/${userId}/quiz/answers`, 'PUT', {
+      quizId, answers, percent
+    })
+    const data = await res.json()
+
+    if (data.message != 'SUCCESS') return {message: data.message}
+    
+    
+    return {message: 'SUCCESS'}
+  } catch (error) {
+    return {message: 'ERROR'}
+  }
+}

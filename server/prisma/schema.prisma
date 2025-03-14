@@ -47,17 +47,17 @@ model Lesson {
   topic      Topic       @relation(fields: [topicId], references: [id])
   programmes Programme[]
   users      User[]
-  quiz Quiz?
+  quiz       Quiz?
 
   @@unique([topicId, number])
   @@map("lessons")
 }
 
 model Topic {
-  id           String   @id @default(cuid())
-  number       Int
-  title        String
-  lessons      Lesson[]
+  id      String   @id @default(cuid())
+  number  Int
+  title   String
+  lessons Lesson[]
 
   finalQuiz Quiz?
 
@@ -93,7 +93,7 @@ model Quiz {
   topicId  String? @unique
   lessonId String? @unique
 
-  topic Topic? @relation(fields: [topicId], references: [id])
+  topic  Topic?  @relation(fields: [topicId], references: [id])
   lesson Lesson? @relation(fields: [lessonId], references: [id])
 
   @@map("Quizzes")
@@ -116,4 +116,14 @@ model Question {
 enum QuizType {
   global
   miniQuiz
+}
+
+model QuizResults {
+  userId     String
+  quizId     String
+  statistics Json
+  percent    Int
+
+  @@id([userId, quizId])
+  @@map("quiz-results")
 }

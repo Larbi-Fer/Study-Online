@@ -31,4 +31,22 @@ export class UserService {
 
     return { message: 'SUCCESS', payload: newLesson }
   }
+
+  async setNewAnswers(userId: string, quizId: string, answers: quizStatistics[], percent: number) {
+    const res = await this.prisma.quizResults.upsert({
+      create: {
+        userId, quizId,
+        statistics: answers,
+        percent: percent
+      },
+      update: {
+        statistics: answers,
+        percent: percent
+      },
+      where: { userId_quizId: {userId, quizId} },
+      omit: {userId: true}
+    })
+    return { message: "SUCCESS" }
+    
+  }
 }
