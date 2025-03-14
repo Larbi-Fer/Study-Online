@@ -27,12 +27,18 @@ const slideVariant = {
   }
 }
 
+const initalGeneralStatistics: QuizGeneralResults[] = [
+  { label: 'correct', value: 0 },
+  { label: 'incorrect', value: 0 },
+  { label: 'timeout', value: 0 }
+]
+
 const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const [currentSlide, setCurrentSlide] = useState({ slide: 0, selected: -1, stop: false })
   const qst = quiz.questions[currentSlide.slide]
   const [isTimeOut, setIsTimeOut] = useState(false)
   const [timeoutVal, setTimeoutVal] = useState<NodeJS.Timeout>()
-  const [statistics, setStatistics] = useState<userQuizStatistics>({})
+  const [statistics, setStatistics] = useState<{byFiald: userQuizStatistics, general: QuizGeneralResults[]}>({byFiald: {}, general: initalGeneralStatistics})
   const [rate, setRate] = useState(0)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -60,13 +66,17 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
     if (i == qst.correct) setRate(prevRate => prevRate + Math.round( 1 / quiz.questions.length * ( isTimeOut ? 50 : 100 ) ))
 
     const prev = statistics
+    // by field
+    const type = isTimeOut ? 'timeout' : (i == qst.correct ? 'correct' : 'incorrect')
     qst.tags.forEach(tag => {
-      const type = isTimeOut ? 'timeout' : (i == qst.correct ? 'correct' : 'incorrect')
-      if (!prev[tag]) prev[tag] = {
+      if (!prev.byFiald[tag]) prev.byFiald[tag] = {
         correct: 0, incorrect: 0, timeout: 0
       }
-      prev[tag][type] += 1
+      prev.byFiald[tag][type] += 1
     })
+
+    // general
+    statistics.general[type == 'correct' ? 0 : (type == 'incorrect' ? 1 : 2)].value++
 
     setStatistics(prev)
   }
@@ -84,12 +94,16 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const uploadAnswers = async() => {
     setLoading(true)
     const answers: QuizStatistics[] = []
-    for (const field in statistics) {
+    for (const field in statistics.byFiald) {
       if (Object.prototype.hasOwnProperty.call(statistics, field)) {
-        answers.push({ ...statistics[field] as any, label: field })
+        answers.push({ ...statistics.byFiald[field] as any, label: field })
       }
     }
-    const res = await setQuizResult(userId!, quiz.id, answers, rate)
+
+    console.log(statistics);
+    
+
+    const res = await setQuizResult(userId!, quiz.id, {byField: answers, general: statistics.general}, rate)
 
     if (res.message != 'SUCCESS') return Toast('Something went wrong', 'error')
 

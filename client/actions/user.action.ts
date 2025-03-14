@@ -22,7 +22,7 @@ export const nextLesson = async (id: string): Promise<UserActionProps> => {
   }
 }
 
-export const setQuizResult = async (userId: string, quizId: string, answers: QuizStatistics[], percent: number): Promise<UserActionProps> => {
+export const setQuizResult = async (userId: string, quizId: string, answers: {byField: QuizStatistics[], general: QuizGeneralResults[]}, percent: number): Promise<UserActionProps> => {
   try {
     const res = await api(`${path}/${userId}/quiz/answers`, 'PUT', {
       quizId, answers, percent

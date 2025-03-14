@@ -60,8 +60,14 @@ interface QuizStatistics {
 }
 
 interface QuizGeneralResults {
-  label: string;
+  label: 'correct' | 'incorrect' | 'timeout';
   value: number;
+}
+
+interface QuizStatisticsArgs {
+  byFiald: QuizStatistics[];
+  general: QuizGeneralResults[];
+  percent: number
 }
 
 type LessonSlidesProps = LessonSlideProps[][]
