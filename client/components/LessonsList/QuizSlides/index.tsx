@@ -9,6 +9,8 @@ import './style.css'
 import Countdown from "./Countdown"
 import { setQuizResult } from "@/actions/user.action"
 import { useAppSelector } from "@/lib/hooks"
+import Toast from "@/ui/Toast"
+import { useRouter } from "next/navigation"
 
 const slideVariant = {
   hidden: {
@@ -32,6 +34,8 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const [timeoutVal, setTimeoutVal] = useState<NodeJS.Timeout>()
   const [statistics, setStatistics] = useState<userQuizStatistics>({})
   const [rate, setRate] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
   const userId = useAppSelector(state => state.user?.id)
 
   useEffect(() => {
@@ -78,6 +82,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   }
 
   const uploadAnswers = async() => {
+    setLoading(true)
     const answers: QuizStatistics[] = []
     for (const field in statistics) {
       if (Object.prototype.hasOwnProperty.call(statistics, field)) {
@@ -85,7 +90,10 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
       }
     }
     const res = await setQuizResult(userId!, quiz.id, answers, rate)
-    console.log(res);
+
+    if (res.message != 'SUCCESS') return Toast('Something went wrong', 'error')
+
+    router.push(`/quiz/${quiz.id}/statistics`)
   }
 
   return (
@@ -112,7 +120,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
 
           {currentSlide.selected !== -1 && (
             quiz.questions.length == currentSlide.slide+1 ?
-              <Button onClick={uploadAnswers}>Finish</Button>
+              <Button onClick={uploadAnswers} loading={loading}>Finish</Button>
             :
               <Button onClick={changeSlide}>Next {'>'}</Button>
             )
