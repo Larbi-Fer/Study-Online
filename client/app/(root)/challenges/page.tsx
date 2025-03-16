@@ -1,4 +1,4 @@
-import { getChallengeData } from "@/actions/challenges.action";
+import { getChallengesData } from "@/actions/challenges.action";
 import ChallengesList from "@/components/Challenges";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ const Challenges = async() => {
   )*/
 
   // Get chellenges & points
-  const data = await getChallengeData(user.id, user.lesson.topicId)
+  const data = await getChallengesData(user.id, user.lesson.topicId)
   if (data.message != 'SUCCESS') return (
     <h3>Something wrong</h3>
   )

@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { GetChallengesDto } from './dto';
 
@@ -15,5 +15,11 @@ export class ChallengesController {
       points: p,
       challenges
     } }
+  }
+
+  @Get('/:id')
+  async getProgramme(@Param('id') id: string) {
+    const payload = await this.challengeServise.getProgramme(id)
+    return { message: 'SUCCESS', payload }
   }
 }
