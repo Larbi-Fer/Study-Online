@@ -2,6 +2,7 @@
 
 import CODES, { AuthCodeProps } from "@/lib/CODES";
 import { cookies } from "next/headers";
+import api from "./api";
 
 type AuthActionProps = {
   type: string,
@@ -25,7 +26,8 @@ export const loginAction = async (email: string, password: string): Promise<Auth
         throw new Error(data.message + '|' + CODES.AUTH[data.message as AuthCodeProps])
       }
 
-      (await cookies()).set('user', JSON.stringify(data))
+      (await cookies()).set('user', JSON.stringify(data));
+      (await cookies()).set('userId', data.id);
       return { type: 'LOGIN', payload: data }
     } catch (error: any) {
       const message = error.message.split('|')
@@ -72,11 +74,14 @@ export const activateAction = async (code: string, email: string) : Promise<Auth
 }
 
 export const getUserFromCookies = async () => {
-  const data = (await cookies()).get('user')?.value
+  const userId = (await cookies()).get('userId')?.value
   
-  if(!data) return null
+  if(!userId) return null
 
-  const user = JSON.parse(data)
+  const res = await api(`/user/${userId}/main-data`, 'GET')
+  console.log(res);
+  
+  const user = await res.json()
 
   return user
 }

@@ -6,6 +6,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async getUserMainData(id: string) {
+    return await this.prisma.user.findUnique({
+      where: {id},
+      include: {
+        lesson: {select: {id: true, number: true, topicId: true}}
+      }
+    })
+  }
+
   async nextLesson(id: string) {
     const user = (await this.prisma.user.findUnique({
       where: { id },

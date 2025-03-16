@@ -6,6 +6,11 @@ import { NewAnswersDto, QuizIdDto } from './dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Get('main-data')
+  userMainData(@Param('id') id: string) {
+    return this.userService.getUserMainData(id)
+  }
+
   @Patch('/next-lesson')
   nextLesson(@Param('id') id: string) {
     return this.userService.nextLesson(id)
