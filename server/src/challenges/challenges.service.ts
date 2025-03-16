@@ -58,4 +58,14 @@ export class ChallengesService {
       select: { title: true, description: true, goal: true, code: true }
     })
   }
+
+  async challangeDone(programmeId: string, userId: string) {
+    await this.prisma.challenge.upsert({
+      where: {
+        userId_programmeId: { userId, programmeId }
+      },
+      update: {},
+      create: { userId, programmeId }
+    });
+  }
 }

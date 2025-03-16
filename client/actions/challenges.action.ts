@@ -18,9 +18,20 @@ export const getChallengesData = async (userId: string, topicId: string) : Promi
   }
 }
 
-export const getChallenge = async (userId: string) : Promise<ChallengesActionProps> => {
+export const getChallenge = async (progId: string) : Promise<ChallengesActionProps> => {
   try {
-    const res = await api(`${PATH}/${userId}`, 'GET')
+    const res = await api(`${PATH}/${progId}`, 'GET')
+    const data = await res.json()
+
+    return data
+  } catch (error) {
+    return {message: 'ERROR'}
+  }
+}
+
+export const challengeDone = async (userId: string, progId: string) : Promise<ChallengesActionProps> => {
+  try {
+    const res = await api(`${PATH}/${progId}/?userId=${userId}`, 'POST')
     const data = await res.json()
 
     return data

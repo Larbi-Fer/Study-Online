@@ -11,3 +11,8 @@ export class GetChallengesDto {
   @IsString()
   userId: string
 }
+
+export class ChallengeDoneDto {
+  @IsString()
+  userId: string
+}
