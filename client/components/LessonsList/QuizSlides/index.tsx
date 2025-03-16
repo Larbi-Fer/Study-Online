@@ -38,7 +38,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const qst = quiz.questions[currentSlide.slide]
   const [isTimeOut, setIsTimeOut] = useState(false)
   const [timeoutVal, setTimeoutVal] = useState<NodeJS.Timeout>()
-  const [statistics, setStatistics] = useState<{byFiald: userQuizStatistics, general: QuizGeneralResults[]}>({byFiald: {}, general: initalGeneralStatistics})
+  const [statistics, setStatistics] = useState<{byField: userQuizStatistics, general: QuizGeneralResults[]}>({byField: {}, general: initalGeneralStatistics})
   const [rate, setRate] = useState(0)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -69,10 +69,10 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
     // by field
     const type = isTimeOut ? 'timeout' : (i == qst.correct ? 'correct' : 'incorrect')
     qst.tags.forEach(tag => {
-      if (!prev.byFiald[tag]) prev.byFiald[tag] = {
+      if (!prev.byField[tag]) prev.byField[tag] = {
         correct: 0, incorrect: 0, timeout: 0
       }
-      prev.byFiald[tag][type] += 1
+      prev.byField[tag][type] += 1
     })
 
     // general
@@ -94,14 +94,11 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const uploadAnswers = async() => {
     setLoading(true)
     const answers: QuizStatistics[] = []
-    for (const field in statistics.byFiald) {
-      if (Object.prototype.hasOwnProperty.call(statistics, field)) {
-        answers.push({ ...statistics.byFiald[field] as any, label: field })
+    for (const field in statistics.byField) {
+      if (Object.prototype.hasOwnProperty.call(statistics.byField, field)) {
+        answers.push({ ...statistics.byField[field] as any, label: field })
       }
     }
-
-    console.log(statistics);
-    
 
     const res = await setQuizResult(userId!, quiz.id, {byField: answers, general: statistics.general}, rate)
 

@@ -37,3 +37,15 @@ export const setQuizResult = async (userId: string, quizId: string, answers: {by
     return {message: 'ERROR'}
   }
 }
+
+export const GetQuizResult = async (userId: string, quizId: string): Promise<UserActionProps> => {
+  try {
+    const res = await api(`${path}/${userId}/quiz/result/?quizId=${quizId}`, 'GET')
+    const data = await res.json()
+
+    return { message: data.message, payload: data.payload }
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR'}
+  }
+}

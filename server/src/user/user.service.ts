@@ -47,6 +47,13 @@ export class UserService {
       omit: {userId: true}
     })
     return { message: "SUCCESS" }
-    
+  }
+
+  async quizResult(userId: string, quizId: string) {
+    const res = await this.prisma.quizResults.findUnique({
+      where: {userId_quizId: {userId, quizId}},
+      select: {statistics: true, percent: true}
+    })
+    return { message: 'SUCCESS', payload: res }
   }
 }

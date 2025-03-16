@@ -54,9 +54,9 @@ interface userQuizStatistics {
 
 interface QuizStatistics {
   label: string;
-  correct: string;
-  incorrect: string;
-  timeout: string;
+  correct: number;
+  incorrect: number;
+  timeout: number;
 }
 
 interface QuizGeneralResults {
@@ -65,8 +65,10 @@ interface QuizGeneralResults {
 }
 
 interface QuizStatisticsArgs {
-  byFiald: QuizStatistics[];
-  general: QuizGeneralResults[];
+  statistics: {
+    byField: QuizStatistics[];
+    general: QuizGeneralResults[];
+  }
   percent: number
 }
 
