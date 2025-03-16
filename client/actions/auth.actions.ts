@@ -79,7 +79,6 @@ export const getUserFromCookies = async () => {
   if(!userId) return null
 
   const res = await api(`/user/${userId}/main-data`, 'GET')
-  console.log(res);
   
   const user = await res.json()
 

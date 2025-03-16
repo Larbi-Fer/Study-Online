@@ -72,4 +72,13 @@ interface QuizStatisticsArgs {
   percent: number
 }
 
+// chellenges
+
+interface ChallengesArgs {
+  id: string;
+  title: string;
+  points: number;
+  requiredLvl: number;
+}
+
 type LessonSlidesProps = LessonSlideProps[][]

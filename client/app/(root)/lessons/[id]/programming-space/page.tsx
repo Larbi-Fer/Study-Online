@@ -2,7 +2,7 @@
 
 import CodingSapce from '@/components/CodingSpace'
 import { useAppSelector } from '@/lib/hooks'
-import { useAfterComplete } from '@/lib/utils'
+import { useAfterComplete } from '@/lib/customHooks'
 
 const ProgrammingSpace = () => {
   const {lessonId, codes} = useAppSelector(state => ({lessonId: state.user?.lessonId, codes: state.programmes.codes}))

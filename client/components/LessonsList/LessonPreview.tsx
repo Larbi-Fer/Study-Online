@@ -13,7 +13,7 @@ import { setCongrationMsg, setProgrammes } from '@/lib/features/programmes'
 import { useRouter } from 'next/navigation'
 import useHotkeys from '@/lib/useHotkeys'
 import CongratulationsMsg from './CongratulationsMsg'
-import { useAfterComplete } from '@/lib/utils'
+import { useAfterComplete } from '@/lib/customHooks'
 
 const slideVariant = {
   hidden: {
