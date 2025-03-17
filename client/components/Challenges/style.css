@@ -1,0 +1,14 @@
+.challenges-list {
+  width: 100%;
+  /* max-width: 700px; */
+}
+
+.challenges-list .challenge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  background-color: #dde;
+}
