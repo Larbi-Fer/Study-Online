@@ -1,12 +1,8 @@
-import React from 'react'
+import Dash from '@/components/dashboard'
 
 const Dashboard = () => {
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h2>
-        The levels will be displayed here.
-      </h2>
-    </div>
+    <Dash />
   )
 }
 
