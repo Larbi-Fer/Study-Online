@@ -1,107 +1,120 @@
+/* Global Styles */
 body {
-  --bg: #fdfdfd;
-  background-color: var(--bg);
+  --bg: #f4f7fc; /* Softer background color */
+  --primary-color: #0059FF; /* Green accent */
+  --text-color: #333; /* Dark text for readability */
+  --border-color: #ddd; /* Soft border */
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for cards */
+  --button-hover-color: #4caf50; /* Button hover effect */
+  --font-family: 'Roboto', sans-serif; /* Modern font */
+  
+  /* background-color: var(--bg); */
+  font-family: var(--font-family);
+  color: var(--text-color);
 }
 
 .dashboard-container {
-  --primary-container-bg: #d2d0e0;
-  --secondary-container-bg: #b4b1b1;
-
-  --raduis1: 5px;
-  --raduis2: 10px;
-
-  width: 100%;
   display: flex;
   max-width: 1600px;
   min-height: calc(100vh - var(--nav-pd) - 20px);
+  margin: 0 auto;
+  padding: 20px;
+  gap: 20px;
+  flex-wrap: wrap; /* For responsiveness */
 }
 
-.dashboard-container .left > div, .dashboard-container .right > div {
-  margin-bottom: 10px;
-}
-
-/* Left side */
-
+/* Left Side */
 .dashboard-container .left {
-  width: 80%;
-  margin: 10px;
+  flex: 1;
+  min-width: 600px;
 }
 
-/* Left side -> Card */
+.dashboard-container .left > div,
+.dashboard-container .right > div {
+  margin-bottom: 20px;
+}
 
+/* Card Styles */
 .dashboard-container .left .cards .card {
-  background-color: var(--primary-container-bg);
-  max-width: 500px;
-  margin: auto;
+  background-color: var(--bg);
   border-radius: var(--raduis1);
-  box-shadow: 0 0 5px #0009;
-  padding: 10px;
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-container .left .cards .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Hover shadow effect */
 }
 
 .dashboard-container .left .cards .card .card-details {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .dash-details {
-  margin-top: 30px;
-  padding: 0 20px;
-}
-
-/* Left side -> Lesson preview */
-
-.lesson {
-  width: calc(100% - 10px);
-  max-width: 1300px;
-  margin: 10px auto;
+  margin-top: 20px;
+  padding: 20px;
   background-color: var(--primary-container-bg);
-
-  border-radius: 10px;
+  border-radius: var(--raduis2);
 }
 
 .lesson {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #fff;
+  background-color: var(--primary-container-bg);
+  border-radius: var(--raduis2);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.lesson:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .lesson .level {
-  margin: 5px 10px;
-  border-right: 1px solid #222;
-  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 15px;
+  border-right: 1px solid var(--border-color);
 }
 
 .lesson .level .num {
   text-align: center;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 .lesson .level .level-name {
-  font-size: 14px;
-  color: #2228;
+  font-size: 16px;
+  color: #555;
 }
 
 .lesson .details {
-  width: 100%;
-  margin: 5px 10px;
+  flex: 1;
+  padding: 0 15px;
 }
 
 .lesson .details .title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 .lesson .details .info {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   font-size: 14px;
+  color: #666;
 }
 
 .lesson .details .info div span:first-child {
-  color: #2228;
+  font-weight: bold;
 }
 
 .lesson .action {
@@ -110,36 +123,71 @@ body {
 }
 
 .lesson .action button {
-  width: max-content;
+  background-color: var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-
-.challenges-preview {
-  margin-top: 10px;
-}
-
-/* Right side */
-
+/* Right Side */
 .dashboard-container .right {
-  width: 23%;
-  margin: 10px;
-  min-width: 300px;
-
+  width: 300px;
   background-color: var(--primary-container-bg);
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: var(--raduis2);
+  padding: 20px;
+  box-shadow: var(--card-shadow);
 }
-
-/* Right side -> level card */
 
 .level-card {
   background-color: var(--bg);
-  padding: 5px 20px;
-  border-radius: 6px;
-  margin: 0;
-  box-shadow: 0 0 20px #fff9;
-
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
   display: flex;
   justify-content: space-between;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.level-card div {
+  color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 1050px) {
+  .dashboard-container {
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .dashboard-container .left {
+    width: 100%;
+  }
+
+  .dashboard-container .right {
+    width: 50%;
+    position: absolute;
+    right: -50%;
+  }
+
+  .dashboard-container::before {
+    content: '<-';
+    position: absolute;
+    top: 35%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    cursor: pointer;
+  }
+
+  .dashboard-container .left .cards .card,
+  .lesson {
+    max-width: 100%;
+  }
 }

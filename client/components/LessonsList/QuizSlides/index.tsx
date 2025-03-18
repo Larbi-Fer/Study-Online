@@ -76,7 +76,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
     })
 
     // general
-    statistics.general[type == 'correct' ? 0 : (type == 'incorrect' ? 1 : 2)].value++
+    ++prev.general[type == 'correct' ? 0 : (type == 'incorrect' ? 1 : 2)].value
 
     setStatistics(prev)
   }

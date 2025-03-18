@@ -5,10 +5,11 @@ import Button from '@/ui/Button'
 import { CheckCircleIcon } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import Link from 'next/link'
+import React from 'react'
 
 type ListProps = {
   list: LessonArg[],
-  key: React.Key
+  // key: React.Key
 }
 
 const listVariant = {
@@ -16,16 +17,16 @@ const listVariant = {
   show: {opacity: 1, y: 0}
 }
 
-const List = ({ list, key }: ListProps) => {
+const List = ({ list }: ListProps) => {
   const user = useAppSelector(state => state.user)
   console.log(list);
   
 
   return (
-    <motion.div key={key} variants={listVariant} className='list'>
+    <motion.div variants={listVariant} className='list'>
       {list.map((lesson, i) => (
-        <>
-          <motion.div key={'lesson-' + i} className='element'>
+        <React.Fragment key={i}>
+          <motion.div key={'lesson-' + i} id={'lesson-' + i} className='element'>
             {user?.lesson?.number! > lesson.number ?
               <div className='level complete-icon'>
                 <div><CheckCircleIcon size={30} color='#1f1' /></div>
@@ -89,7 +90,7 @@ const List = ({ list, key }: ListProps) => {
               </div>
             </motion.div>
           )}
-        </>
+        </React.Fragment>
       ))}
     </motion.div>
   )
