@@ -7,7 +7,7 @@ type WhatNextProps = {
 
 const WhatNaxt = ({ quiz }: WhatNextProps) => {
   return (
-    <div className="what-next">
+    <div className="dash-details">
       <h2>What next</h2>
       {quiz ?
         <div className="lesson">
