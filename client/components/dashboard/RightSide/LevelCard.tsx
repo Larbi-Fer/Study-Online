@@ -1,7 +1,11 @@
+import { intToString } from "@/lib/utils"
 
-const LevelCard = () => {
+const LevelCard = ({ level }: {level: number}) => {
   return (
-    <div>LevelCard</div>
+    <div className="level-card">
+      <div>Level</div>
+      <div>{intToString(level)}</div>
+    </div>
   )
 }
 

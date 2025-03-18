@@ -39,7 +39,7 @@ const Dashboard = () => {
 
       <motion.div className="right" variants={animation} initial='hidden' animate='show'>
         <motion.div variants={animation}>
-          <LevelCard />
+          <LevelCard level={3} />
         </motion.div>
 
         <motion.div variants={animation}>

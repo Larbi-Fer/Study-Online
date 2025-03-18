@@ -1,5 +1,6 @@
 body {
-  background-color: #fdfdfd;
+  --bg: #fdfdfd;
+  background-color: var(--bg);
 }
 
 .dashboard-container {
@@ -112,6 +113,10 @@ body {
   width: max-content;
 }
 
+.challenges-preview {
+  margin-top: 10px;
+}
+
 /* Right side */
 
 .dashboard-container .right {
@@ -120,6 +125,21 @@ body {
   min-width: 300px;
 
   background-color: var(--primary-container-bg);
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+/* Right side -> level card */
+
+.level-card {
+  background-color: var(--bg);
+  padding: 5px 20px;
+  border-radius: 6px;
+  margin: 0;
+  box-shadow: 0 0 20px #fff9;
+
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+  font-weight: 600;
 }
