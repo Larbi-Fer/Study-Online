@@ -29,7 +29,7 @@ const Dashboard = () => {
         </motion.div>
 
         <motion.div variants={animation}>
-          <WhatNaxt />
+          <WhatNaxt quiz />
         </motion.div>
 
         <motion.div variants={animation}>
