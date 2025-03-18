@@ -15,6 +15,10 @@ body {
   min-height: calc(100vh - var(--nav-pd) - 20px);
 }
 
+.dashboard-container .left > div, .dashboard-container .right > div {
+  margin-bottom: 10px;
+}
+
 /* Left side */
 
 .dashboard-container .left {
