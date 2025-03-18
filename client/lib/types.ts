@@ -17,6 +17,8 @@ interface LessonArg {
   }
 }
 
+type LessonSlidesProps = LessonSlideProps[][]
+
 interface ProgrammeArgs {
   code: string;
   description: string;
@@ -81,4 +83,11 @@ interface ChallengesArgs {
   requiredLvl: number;
 }
 
-type LessonSlidesProps = LessonSlideProps[][]
+// dashboard
+
+interface DashboardArgs {
+  challenges: ChallengesArgs[];
+  points: number;
+  lessonsC: number;
+  lessonsN: number;
+}

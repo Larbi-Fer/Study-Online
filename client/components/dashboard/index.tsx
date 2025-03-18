@@ -13,17 +13,17 @@ const animation = {
   show: { y: 0, opacity: 1, transition: { staggerChildren: 0.15 } },
 }
 
-const Dashboard = () => {
+const Dashboard = ({ data }: { data: DashboardArgs }) => {
   return (
     <div className="dashboard-container">
       <motion.div className="left" variants={animation} initial='hidden' animate='show'>
         <motion.div variants={animation}>
           <Grid container spacing={4} className="cards">
             <Grid size={6}>
-              <Card />
+              <Card name="Lessons" description="You should complete all lessons" progress={data.lessonsC} total={data.lessonsN}/>
             </Grid>
             <Grid size={6}>
-              <Card />
+              <Card name="Points" description="You should collect 50 points from challenges part" progress={data.points} total={50}/>
             </Grid>
           </Grid>
         </motion.div>
@@ -33,13 +33,13 @@ const Dashboard = () => {
         </motion.div>
 
         <motion.div variants={animation}>
-          <RecomChallenges />
+          <RecomChallenges challenges={data.challenges} />
         </motion.div>
       </motion.div>
 
       <motion.div className="right" variants={animation} initial='hidden' animate='show'>
         <motion.div variants={animation}>
-          <LevelCard level={3} />
+          <LevelCard level={Math.floor(data.lessonsC / 3) + 1} />
         </motion.div>
 
         <motion.div variants={animation}>

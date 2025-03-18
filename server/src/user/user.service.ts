@@ -32,7 +32,19 @@ export class UserService {
             number: number + 1,
             topicId
           }
-        } }
+        } },
+        completedLessons: {
+          create: {
+            lesson: {
+              connect: {
+                topicId_number: {
+                  number: number + 1,
+                  topicId
+                }
+              }
+            },
+          }
+        }
       },
       where: {id},
       select: { lesson: { select: {id: true, number: true, topicId: true} } }

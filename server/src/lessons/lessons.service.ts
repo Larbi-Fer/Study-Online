@@ -33,4 +33,10 @@ export class LessonsService {
 
     return {message: 'SUCCESS', payload: lesson}
   }
+
+  async getCompletedLessons(topicId: string, userId: string) {
+    return await this.prisma.completedLessons.count({
+      where: {userId, lesson: {topicId}}
+    })
+  }
 }
