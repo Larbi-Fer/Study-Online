@@ -47,4 +47,51 @@ export class LessonsService {
       where: {userId, lesson: {topicId}}
     })
   }
+
+  async getLastLesson(userId: string) {
+    return await this.prisma.completedLessons.findFirst({
+      where: {userId},
+      orderBy: {createdAt: 'desc'},
+      select: {
+        lesson: {
+          select: {
+            number: true,
+            quiz: {
+              select: {
+                id: true,
+                quizResults: {
+                  where: {userId},
+                  select: {percent: true}
+                }
+              }
+            },
+          }
+        }
+      }
+    })
+  }
+
+  getCurrentLesson(userId: string) {
+    return this.prisma.user.findUnique({
+      where: {id: userId},
+      select: {
+        lesson: {
+          include: {
+            _count: {select: {programmes: true}},
+            completed: {where: {userId}, select: {createdAt: true}},
+            topic: {select: {title: true}},
+            quiz: {
+              select: {
+                id: true,
+                quizResults: {
+                  where: {userId},
+                  select: {percent: true}
+                }
+              },
+            }
+          }
+        }
+      }
+    })
+  }
 }

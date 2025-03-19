@@ -99,4 +99,9 @@ interface DashboardArgs {
   points: number;
   lessonsC: number;
   lessonsN: number;
+
+  lessonOrQuiz: {
+    lesson?: LessonArg,
+    quiz?: QuizArgs & { number: number }
+  }
 }

@@ -17,7 +17,7 @@ const LessonsList = ({ list }: LessonsProps) => {
       animate='show'
     >
       {list.map((lessons, i) => (
-        <List list={lessons} key={'lessons-group' + i} next={i < 1 ? false : quizzes[i-1]} />
+        <List list={lessons} key={'lessons-group' + i} next={i < 1 ? true : quizzes[i-1]} />
       ))}
     </motion.div>
   )

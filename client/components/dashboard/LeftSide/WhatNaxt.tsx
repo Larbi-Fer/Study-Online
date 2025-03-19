@@ -2,17 +2,19 @@ import Button from "@/ui/Button"
 import Link from "next/link"
 
 type WhatNextProps = {
-  quiz?: boolean
+  lesson?: LessonArg,
+  quiz?: QuizArgs & { number: number }
 }
 
-const WhatNaxt = ({ quiz }: WhatNextProps) => {
+const WhatNaxt = ({ lesson, quiz }: WhatNextProps) => {
+
   return (
     <div className="dash-details">
       <h2>What next</h2>
       {quiz ?
         <div className="lesson">
           <div className="level">
-            <div className="num">02</div>
+            <div className="num">{quiz.number}</div>
             <div className='level-name'>&nbsp;&nbsp;Quiz&nbsp;&nbsp;</div>
           </div>
 
@@ -35,12 +37,12 @@ const WhatNaxt = ({ quiz }: WhatNextProps) => {
       :
         <div className="lesson">
           <div className="level">
-            <div className="num">03</div>
+            <div className="num">{lesson?.number}</div>
             <div className='level-name'>Lesson</div>
           </div>
 
           <div className="details">
-            <div className="title">lesson title</div>
+            <div className="title">{lesson?.title}</div>
             <div className="info">
               <div>
                 <span>Slides: </span>
@@ -48,7 +50,7 @@ const WhatNaxt = ({ quiz }: WhatNextProps) => {
               </div>
               <div>
                 <span>Programmes: </span>
-                <span>02</span>
+                <span>{lesson?._count.programmes}</span>
               </div>
             </div>
           </div>
