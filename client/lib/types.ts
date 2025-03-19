@@ -11,9 +11,18 @@ interface LessonArg {
 
   _count: {
     programmes: number,
-  }
+  };
+  topic: {
+    title: string
+  };
+  completed: {
+    createdAt: Date
+  }[];
   quiz?: {
-    id: string
+    id: string,
+    quizResults: {
+      percent: number
+    }[]
   }
 }
 

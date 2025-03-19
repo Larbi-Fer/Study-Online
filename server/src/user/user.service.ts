@@ -18,7 +18,7 @@ export class UserService {
   async nextLesson(id: string) {
     const user = (await this.prisma.user.findUnique({
       where: { id },
-      select: {lesson: {select: {number: true, topicId: true}}}
+      select: {lesson: {select: {number: true, topicId: true, id: true}}}
     }))
 
     if (!user) return { message: CODES.USER.USER_NOT_FOUND }
@@ -35,14 +35,7 @@ export class UserService {
         } },
         completedLessons: {
           create: {
-            lesson: {
-              connect: {
-                topicId_number: {
-                  number: number + 1,
-                  topicId
-                }
-              }
-            },
+            lesson: { connect: { id: user.lesson.id } },
           }
         }
       },

@@ -15,7 +15,7 @@ export class CourseController {
     const points = await this.challengesService.getUserPoints(userId)
 
     const lessonsC = await this.lessonsService.getCompletedLessons(topicId, userId)
-    const lessonsN = (await this.lessonsService.getLessons(topicId)).payload.length
+    const lessonsN = (await this.lessonsService.getLessons(topicId, userId)).payload.length
 
     return {
       message: 'SUCCESS',

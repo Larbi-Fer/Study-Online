@@ -26,6 +26,7 @@ model User {
   completedLessons CompletedLessons[]
   lessonId String?
   challenge Challenge[]
+  quizResults QuizResults[]
 
   otp Otp?
 }
@@ -121,6 +122,7 @@ model Quiz {
 
   topic  Topic?  @relation(fields: [topicId], references: [id])
   lesson Lesson? @relation(fields: [lessonId], references: [id])
+  quizResults QuizResults[]
 
   @@map("Quizzes")
 }
@@ -149,6 +151,9 @@ model QuizResults {
   quizId     String
   statistics Json
   percent    Int
+
+  user User @relation(fields: [userId], references: [id])
+  quiz Quiz @relation(fields: [quizId], references: [id])
 
   @@id([userId, quizId])
   @@map("quiz-results")

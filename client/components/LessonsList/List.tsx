@@ -1,14 +1,17 @@
 'use client'
 
 import { useAppSelector } from '@/lib/hooks'
+import { intToString } from '@/lib/utils'
 import Button from '@/ui/Button'
+import Progress from '@/ui/Progress'
 import { CheckCircleIcon } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
 type ListProps = {
   list: LessonArg[],
+  next: boolean
   // key: React.Key
 }
 
@@ -17,10 +20,10 @@ const listVariant = {
   show: {opacity: 1, y: 0}
 }
 
-const List = ({ list }: ListProps) => {
-  const user = useAppSelector(state => state.user)
-  console.log(list);
+const List = ({ list, next }: ListProps) => {
+  console.log(next);
   
+  const user = useAppSelector(state => state.user)
 
   return (
     <motion.div variants={listVariant} className='list'>
@@ -43,7 +46,7 @@ const List = ({ list }: ListProps) => {
               <div className="info">
                 <div>
                   <span>Slides: </span>
-                  <span>10</span>
+                  <span>{lesson.data?.lesson?.length || 0}</span>
                 </div>
                 <div>
                   <span>Programmes: </span>
@@ -54,39 +57,50 @@ const List = ({ list }: ListProps) => {
 
             <div className="action">
               <Link href={`/lessons/${lesson.id}`}>
-                {user?.lesson?.number! < lesson.number ?
-                  <Button disabled>Start</Button>
-                  : ( user?.lesson?.number! == lesson.number ?
-                      <Button>Start</Button>
+                {lesson.completed.length ?
+                    <Button>Retake</Button>
+                  :
+                    (lesson.number == user?.lesson?.number ?
+                      <Button disabled={!next}>Start</Button>
                     :
-                      <Button>Retake</Button>
-                )
+                      <Button disabled>Start</Button>
+                    )
                 }
               </Link>
             </div>
           </motion.div>
 
-          {((i+1) % 3 == 0) && (
+          {lesson.quiz?.id && (
             <motion.div key={'quiz-' + i} className='element'>
-              <div className="level">
-                <div className="num">{(i+1)/3}</div>
+              {lesson.quiz.quizResults.length ?
+                <div className='level'>
+                  <Progress progress={lesson.quiz.quizResults[0].percent} small color={lesson.quiz.quizResults[0].percent > 50 ? undefined : '#f44'} />
+                </div>
+              : <div className="level">
+                <div className="num">{intToString((i+1)/3)}</div>
                 <div className='level-name'>&nbsp;&nbsp;Quiz&nbsp;&nbsp;</div>
-              </div>
+              </div>}
 
               <div className="details">
                 <div className="title">Quiz</div>
                 <div className="info">
                   <div>
-                    <span>Slides: </span>
+                    <span>Questions: </span>
                     <span>10</span>
                   </div>
                 </div>
               </div>
 
               <div className="action">
-                <Link href={`/quiz/${lesson.quiz?.id}`}>
-                  <Button>Start quiz</Button>
-                </Link>
+                {lesson.quiz.quizResults.length > 0 ? (
+                  <Link href={`/quiz/${lesson.quiz.id}/statistics`}>
+                    <Button>Statistics</Button>
+                  </Link>
+                ) : (
+                  <Link href={`/quiz/${lesson.quiz.id}`}>
+                    <Button disabled={lesson.completed.length == 0}>Start quiz</Button>
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}

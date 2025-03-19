@@ -5,14 +5,22 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class LessonsService {
   constructor(private prisma: PrismaService) {}
 
-  async getLessons(topicId: string) {
+  async getLessons(topicId: string, userId: string) {
     const lessons = await this.prisma.lesson.findMany({
       where: {topicId},
       omit: {data: true, topicId: true},
       include: {
         _count: {select: {programmes: true}},
+        completed: {where: {userId}, select: {createdAt: true}},
+        topic: {select: {title: true}},
         quiz: {
-          select: {id: true }
+          select: {
+            id: true,
+            quizResults: {
+              where: {userId},
+              select: {percent: true}
+            }
+          },
         }
       }
     })

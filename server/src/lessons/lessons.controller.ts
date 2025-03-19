@@ -6,8 +6,8 @@ export class LessonsController {
   constructor(private lessonService: LessonsService) {}
 
   @Get()
-  getLessons(@Query('topicId') topicId: string) {
-    return this.lessonService.getLessons(topicId)
+  getLessons(@Query('topicId') topicId: string, @Query('userId') userId: string) {
+    return this.lessonService.getLessons(topicId, userId)
   }
 
   @Get('/:id')

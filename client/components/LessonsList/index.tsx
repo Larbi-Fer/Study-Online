@@ -8,7 +8,7 @@ type LessonsProps = {
 }
 
 const LessonsList = ({ list }: LessonsProps) => {
-  // console.log(list);
+  const quizzes = list.flat().filter(lesson => lesson.quiz?.id).map(lesson => !!lesson.quiz?.quizResults.length)
 
   return (
     <motion.div
@@ -17,7 +17,7 @@ const LessonsList = ({ list }: LessonsProps) => {
       animate='show'
     >
       {list.map((lessons, i) => (
-        <List list={lessons} key={'lessons-group' + i} />
+        <List list={lessons} key={'lessons-group' + i} next={i < 1 ? false : quizzes[i-1]} />
       ))}
     </motion.div>
   )

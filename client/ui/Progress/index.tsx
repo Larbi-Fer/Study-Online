@@ -6,10 +6,12 @@ import { useEffect } from "react"
 
 type ProgressProps = {
   progress: number,
-  total: number
+  total?: number,
+  small?: boolean,
+  color?: string
 }
 
-const Progress = ({ progress, total }: ProgressProps) => {
+const Progress = ({ progress, total, small, color }: ProgressProps) => {
   const count = useMotionValue(0)
   const rounded = useTransform(() => Math.round(count.get()))
 
@@ -18,15 +20,15 @@ const Progress = ({ progress, total }: ProgressProps) => {
       return () => controls.stop()
   }, [])
 
-  const radius = 55;
-  const strokeWidth = 7;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDasharray = circumference;
-  const strokeDashoffset = circumference - (progress / total) * circumference;
-
+    const radius = 55;
+    const strokeWidth = 7;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDasharray = circumference;
+    const strokeDashoffset = circumference - (progress / (total || 100)) * circumference;
+    
   return (
     <div style={{position: 'relative', width: 'fit-content'}} >
-      <svg width="120" height="120" viewBox="0 0 120 120">
+      <svg width={small ? "60" : "100"} height={small ? "60" : "100"} viewBox="0 0 120 120">
         {/* Background circle */}
         <circle
           cx="60"
@@ -41,23 +43,23 @@ const Progress = ({ progress, total }: ProgressProps) => {
           cx="60"
           cy="60"
           r={radius}
-          stroke='#3fe2ff'
+          stroke={color || '#3fe2ff'}
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={strokeDasharray}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          transform="rotate(-90 60 60)" // Rotate to make it start from top
+          transform="rotate(-90 60 60)"
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
           transition={{ duration: 1, ease: 'easeInOut' }}
         />
       </svg>
 
-      <div style={numberStyle}>
+      <div style={{...numberStyle, fontSize: small ? '20px' : '30px'}}>
         <motion.div>{rounded}</motion.div>
-        <div style={{fontSize: '15px', marginBottom: '7px', color: '#2229'}}>
-          /{total}
+        <div style={{fontSize: small ? '10px' : '15px', marginBottom: '7px', color: '#2229'}}>
+          {total ? '/'+total : '%'}
         </div>
       </div>
     </div>
@@ -69,8 +71,7 @@ const numberStyle: any = {
   display: 'flex',
   alignItems: 'end',
   gap: '5px',
-  fontWeight: '600',
-  fontSize: '30px'
+  fontWeight: '600'
 }
 
 export default Progress
