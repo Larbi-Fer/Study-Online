@@ -23,7 +23,7 @@ const Dashboard = ({ data }: { data: DashboardArgs }) => {
               <Card name="Lessons" description="You should complete all lessons" progress={data.lessonsC} total={data.lessonsN}/>
             </Grid>
             <Grid size={6}>
-              <Card name="Points" description="You should collect 50 points from challenges part" progress={data.points} total={50}/>
+              <Card name="Points" description="You should collect 50 points from the Challenges section." progress={data.points} total={50}/>
             </Grid>
           </Grid>
         </motion.div>
