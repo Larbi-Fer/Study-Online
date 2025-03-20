@@ -14,7 +14,7 @@
   max-width: 1000px;
 }
 
-.slide .lesson {
+.slide .slide-lesson {
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -22,7 +22,7 @@
   flex-direction: column;
 }
 
-.slide .actions {
+.slide .slide-actions {
   position: absolute;
   bottom: 0;
 

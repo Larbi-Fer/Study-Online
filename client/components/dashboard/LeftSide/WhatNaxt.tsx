@@ -29,7 +29,7 @@ const WhatNaxt = ({ lesson, quiz }: WhatNextProps) => {
           </div>
 
           <div className="action">
-            <Link href={`/quiz/${'id'}`}>
+            <Link href={`/quiz/${quiz.id}`}>
               <Button>Start quiz</Button>
             </Link>
           </div>
@@ -56,7 +56,7 @@ const WhatNaxt = ({ lesson, quiz }: WhatNextProps) => {
           </div>
 
           <div className="action">
-            <Link href={`/lessons/${'id'}`}>
+            <Link href={`/lessons/${lesson?.id}`}>
               <Button>Start</Button>
             </Link>
           </div>
