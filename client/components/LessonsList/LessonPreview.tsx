@@ -2,7 +2,7 @@
 
 import * as motion from 'motion/react-client'
 import Button from "@/ui/Button"
-import { MouseEvent, useState } from "react"
+import { MouseEvent, useRef, useState } from "react"
 import ReactMarkdown from 'react-markdown'
 
 import './LessonPreviewStyle.css'
@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation'
 import useHotkeys from '@/lib/useHotkeys'
 import CongratulationsMsg from './CongratulationsMsg'
 import { useAfterComplete } from '@/lib/customHooks'
+import CustomCursor from '@/ui/CustomCursor'
 
 const slideVariant = {
   hidden: {
@@ -35,6 +36,7 @@ const LessonPreview = ({ lesson }: { lesson: LessonArg }) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const afterComplete = useAfterComplete(lesson.id)
+  const slideRef = useRef<HTMLDivElement>(null)
 
   useHotkeys(
     [{ key: 'ArrowLeft' }],
@@ -69,8 +71,9 @@ const LessonPreview = ({ lesson }: { lesson: LessonArg }) => {
 
   return (
     <>
-      <div className="slide">
-        <div className="slide-lesson">
+        <CustomCursor objectRef={slideRef} />
+      <div className="slide" ref={slideRef}>
+        <div className="slide-lesson" ref={slideRef}>
           <AnimatePresence mode='popLayout'>
             {lesson.data.lesson[currentSlide].map((content, i) => (
               <motion.div key={content.key || currentSlide + '-' + i} layout='preserve-aspect' variants={slideVariant} initial='hidden' animate='show' exit='exit' transition={{ delay: i / 15 }}>

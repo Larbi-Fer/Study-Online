@@ -12,6 +12,12 @@
   max-height: 500px;
   width: calc(100% - 20px);
   max-width: 1000px;
+
+  cursor: none;
+}
+
+.slide * {
+  cursor: none;
 }
 
 .slide .slide-lesson {
