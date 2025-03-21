@@ -2,13 +2,18 @@ import * as motion from "motion/react-client"
 import List from "./List"
 
 import './style.css'
+import { QUIZ_PASS_PERCENTAGE } from "@/lib/constant"
 
 type LessonsProps = {
   list: any[][]
 }
 
 const LessonsList = ({ list }: LessonsProps) => {
-  const quizzes = list.flat().filter(lesson => lesson.quiz?.id).map(lesson => !!lesson.quiz?.quizResults.length)
+  const quizzes = list.flat()
+    .filter(lesson => lesson.quiz?.id)
+    .map(lesson => !!lesson.quiz?.quizResults.length
+                  && lesson.quiz?.quizResults[0].percent > QUIZ_PASS_PERCENTAGE);
+  console.log(quizzes);
 
   return (
     <motion.div

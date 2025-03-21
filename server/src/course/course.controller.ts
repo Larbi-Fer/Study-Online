@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ChallengesService } from 'src/challenges/challenges.service';
 import { LessonsService } from 'src/lessons/lessons.service';
+import { QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
 
 @Controller('course')
 export class CourseController {
@@ -22,7 +23,7 @@ export class CourseController {
     if (!lastLesson) lessonOrQuiz.lesson = currentLesson.lesson
     else
       if (lastLesson.lesson.quiz) {
-        if (lastLesson.lesson.quiz.quizResults.length == 0) {
+        if (lastLesson.lesson.quiz.quizResults.length == 0 || lastLesson.lesson.quiz.quizResults[0].percent < QUIZ_PASS_PERCENTAGE) {
           lessonOrQuiz.quiz = lastLesson.lesson.quiz
           lessonOrQuiz.quiz.number = Math.floor(lastLesson.lesson.number / 3)
         }
