@@ -21,8 +21,6 @@ const listVariant = {
 }
 
 const List = ({ list, next }: ListProps) => {
-  console.log(list);
-  
   const user = useAppSelector(state => state.user)
 
   return (

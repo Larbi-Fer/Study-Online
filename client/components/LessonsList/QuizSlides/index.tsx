@@ -110,7 +110,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   return (
     <div>
       <div className="slide quiz-slide">
-        <div className="lesson">
+        <div className="lesson slide-lesson">
           <AnimatePresence mode='wait'>
             
               <motion.div key={qst.id} variants={slideVariant} initial='hidden' animate='show' exit='exit'>

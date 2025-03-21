@@ -55,6 +55,7 @@
 }
 
 .quiz-slide .actions {
+  display: flex;
   justify-content: end;
 }
 
