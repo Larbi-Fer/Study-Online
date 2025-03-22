@@ -73,6 +73,7 @@ model Topic {
   number  Int
   title   String
   lessons Lesson[]
+  programmes Programme[]
 
   finalQuiz Quiz?
 
@@ -89,11 +90,13 @@ model Programme {
   requiredLvl Int? @map("required_lvl")
 
   lessonId String?
+  topicId String?
 
   code String @db.LongText
   goal String
 
   lesson Lesson? @relation(fields: [lessonId], references: [id])
+  topic Topic? @relation(fields: [topicId], references: [id])
   challenge Challenge[]
 
   @@map("programmes")

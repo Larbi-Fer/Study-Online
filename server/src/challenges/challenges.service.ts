@@ -12,7 +12,7 @@ export class ChallengesService {
       take?: number
     } = {
       where: {
-        lesson: {topicId},
+        topicId
       },
     }
     if (userId) query.where.challenge = {
