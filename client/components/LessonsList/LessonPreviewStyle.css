@@ -66,3 +66,12 @@
   background-color: var(--primary-bg);
   transition: .3s;
 }
+
+
+.code-snippet {
+  width: 100%;
+  max-width: 800px;
+  margin: 5px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #757379;
+}

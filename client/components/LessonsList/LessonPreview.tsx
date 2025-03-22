@@ -15,6 +15,7 @@ import useHotkeys from '@/lib/useHotkeys'
 import CongratulationsMsg from './CongratulationsMsg'
 import { useAfterComplete } from '@/lib/customHooks'
 import CustomCursor from '@/ui/CustomCursor'
+import LessonContant from './LessonContent'
 
 const slideVariant = {
   hidden: {
@@ -76,8 +77,10 @@ const LessonPreview = ({ lesson }: { lesson: LessonArg }) => {
         <div className="slide-lesson" ref={slideRef}>
           <AnimatePresence mode='popLayout'>
             {lesson.data.lesson[currentSlide].map((content, i) => (
-              <motion.div key={content.key || currentSlide + '-' + i} layout='preserve-aspect' variants={slideVariant} initial='hidden' animate='show' exit='exit' transition={{ delay: i / 15 }}>
-                {content.type == 'markdown' ? <ReactMarkdown>{content.markdown}</ReactMarkdown> : content.list.join(' | ')}
+              <motion.div key={content.key || currentSlide + '-' + i}
+                    style={{ width: '100%' }}
+                    layout={content.key ? 'preserve-aspect' : false} variants={slideVariant} initial='hidden' animate='show' exit='exit' transition={{ delay: i / 15 }}>
+                <LessonContant content={content} />
               </motion.div>
             ))}
           </AnimatePresence>

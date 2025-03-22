@@ -34,13 +34,28 @@ interface ProgrammeArgs {
   title: string;
 }
 
-interface LessonSlideProps {
-  type: 'markdown' | 'list' | 'img' | 'question';
+// Lesson content
+type MarkdownContent = { type: 'markdown'; markdown: string; };
+
+type ListContent = { type: 'list'; list: string[]; };
+
+type ImgContent = { type: 'img'; img: string; };
+
+type QuestionContent = { type: 'question'; questionId: string; };
+
+type CodeContent = { type: 'code'; language: string; code: string; };
+
+// Union of all types
+type LessonSlideProps = (MarkdownContent | ListContent | ImgContent | QuestionContent | CodeContent) & { key?: string };
+
+/*{
+  type: 'markdown' | 'list' | 'img' | 'question' | 'code';
+  language?: string;
   markdown: string;
   list: string[];
   img: string;
   key?: string;
-}
+}*/
 
 type LessonSlidesProps = LessonSlideProps[][]
 
