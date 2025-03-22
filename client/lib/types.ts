@@ -26,7 +26,6 @@ interface LessonArg {
   }
 }
 
-type LessonSlidesProps = LessonSlideProps[][]
 
 interface ProgrammeArgs {
   code: string;
@@ -42,6 +41,8 @@ interface LessonSlideProps {
   img: string;
   key?: string;
 }
+
+type LessonSlidesProps = LessonSlideProps[][]
 
 interface QuizArgs {
   id: string;
