@@ -72,8 +72,8 @@ const LessonPreview = ({ lesson }: { lesson: LessonArg }) => {
 
   return (
     <>
-        <CustomCursor objectRef={slideRef} />
-      <div className="slide" ref={slideRef}>
+      <CustomCursor objectRef={slideRef} />
+      <div className="slide">
         <div className="slide-lesson" ref={slideRef}>
           <AnimatePresence mode='popLayout'>
             {lesson.data.lesson[currentSlide].map((content, i) => (

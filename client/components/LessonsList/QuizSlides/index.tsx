@@ -112,7 +112,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
       <div className="slide quiz-slide">
         <div className="lesson slide-lesson">
           <AnimatePresence mode='wait'>
-            
+
               <motion.div key={qst.id} variants={slideVariant} initial='hidden' animate='show' exit='exit'>
                 <h2>{qst.question}</h2>
                 <div className="choices">
@@ -122,6 +122,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
                     </div>
                   ))}
                 </div>
+                  
               </motion.div>
             
           </AnimatePresence>

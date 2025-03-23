@@ -37,6 +37,14 @@ const CustomCursor = ({ objectRef }: { objectRef?: RefObject<any> }) => {
     };
   }, [timer]);
 
+  useEffect(() => {
+    if (objectRef?.current) objectRef.current.addEventListener('mouseleave', () => setIsVisible(false));
+    return () => {
+      if (objectRef?.current) objectRef.current.removeEventListener('mouseleave', () => setIsVisible(false)); 
+    }
+  }, [])
+  
+
   return (
     <AnimatePresence>
       {isVisible &&

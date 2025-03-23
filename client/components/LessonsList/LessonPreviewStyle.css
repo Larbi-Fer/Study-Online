@@ -13,11 +13,6 @@
   width: calc(100% - 20px);
   max-width: 1000px;
 
-  cursor: none;
-}
-
-.slide * {
-  cursor: none;
 }
 
 .slide .slide-lesson {
@@ -26,6 +21,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: none;
 }
 
 .slide .slide-actions {

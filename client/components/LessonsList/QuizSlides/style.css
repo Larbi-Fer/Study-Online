@@ -1,3 +1,7 @@
+.quiz-slide .slide-lesson {
+  cursor: auto !important;
+}
+
 .quiz-slide .lesson > div {
   width: 100%;
   text-align: center;
