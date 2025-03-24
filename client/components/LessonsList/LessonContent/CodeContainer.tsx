@@ -3,7 +3,7 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
 const CodeSnippet = ({ language, code }: {language: string, code: string}) => {
   return (
-    <div className="code-snippet" style={{ width: "100%", background: "#252525" }}>
+    <div className="code-snippet" style={style}>
       <SyntaxHighlighter
         language={language || 'plaintext'}
         style={atomOneDark}
@@ -22,6 +22,15 @@ const CodeSnippet = ({ language, code }: {language: string, code: string}) => {
       </SyntaxHighlighter>
     </div>
   )
+}
+
+const style: any = {
+  width: '100%',
+  maxWidth: '800px',
+  background: "#282c34",
+  margin: '5px auto',
+  borderRadius: '10px',
+  boxShadow: '0 0 20px #757379',
 }
 
 export default CodeSnippet

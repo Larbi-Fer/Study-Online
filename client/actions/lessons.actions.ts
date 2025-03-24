@@ -1,3 +1,5 @@
+'use server'
+
 import api from "./api"
 
 const path = '/lessons'
@@ -23,7 +25,7 @@ export const getLesson = async (lessonId: string): Promise<LessonsActionProps> =
   try {
     const res = await api(`${path}/${lessonId}`, 'GET')
     const data = await res.json()
-
+    
     return data
   } catch (error) {
     return {message: 'ERROR', payload: null}

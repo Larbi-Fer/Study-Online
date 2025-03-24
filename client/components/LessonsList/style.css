@@ -73,3 +73,17 @@
 .list .action button {
   width: max-content;
 }
+
+/* Lesson side peek */
+
+.lesson-side-peek {
+  margin: 0 30px;
+}
+
+.lesson-side-peek h1, .lesson-side-peek h2 {
+  text-align: center;
+}
+
+.lesson-side-peek .lesson-section {
+  margin: 30px 0;
+}

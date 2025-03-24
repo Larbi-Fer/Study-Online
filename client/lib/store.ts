@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './features/user'
 import programmesReducer from './features/programmes'
+import lessonReducer from './features/lesson'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
-      programmes: programmesReducer
+      programmes: programmesReducer,
+      lesson: lessonReducer
     }
   })
 }

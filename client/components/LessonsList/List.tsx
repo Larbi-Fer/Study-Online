@@ -1,6 +1,7 @@
 'use client'
 
-import { useAppSelector } from '@/lib/hooks'
+import { setLesson } from '@/lib/features/lesson'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { intToString } from '@/lib/utils'
 import Button from '@/ui/Button'
 import Progress from '@/ui/Progress'
@@ -22,6 +23,11 @@ const listVariant = {
 
 const List = ({ list, next }: ListProps) => {
   const user = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
+
+  const setReview = (id: string) => () => {
+    dispatch(setLesson({ lessonId: id }))
+  }
 
   return (
     <motion.div variants={listVariant} className='list'>
@@ -54,17 +60,17 @@ const List = ({ list, next }: ListProps) => {
             </div>
 
             <div className="action">
-              <Link href={`/lessons/${lesson.id}`}>
                 {lesson.completed.length ?
-                    <Button>Retake</Button>
-                  :
-                    (lesson.number == user?.lesson?.number ?
+                  <Button onClick={setReview(lesson.id)}>Review</Button>
+                :
+                  <Link href={`/lessons/${lesson.id}`}>
+                    {lesson.number == user?.lesson?.number ?
                       <Button disabled={!next}>Start</Button>
                     :
                       <Button disabled>Start</Button>
-                    )
+                    }
+                  </Link>
                 }
-              </Link>
             </div>
           </motion.div>
 
