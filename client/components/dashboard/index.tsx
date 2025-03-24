@@ -7,6 +7,7 @@ import StreakCalendar from "./RightSide/StreakCalendar"
 import * as motion from 'motion/react-client'
 
 import './style.css'
+import { format } from "date-fns"
 
 const animation = {
   hidden: { y: 5, opacity: 0 },
@@ -43,7 +44,7 @@ const Dashboard = ({ data }: { data: DashboardArgs }) => {
         </motion.div>
 
         <motion.div variants={animation}>
-          <StreakCalendar />
+          <StreakCalendar streaks={data.streaks.map(s => format(s.createdAt, 'yyyy-MM-dd'))} />
         </motion.div>
       </motion.div>
     </div>

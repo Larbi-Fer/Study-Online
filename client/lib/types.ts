@@ -119,5 +119,9 @@ interface DashboardArgs {
   lessonOrQuiz: {
     lesson?: LessonArg,
     quiz?: QuizArgs & { number: number }
-  }
+  };
+
+  streaks: {
+    createdAt: Date;
+  }[]
 }

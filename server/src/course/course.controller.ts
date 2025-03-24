@@ -2,12 +2,14 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ChallengesService } from 'src/challenges/challenges.service';
 import { LessonsService } from 'src/lessons/lessons.service';
 import { QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
+import { CourseService } from './course.service';
 
 @Controller('course')
 export class CourseController {
   constructor(
     private challengesService: ChallengesService,
-    private lessonsService: LessonsService
+    private lessonsService: LessonsService,
+    private courseService: CourseService
   ) {}
 
   @Get(':userId')
@@ -31,15 +33,17 @@ export class CourseController {
       } else lessonOrQuiz.lesson = currentLesson.lesson
 
     // console.log(lessonOrQuiz);
-    
 
     const lessonsC = await this.lessonsService.getCompletedLessons(topicId, userId)
     const lessonsN = (await this.lessonsService.getLessons(topicId, userId)).payload.length
 
+    // calendar
+    const streaks = await this.courseService.completedLessonsForMonth(userId, new Date().getMonth())
+
     return {
       message: 'SUCCESS',
       payload: {
-        challenges, points, lessonsC, lessonsN, lessonOrQuiz
+        challenges, points, lessonsC, lessonsN, lessonOrQuiz, streaks
       }
     }
   }

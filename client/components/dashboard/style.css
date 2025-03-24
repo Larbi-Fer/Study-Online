@@ -196,3 +196,84 @@ body {
     max-width: 100%;
   }
 }
+
+/* Calendar */
+
+.streak-calendar {
+  --day-w: 33px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.calendar-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-actions .action {
+  cursor: pointer;
+}
+
+.calendar-actions .action.disabled {
+  cursor: default;
+  color: #999;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, var(--day-w));
+  justify-content: center;
+  font-weight: bold;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.calendar-day.header {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  border: none;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, var(--day-w));
+  grid-gap: 5px;
+  justify-content: center;
+}
+
+.calendar-day {
+  width: var(--day-w);
+  height: var(--day-w);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: #f0f0f0; */
+  border: 1px solid #f0f0f0;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.calendar-day.streak {
+  border-color: #4caf50 !important; /* Green for streak days */
+}
+
+.calendar-day.today {
+  border: 2px solid #2196f3; /* Blue border for today */
+}
+
+.calendar-day.disabled {
+  color: #999;
+  background: #ddd;
+}
+.calendar-day.disabled:hover {
+  background: #ddd;
+  cursor: default;
+}
+
+.calendar-day:hover {
+  background-color: #ddd;
+}
