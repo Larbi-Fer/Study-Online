@@ -31,16 +31,15 @@ const LessonSidePeek = () => {
     setLesson(undefined)
   }
 
-
   return (
     <SidePeek isActive={lessonId != null} close={handleClose}>
       {lesson ? (
         <div className="lesson-side-peek">
           <h1>{lesson.title}</h1>
           {lesson.data.lesson.map((section, i) =>
-            <div className="lesson-section">
+            <div key={'section-' + i} className="lesson-section">
               {section.map((element, i) => (
-                <div key={'section' + i} className="lesson-element">
+                <div key={'element-' + i} className="lesson-element">
                   <LessonContant content={element} />
                 </div>
               ))}
