@@ -16,7 +16,7 @@ const StreakCalendar = ({ streaks }: { streaks: string[] }) => {
   const [monthStreaks, setMonthStreaks] = useState(streaks);
   const currentMonth = useRef(new Date().getMonth())
   const userId = useAppSelector(state => state.user?.id)!;
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setMonthDays(today.current);

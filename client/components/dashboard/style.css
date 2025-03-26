@@ -208,6 +208,7 @@ body {
 }
 
 .streak-calendar .loading-area {
+  position: relative;
   min-height: 200px;
 }
 
