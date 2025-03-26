@@ -47,4 +47,14 @@ export class CourseController {
       }
     }
   }
+
+  @Get(':userId/streaks')
+  async streaks(@Param('userId') userId: string, @Query('month') month: string) {
+    const streaks = await this.courseService.completedLessonsForMonth(userId, parseInt(month))
+
+    return {
+      message: 'SUCCESS',
+      payload: streaks
+    }
+  }
 }

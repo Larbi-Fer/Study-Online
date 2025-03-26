@@ -49,3 +49,15 @@ export const GetQuizResult = async (userId: string, quizId: string): Promise<Use
     return {message: 'ERROR'}
   }
 }
+
+export const getStreaks = async (userId: string, month: number): Promise<UserActionProps> => {
+  try {
+    const res = await api(`/course/${userId}/streaks/?month=${month}`, 'GET')
+    const data = await res.json()
+
+    return { message: data.message, payload: data.payload }
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR'}
+  }
+}

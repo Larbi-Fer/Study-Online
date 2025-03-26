@@ -207,16 +207,26 @@ body {
   margin-top: 20px;
 }
 
+.streak-calendar .loading-area {
+  min-height: 200px;
+}
+
 .calendar-actions {
   display: flex;
   justify-content: space-between;
+}
+
+.calendar-actions button {
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 .calendar-actions .action {
   cursor: pointer;
 }
 
-.calendar-actions .action.disabled {
+.calendar-actions .action:disabled {
   cursor: default;
   color: #999;
 }
