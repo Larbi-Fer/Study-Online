@@ -1,1 +1,2 @@
 export const QUIZ_PASS_PERCENTAGE = 80
+export const CHALLENGES_PONTS_REQUIRED = 50

@@ -8,6 +8,7 @@ import * as motion from 'motion/react-client'
 
 import './style.css'
 import { format } from "date-fns"
+import { CHALLENGES_PONTS_REQUIRED } from "@/lib/constant"
 
 const animation = {
   hidden: { y: 5, opacity: 0 },
@@ -24,7 +25,7 @@ const Dashboard = ({ data }: { data: DashboardArgs }) => {
               <Card name="Lessons" description="You should complete all lessons" progress={data.lessonsC} total={data.lessonsN}/>
             </Grid>
             <Grid size={6}>
-              <Card name="Points" description="You should collect 50 points from the Challenges section." progress={data.points} total={50}/>
+              <Card name="Points" description="You should collect 50 points from the Challenges section." progress={data.points} total={CHALLENGES_PONTS_REQUIRED}/>
             </Grid>
           </Grid>
         </motion.div>

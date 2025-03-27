@@ -55,6 +55,7 @@ const StreakCalendar = ({ streaks }: { streaks: string[] }) => {
 
   const goToDay = () => {
     if (areSameMonth(today.current, days[days.length-1])) return
+    currentMonth.current = today.current.getMonth()
     setMonthDays(today.current)
     setMonthStreaks(streaks)
   }
