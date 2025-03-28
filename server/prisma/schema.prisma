@@ -28,7 +28,14 @@ model User {
   challenge Challenge[]
   quizResults QuizResults[]
 
+  role Role @default(student)
+
   otp Otp?
+}
+
+enum Role {
+  admin
+  student
 }
 
 model Otp {

@@ -1,25 +1,40 @@
+import { TextareaAutosize } from "@mui/material"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
-const CodeSnippet = ({ language, code }: {language: string, code: string}) => {
+const CodeSnippet = ({ language, code, edit, endEditing }: {language: string, code: string, edit?: boolean, endEditing?: (newCode: string) => void}) => {
   return (
     <div className="code-snippet" style={style}>
-      <SyntaxHighlighter
-        language={language || 'plaintext'}
-        style={atomOneDark}
-        customStyle={{
-          padding: "1rem",
-          background: "transparent",
-          margin: 0,
-        }}
-        showLineNumbers={true}
-        wrapLines={true}
-        lineNumberStyle={{
-          display: 'none'
-        }}
-      >
-        {code}
-      </SyntaxHighlighter>
+      {edit ?
+        <TextareaAutosize style={{
+            padding: "1rem",
+            background: "transparent",
+            margin: 0,
+            color: 'white'
+          }}
+          className="without-border"
+          onBlur={e => endEditing && endEditing(e.target.value)}
+          autoFocus
+          defaultValue={code}
+        />
+      :
+        <SyntaxHighlighter
+          language={language || 'plaintext'}
+          style={atomOneDark}
+          customStyle={{
+            padding: "1rem",
+            background: "transparent",
+            margin: 0,
+          }}
+          showLineNumbers={true}
+          wrapLines={true}
+          lineNumberStyle={{
+            display: 'none'
+          }}
+        >
+          {code}
+        </SyntaxHighlighter>
+      }
     </div>
   )
 }

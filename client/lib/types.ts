@@ -35,6 +35,8 @@ interface ProgrammeArgs {
 }
 
 // Lesson content
+type LessonContentType = 'markdown' | 'list' | 'img' | 'question' | 'code'
+
 type MarkdownContent = { type: 'markdown'; markdown: string; };
 
 type ListContent = { type: 'list'; list: string[]; };
@@ -47,6 +49,7 @@ type CodeContent = { type: 'code'; language: string; code: string; };
 
 // Union of all types
 type LessonSlideProps = (MarkdownContent | ListContent | ImgContent | QuestionContent | CodeContent) & { key?: string };
+type LessonSlideAndIdProps = LessonSlideProps & {id: number}
 
 /*{
   type: 'markdown' | 'list' | 'img' | 'question' | 'code';

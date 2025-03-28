@@ -1,0 +1,29 @@
+
+.slide {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: calc(100% - var(--nav-pd) - 20px);
+  max-height: 500px;
+  width: calc(100% - 20px);
+  max-width: 1000px;
+
+}
+
+.slide .slide-lesson {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide .slide-actions {
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
