@@ -62,7 +62,7 @@ const EditingSpace = ({ item, handleChangeContent, slide, itemNumber, changeType
         exit={{opacity: 0, x: -20}}
       >
         <div className="edit-container">
-          <div onDoubleClick={() => setIsEditing(true)}>
+          <div onDoubleClick={() => setIsEditing(true)} style={{width: '100%'}}>
             <LessonContant content={item} />
           </div>
           <div className="type-list-container" style={{zIndex: '5555'}}>

@@ -6,11 +6,15 @@ import * as motion from 'motion/react-client'
 import { PlusCircleIcon } from "lucide-react"
 import { DEFAULT_LESSON_ITEM } from "@/lib/constant"
 import { Reorder } from "motion/react"
+import Button from "@/ui/Button"
+import Toast from "@/ui/Toast"
+import { createLesson } from "@/actions/lessons.actions"
 
 const CreateLesson = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [slides, setSlides] = useState<LessonSlideAndIdProps[][]>([[{id: Math.random(), type: 'markdown', markdown: DEFAULT_LESSON_ITEM}, {id: Math.random(), type: 'markdown', markdown: '#### Simple example 2'}, {id: Math.random(), type: 'markdown', markdown: '#### Simple example 3'}]])
   const [active, setActive] = useState<number>(0)
+  const [loading, setLoading] = useState(false)
 
   const changeContent = (content: LessonSlideAndIdProps, slide: number, i: number) => {
     setSlides(prevSlides => {
@@ -24,6 +28,14 @@ const CreateLesson = () => {
   const newSlide = () => {
     setSlides(prevSlides => [...prevSlides, [{id: Math.random(), type: 'markdown', markdown: DEFAULT_LESSON_ITEM}]])
     setCurrentSlide(prev => prev+1)
+  }
+
+  const removeSlide = () => {
+    // TODO: change this messege
+    if (slides.length == 1) return Toast('This is the last slide', 'warning')
+    const current = currentSlide
+    setCurrentSlide(prev => prev == 0 ? 0 : (prev-1))
+    setSlides(prevSlides => prevSlides.filter((_, i) => i != current))
   }
 
   const changeType = (newItem: LessonSlideAndIdProps, slide: number, i: number) => {
@@ -52,8 +64,23 @@ const CreateLesson = () => {
     })
   }
 
+  const submitLesson = async() => {
+    setLoading(true)
+
+    await createLesson(slides.map(slide => slide.map(item => {
+      //// const newItem: LessonSlidesProps | LessonSlideAndIdProps = {...item};
+      return item
+    })))
+
+    setLoading(false)
+  }
+
   return (
     <div>
+      <div className="lesson-actions" key='actions'>
+        <Button onClick={removeSlide} background="#f55">Remove slide</Button>
+        <Button onClick={submitLesson} loading={loading}>Done</Button>
+      </div>
       <Slides
         currentSlide={currentSlide}
         setCurrentSlide={setCurrentSlide}
@@ -62,13 +89,15 @@ const CreateLesson = () => {
         animationMode="popLayout"
         lastSlideBtn="new slide"
       >
+        
         <Reorder.Group
+          key='content'
           axis="y"
           values={slides[currentSlide]}
           onReorder={e => {
             e.map((item, index) => {
               const newOrder = e.map((item) => item.id); // Assuming each item has an `id`
-    
+
               // Update slides state with new order
               setSlides((prevSlides) => {
                 const updatedSlides = [...prevSlides];

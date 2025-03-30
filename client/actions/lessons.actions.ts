@@ -31,3 +31,14 @@ export const getLesson = async (lessonId: string): Promise<LessonsActionProps> =
     return {message: 'ERROR', payload: null}
   }
 }
+
+export const createLesson = async (data: LessonSlidesProps): Promise<LessonsActionProps> => {
+  try {
+    const res = await api(`${path}/create`, 'POST')
+    const data = await res.json()
+
+    return data
+  } catch (error) {
+    return {message: 'ERROR', payload: null}
+  }
+}

@@ -1,3 +1,10 @@
+.lesson-actions {
+  position: absolute;
+  top: var(--nav-pd);
+  right: 10px;
+  display: flex;
+  gap: 5px;
+}
 .edit-container {
   padding: 10px;
   border-radius: 10px;
@@ -5,6 +12,7 @@
   position: relative;
   z-index: 1;
 }
+
 
 .edit-container:hover {
   background-color: #f0f0f0;
