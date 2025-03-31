@@ -1,10 +1,18 @@
-.lesson-actions {
+.lesson-data {
   position: absolute;
   top: var(--nav-pd);
-  right: 10px;
+  left: 0;
+  width: 100%;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.lesson-data .lesson-actions, .lesson-data .lesson-fields {
   display: flex;
   gap: 5px;
 }
+
 .edit-container {
   padding: 10px;
   border-radius: 10px;

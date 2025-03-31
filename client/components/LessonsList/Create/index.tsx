@@ -1,6 +1,6 @@
 'use client'
 import Slides from "@/ui/Slides"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import EditingSpace from "./EditingSpace"
 import * as motion from 'motion/react-client'
 import { PlusCircleIcon } from "lucide-react"
@@ -9,6 +9,7 @@ import { Reorder } from "motion/react"
 import Button from "@/ui/Button"
 import Toast from "@/ui/Toast"
 import { createLesson } from "@/actions/lessons.actions"
+import { Autocomplete, TextField } from "@mui/material"
 
 const CreateLesson = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -64,23 +65,38 @@ const CreateLesson = () => {
     })
   }
 
-  const submitLesson = async() => {
+  const submitLesson = async(e: FormEvent) => {
+    e.preventDefault()
     setLoading(true)
 
-    await createLesson(slides.map(slide => slide.map(item => {
+    // THEN
+    /* await createLesson(slides.map(slide => slide.map(item => {
       //// const newItem: LessonSlidesProps | LessonSlideAndIdProps = {...item};
       return item
-    })))
+    }))) */
 
     setLoading(false)
   }
 
   return (
     <div>
-      <div className="lesson-actions" key='actions'>
-        <Button onClick={removeSlide} background="#f55">Remove slide</Button>
-        <Button onClick={submitLesson} loading={loading}>Done</Button>
-      </div>
+      <form className="lesson-data">
+        <div className="lesson-fields" onSubmit={submitLesson}>
+          <TextField placeholder="Lesson Title" defaultValue='Untitled' required sx={{'input': {padding: '7.5px 10px'}}} />
+          <Autocomplete
+            disablePortal
+            // TODO: fetch topics
+            options={['Basics', 'oop']}
+            sx={{ width: 300, '.MuiInputBase-root': {padding: '0 10px'} }}
+            renderInput={(params) => <TextField {...params} placeholder="Topic" required />}
+          />
+        </div>
+        <div className="lesson-actions">
+          <Button onClick={removeSlide} background="#f55" type="button">Remove slide</Button>
+          <Button loading={loading} type="submit">Done</Button>
+        </div>
+      </form>
+
       <Slides
         currentSlide={currentSlide}
         setCurrentSlide={setCurrentSlide}
@@ -91,7 +107,6 @@ const CreateLesson = () => {
       >
         
         <Reorder.Group
-          key='content'
           axis="y"
           values={slides[currentSlide]}
           onReorder={e => {
