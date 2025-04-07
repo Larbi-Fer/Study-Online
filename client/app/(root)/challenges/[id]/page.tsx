@@ -1,5 +1,6 @@
 import { getChallenge } from "@/actions/challenges.action";
 import ChallengeSpace from "@/components/Challenges/ChallengeSpace";
+import { getUserData } from "@/lib/serverUtils";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: {params: Promise<{ id: string }>}) {
@@ -20,8 +21,14 @@ const Challenge = async({ params }: { params: Promise<{id: string}> }) => {
 
   if (!data.payload) return notFound()
 
+  const user = await getUserData()
+  if (!user) return ''
+
+  let isAdmin = false
+  if (user.role == 'admin') isAdmin = true
+
   return (
-    <ChallengeSpace programme={data.payload} progId={progId} />
+    <ChallengeSpace programme={data.payload} progId={progId} edit={isAdmin} />
   )
 }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { createChallengeDto } from './dto';
 
 @Injectable()
 export class ChallengesService {
@@ -67,5 +68,30 @@ export class ChallengesService {
       update: {},
       create: { userId, programmeId }
     });
+  }
+
+  // Admin
+  async createChallenge({data, type, topicId}: createChallengeDto) {
+    console.log('open');
+    
+    return await this.prisma.programme.create({
+      data: {
+        ...data,
+        type,
+        topicId
+      },
+      select: {id: true}
+    })
+  }
+  async updateChallenge(id: string, data: Prisma.ProgrammeUpdateInput) {
+    await this.prisma.programme.update({
+      where: { id },
+      data
+    })
+  }
+  async deleteChallenge(id: string) {
+    return await this.prisma.programme.delete({
+      where: { id }
+    })
   }
 }

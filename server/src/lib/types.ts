@@ -4,3 +4,5 @@ type quizStatistics = {
   incorrect: string;
   timeout: string;
 }
+
+type ProgrammeTypes = 'challenge' | 'lesson'

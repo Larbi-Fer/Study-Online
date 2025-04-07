@@ -6,11 +6,12 @@ type OutputProps = { type: 'success' | 'error', content: string }
 type ProgrammesProps = {
   codes: (ProgrammeArgs & {output?: OutputProps})[],
   i: number;
-  congrationMessage: boolean
+  congrationMessage: boolean,
+  edit?: boolean
 }
 
 export const programmesSlice = createSlice({
-  initialState: { codes: [], i: 0, congrationMessage: false } as ProgrammesProps,
+  initialState: { codes: [], i: 0, congrationMessage: false, edit: false } as ProgrammesProps,
   name: 'programmes',
   reducers: {
     setProgrammes: (state, action: {payload: ProgrammeArgs[]}) => {
@@ -30,10 +31,13 @@ export const programmesSlice = createSlice({
     },
     setCongrationMsg: (state, action: {payload: boolean}) => {
       state.congrationMessage = action.payload
+    },
+    setEditingProgramme: (state, action: {payload: boolean}) => {
+      state.edit = action.payload
     }
   }
 })
 
-export const { setProgrammes, setOutput, setCongrationMsg, nextProgramme } = programmesSlice.actions
+export const { setProgrammes, setOutput, setCongrationMsg, nextProgramme, setEditingProgramme } = programmesSlice.actions
 
 export default programmesSlice.reducer

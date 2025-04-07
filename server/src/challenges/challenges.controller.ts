@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
-import { ChallengeDoneDto, GetChallengesDto } from './dto';
+import { ChallengeDoneDto, createChallengeDto, GetChallengesDto, ProgrammeIdDto, UpdateChallengeDto } from './dto';
 
 @Controller('challenges')
 export class ChallengesController {
@@ -13,6 +13,33 @@ export class ChallengesController {
 
     return { message: 'SUCCESS', payload: {
       points: p,
+      challenges
+    } }
+  }
+
+  // Admin
+  @Post('/create')
+  async createChallenge(@Body() prog: createChallengeDto) {
+    console.log('createChallenge', prog);
+    
+    const challenges = await this.challengeServise.createChallenge(prog)
+    return { message: 'SUCCESS', payload: challenges.id }
+  }
+
+  // Admin
+  @Delete('/delete')
+  async deleteChallenge(@Body() {programmeId}: ProgrammeIdDto) {
+    const challenges = await this.challengeServise.deleteChallenge(programmeId)
+    return { message: 'SUCCESS', payload: {
+      challenges
+    } }
+  }
+
+  // Admin
+  @Put('/update/:id')
+  async updateChallenge(@Param('id') programmeId: string, @Body() {data}: UpdateChallengeDto) {
+    const challenges = await this.challengeServise.updateChallenge(programmeId, data)
+    return { message: 'SUCCESS', payload: {
       challenges
     } }
   }

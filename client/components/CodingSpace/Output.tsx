@@ -3,9 +3,14 @@
 import { CheckCircleIcon, FileWarningIcon, PlayCircleIcon, TerminalIcon } from "lucide-react"
 import Workspace from "./Workspace"
 import { useAppSelector } from "@/lib/hooks"
+import { TextareaAutosize } from "@mui/material"
 
 const Output = () => {
-  const output = useAppSelector(state => state.programmes.codes[state.programmes.i].output)
+  const {output, isEditing, goal} = useAppSelector(state => ({
+    output: state.programmes.codes[state.programmes.i].output,
+    goal : state.programmes.codes[state.programmes.i].goal,
+    isEditing: state.programmes.edit
+  }))
 
   return (
     <Workspace header={
@@ -27,7 +32,7 @@ const Output = () => {
             <div style={{color: '#f00'}}>Execute failed</div>
           </div>
         }
-        {!output && 
+        {!output && !isEditing &&
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20px', color: '#ddd6'}}>
             <PlayCircleIcon size={30} />
             <div>Execute the programme to see the result</div>
@@ -35,7 +40,11 @@ const Output = () => {
         }
 
         <div className="output">
-          {output?.content.split('\n').map((res, i) => <div key={'output-' + i}>{res}</div>)}
+          {isEditing ?
+            <TextareaAutosize id="output-goal" defaultValue={goal} style={{color: 'white', minHeight: '100px'}} className="without-border"></TextareaAutosize>
+          :
+            output?.content.split('\n').map((res, i) => <div key={'output-' + i}>{res}</div>)
+          }
         </div>
       </div>
     </Workspace>

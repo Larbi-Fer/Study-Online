@@ -1,17 +1,29 @@
 'use client'
 
 import { Editor, MonacoDiffEditor } from '@monaco-editor/react'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Workspace from './Workspace'
 import Button from '@/ui/Button'
 import Image from 'next/image'
 import { RotateCcwIcon } from 'lucide-react'
-import { useAppDispatch } from '@/lib/hooks'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { setOutput } from '@/lib/features/programmes'
-import api from '@/actions/api'
+import Loading from '@/ui/Loading'
+import { Autocomplete, createTheme, TextField, ThemeProvider } from '@mui/material'
+import { getTopics } from '@/actions/topics'
+import Toast from '@/ui/Toast'
+import { createChallenge, updateChallenge } from '@/actions/challenges.action'
+import { useParams, useRouter } from 'next/navigation'
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark', // Switch to dark mode
+  },
+});
 
 const EditorPanel = ({ code }: {code: string}) => {
   const editorRef = useRef<MonacoDiffEditor>(null);
+  const isEditing = useAppSelector(state => state.programmes.edit)
 
   const handleEditorDidMount = (editor: MonacoDiffEditor) => {
     editorRef.current = editor;
@@ -22,7 +34,7 @@ const EditorPanel = ({ code }: {code: string}) => {
   }
 
   return (
-    <Workspace header={<Header reset={reset} editor={editorRef} />}>
+    <Workspace header={<Header reset={reset} editor={editorRef} isEditing={isEditing} />}>
       <div style={{overflow: 'hidden'}}>
         <Editor
           defaultLanguage='python'
@@ -30,6 +42,7 @@ const EditorPanel = ({ code }: {code: string}) => {
           theme='vs-dark'
           height='calc(100vh - 70px)'
           onMount={handleEditorDidMount}
+          loading={<Loading />}
           options={{
             minimap: { enabled: false },
             cursorBlinking: "smooth",
@@ -42,12 +55,25 @@ const EditorPanel = ({ code }: {code: string}) => {
   )
 }
 
-const Header = ({reset, editor}: {reset: () => void, editor: React.RefObject<MonacoDiffEditor>}) => {
+const Header = ({reset, editor, isEditing}: {reset: () => void, editor: React.RefObject<MonacoDiffEditor>, isEditing?: boolean}) => {
   const dispatch = useAppDispatch()
+  const program = useAppSelector(state => state.programmes.codes[state.programmes.i])
   const [loading, setLoading] = useState(false)
+  const [topic, setTopic] = useState<{title: string, id: string} | null>(null)
+  const [listTopics, setListTopics] = useState<[{title: string, id: string}] | []>([])
+  const { id: progId } = useParams<{id: string}>()
+  const router = useRouter()
+
+  useEffect(() => {
+    (async() => {
+      const fetchedTopics = await getTopics()
+      if (fetchedTopics.message == 'SUCCESS') setListTopics(fetchedTopics.payload)
+    })()
+  }, [])
 
   const executeProgramme = async() => {
     setLoading(true)
+
     const data = await fetch('https://emkc.org/api/v2/piston/execute', {
         method: 'POST',
         headers: {
@@ -71,6 +97,35 @@ const Header = ({reset, editor}: {reset: () => void, editor: React.RefObject<Mon
     setLoading(false)
   }
 
+  const saveProgramme = async () => {
+    setLoading(true)
+    
+    const code = editor.current.getValue()
+    const goal = (document.getElementById('output-goal') as HTMLTextAreaElement)?.value || ''
+    // post method
+    if (!topic && !progId) {
+      setLoading(false)
+      return Toast('Please select a topic', 'error')
+    }
+
+    const data = {
+      title: program.title,
+      description: program.description,
+      code, goal
+    }
+
+    const res = progId ? await updateChallenge(progId, data, topic?.id)
+                       : await createChallenge(data , 'challenge', topic?.id!)
+    
+    if (res.message != 'SUCCESS') Toast('something went wrong', 'error')
+
+    setLoading(false)
+
+    if(!progId) {
+      router.replace(`/challenges/${res.payload}`)
+    }
+  }
+
   return (
     <div className='code-header'>
       <div className="left">
@@ -85,11 +140,35 @@ const Header = ({reset, editor}: {reset: () => void, editor: React.RefObject<Mon
 
 
       <div className="right">
+        {isEditing &&
+          <div className="action">
+            <ThemeProvider theme={darkTheme}>
+              <Autocomplete
+                disablePortal
+                // TODO: fetch topics
+                options={listTopics}
+                getOptionLabel={(option) => option.title}
+                sx={{
+                  width: 180,
+                  '.MuiInputBase-root': { padding: '0 10px' },
+                }}
+                onChange={(_, nv) => setTopic(nv)}
+                value={topic}
+                renderInput={(params) =>
+                  <TextField {...params} placeholder="Topic" required />}
+              />
+            </ThemeProvider>
+          </div>
+        }
         <div className="action reset">
           <Button transparent onClick={reset}> <RotateCcwIcon size={20} /> </Button>
         </div>
         <div className="action run">
-          <Button background='green' onClick={executeProgramme} loading={loading}>Run</Button>
+          {isEditing ?
+            <Button onClick={saveProgramme} loading={loading}>Save</Button>
+          :
+            <Button background='green' onClick={executeProgramme} loading={loading}>Run</Button>
+          }
         </div>
       </div>
     </div>

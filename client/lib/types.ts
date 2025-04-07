@@ -128,3 +128,5 @@ interface DashboardArgs {
     createdAt: Date;
   }[]
 }
+
+type ProgrammeTypes = 'challenge' | 'lesson'

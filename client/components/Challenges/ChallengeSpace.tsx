@@ -7,7 +7,7 @@ import CodingSapce from "../CodingSpace";
 import { useRouter } from "next/navigation";
 import { challengeDone } from "@/actions/challenges.action";
 
-const ChallengeSpace = ({ programme, progId }: {programme: ProgrammeArgs, progId: string}) => {
+const ChallengeSpace = ({ programme, progId, edit }: {programme: ProgrammeArgs, progId: string, edit?: boolean}) => {
   const dispatch = useAppDispatch()
   const [isDone, setIsDone] = useState(false)
   const userId = useAppSelector(state => state.user?.id)
@@ -30,7 +30,7 @@ const ChallengeSpace = ({ programme, progId }: {programme: ProgrammeArgs, progId
   
   return (
     isDone ?
-      <CodingSapce afterComplete={afterComplete} />
+      <CodingSapce afterComplete={afterComplete} edit={edit} />
     :
       <h3>Loading ...</h3>
   )

@@ -41,3 +41,38 @@ export const challengeDone = async (userId: string, progId: string) : Promise<Ch
     return {message: 'ERROR'}
   }
 }
+
+export const createChallenge = async (data: ProgrammeArgs, type: ProgrammeTypes, topicId: string): Promise<ChallengesActionProps> => {
+  try {
+    const res = await api(`${PATH}/create`, 'POST', {data, type, topicId});
+    const responseData = await res.json();
+
+    return responseData;
+  } catch (error) {
+    console.error('Error creating challenge:', error);    
+    return { message: 'ERROR' };
+  }
+};
+
+export const updateChallenge = async (programmeId: string, data: ProgrammeArgs, topicId?: string): Promise<ChallengesActionProps> => {
+  try {
+    const res = await api(`${PATH}/update/${programmeId}`, 'PUT', {data: {...data, topicId}});
+    const responseData = await res.json();
+
+    return responseData;
+  } catch (error) {
+    console.error('Error updating challenge:', error);
+    return { message: 'ERROR' };
+  }
+};
+
+export const deleteChallenge = async (programmeId: string): Promise<ChallengesActionProps> => {
+  try {
+    const res = await api(`${PATH}/delete/?programmeId=${programmeId}`, 'DELETE');
+    const responseData = await res.json();
+
+    return responseData;
+  } catch (error) {
+    return { message: 'ERROR' };
+  }
+};

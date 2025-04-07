@@ -10,10 +10,12 @@ import Output from './Output'
 import { AnimatePresence } from 'motion/react'
 import Button from '@/ui/Button'
 import Image from 'next/image'
-import { nextProgramme } from '@/lib/features/programmes'
+import { nextProgramme, setEditingProgramme } from '@/lib/features/programmes'
 import CongratulationsMsg from '../LessonsList/CongratulationsMsg'
+import { useEffect } from 'react'
+import DescriptionPanel from './DescriptionPanel'
 
-const CodingSapce = ({ afterComplete }: {afterComplete: () => void}) => {
+const CodingSapce = ({ afterComplete, edit }: {afterComplete?: () => void, edit?: boolean}) => {
   const {programme, i, progsCount} = useAppSelector(
     state => ({
       programme: state.programmes.codes[state.programmes.i],
@@ -23,9 +25,15 @@ const CodingSapce = ({ afterComplete }: {afterComplete: () => void}) => {
   )
   const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    if (!edit) return
+    dispatch(setEditingProgramme(true))
+  }, [])
+  
+
   const handleNext = () => {
     if (progsCount > i+1) dispatch(nextProgramme())
-    else afterComplete()
+    else afterComplete && afterComplete()
 
   }
 
@@ -39,16 +47,7 @@ const CodingSapce = ({ afterComplete }: {afterComplete: () => void}) => {
 
         <div className='part-2'>
           <div>
-            <Workspace header={
-              <div className='text-icon'>
-                <TextIcon color='#59ff7c' />
-                <div>{programme.title}</div>
-              </div>
-            }>
-              <div style={{padding: '10px 20px'}}>
-                {programme.description}
-              </div>
-            </Workspace>
+            <DescriptionPanel programme={programme} editing={edit} />
           </div>
 
           <div>
