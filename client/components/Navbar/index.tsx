@@ -24,6 +24,7 @@ const Navbar = ({ type }: NavbarProps) => {
           <ul className="nav-links">
             <li><Link href='/lessons'>Lessons</Link></li>
             <li><Link href='/challenges'>Challenges</Link></li>
+            <li><Link href='/topics'>Topics</Link></li>
           </ul>
           : null}
         </nav>
