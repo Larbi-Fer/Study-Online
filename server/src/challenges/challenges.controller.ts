@@ -20,8 +20,6 @@ export class ChallengesController {
   // Admin
   @Post('/create')
   async createChallenge(@Body() prog: createChallengeDto) {
-    console.log('createChallenge', prog);
-    
     const challenges = await this.challengeServise.createChallenge(prog)
     return { message: 'SUCCESS', payload: challenges.id }
   }
@@ -38,10 +36,8 @@ export class ChallengesController {
   // Admin
   @Put('/update/:id')
   async updateChallenge(@Param('id') programmeId: string, @Body() {data}: UpdateChallengeDto) {
-    const challenges = await this.challengeServise.updateChallenge(programmeId, data)
-    return { message: 'SUCCESS', payload: {
-      challenges
-    } }
+    await this.challengeServise.updateChallenge(programmeId, data)
+    return { message: 'SUCCESS' }
   }
 
   @Get('/:id')
