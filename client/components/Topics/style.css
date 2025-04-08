@@ -8,3 +8,23 @@
   transform: translateY(-4px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.topics-list .add-topic {
+  display: flex;
+  align-items: center;
+}
+
+.topics-list .add-topic-card {
+  background-color: #f0f0f0;
+  border: 2px dashed #ccc;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  cursor: pointer;
+  transition: .3s;
+}
+.topics-list .add-topic-card:hover {
+  background-color: #e2e2e2;
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

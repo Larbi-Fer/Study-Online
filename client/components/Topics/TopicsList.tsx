@@ -1,6 +1,8 @@
+'use client'
 import { Box, Card, CardContent, CardHeader, CardMedia, Grid2 as Grid, Typography } from "@mui/material";
 import * as motion from 'motion/react-client'
 import './style.css'
+import { useRouter } from "next/navigation";
 
 type Topic = {
   id: string;
@@ -9,7 +11,8 @@ type Topic = {
   image: string;
 };
 
-const TopicsList = ({topics}: {topics: Topic[]}) => {
+const TopicsList = ({topics, isAdmin}: {topics: Topic[], isAdmin?: boolean}) => {
+  const router = useRouter()
   if (!topics || topics.length === 0) {
     return (
       <Grid container spacing={3} padding={2} className="topics-list">
@@ -52,6 +55,24 @@ const TopicsList = ({topics}: {topics: Topic[]}) => {
           </motion.div>
         </Grid>
       ))}
+      {isAdmin && (
+        <Grid size={{ xs: 12, sm: 6, md: 3 }} className="add-topic">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: topics.length * 0.1 }}
+          >
+            <Card className="add-topic-card" elevation={3} onClick={() => router.push('/topics/create')}>
+              <CardContent>
+                <Typography variant="h6" fontWeight="bold">Add New Topic</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Click here to add a new topic.
+                </Typography>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </Grid>
+      )}
     </Grid>
   )
 }
