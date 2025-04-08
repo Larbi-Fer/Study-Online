@@ -5,7 +5,7 @@ import { IKImage, IKVideo, ImageKitProvider, IKUpload, ImageKitContext } from "i
 import { useRef, useState } from "react";
 import Button from "../Button";
 import Toast from "../Toast";
-import Image from "next/image";
+import { UploadCloudIcon } from "lucide-react";
 
 const authenticator = async () => {
   try {
@@ -16,7 +16,7 @@ const authenticator = async () => {
   }
 }
 
-const ImageUpload = () => {
+const ImageUpload = ({changeFile}: {changeFile: (filepath: string) => void}) => {
   const ikUploadRef = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<{filePath: string} | null>(null)
 
@@ -26,6 +26,7 @@ const ImageUpload = () => {
   }
   const onSuccess = (res: any) => {
     setFile(res)
+    changeFile(process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT + res.filePath)
     Toast('Image uploaded successfully', 'success')
   }
 
@@ -43,21 +44,19 @@ const ImageUpload = () => {
         folder="topics-cover"
         onUploadProgress={e => console.log(e.loaded, e.total)}
       />
-      <Button onClick={e => {
+      <div onClick={e => {
         if (ikUploadRef.current) {
           ikUploadRef.current?.click(); 
         }
+      }} style={{cursor: 'pointer', width: '100%', padding: '10px',
+        borderRadius: '8px', display: 'flex', alignItems: 'center',
+        justifyContent: 'center', backgroundColor: '#ddd', color: '#333'
       }}>
-        Upload image <br />
-        {file && file.filePath}
-      </Button>
-
-      {file &&
-        <IKImage
-          alt="uploaded image"
-          path={file.filePath}
-        />
-      }
+        <UploadCloudIcon />
+        <p style={{margin: '0 10px'}}>
+          {file ? 'upload other image' : 'Upload image'}
+        </p>
+      </div>
     </ImageKitProvider>
   )
 }

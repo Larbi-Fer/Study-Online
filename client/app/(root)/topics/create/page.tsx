@@ -1,10 +1,10 @@
-import ImageUpload from "@/ui/ImageUpload"
+import CreateTopic from "@/components/Topics/CreateTopic"
 
-const CreateTopic = () => {
+const CreateTopicPage = () => {
   // TODO: admin check
   return (
-    <ImageUpload />
+    <CreateTopic />
   )
 }
 
-export default CreateTopic
+export default CreateTopicPage

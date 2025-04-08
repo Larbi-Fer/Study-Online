@@ -3,13 +3,7 @@ import { Box, Card, CardContent, CardHeader, CardMedia, Grid2 as Grid, Typograph
 import * as motion from 'motion/react-client'
 import './style.css'
 import { useRouter } from "next/navigation";
-
-type Topic = {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-};
+import TopicCard from "./TopicCard";
 
 const TopicsList = ({topics, isAdmin}: {topics: Topic[], isAdmin?: boolean}) => {
   const router = useRouter()
@@ -32,27 +26,9 @@ const TopicsList = ({topics, isAdmin}: {topics: Topic[], isAdmin?: boolean}) => 
         </Typography>
       </Grid>
       {topics.map((topic, i) => (
+        
         <Grid size={{ xs: 12, sm: 6, md: 3 }} key={topic.id} className="topic-card">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.1 }}
-          >
-            <Card className="challenge-card" elevation={3}>
-              <CardMedia
-                component="img"
-                height="194"
-                image={topic.image}
-                alt={topic.title}
-              />
-              <CardContent>
-                <Typography variant="h6" fontWeight="bold">{topic.title}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {topic.description}
-                </Typography>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <TopicCard topic={topic} i={i} />
         </Grid>
       ))}
       {isAdmin && (

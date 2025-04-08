@@ -1,0 +1,16 @@
+.create-topic-container {
+  display: flex;
+}
+
+.create-topic-container .create-topic-fields, .create-topic-container .create-topic-card {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.create-topic-container .create-topic-card > div, .create-topic-container .create-topic-fields > div {
+  width: 100%;
+  max-width: 400px;
+}

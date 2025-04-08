@@ -130,3 +130,10 @@ interface DashboardArgs {
 }
 
 type ProgrammeTypes = 'challenge' | 'lesson'
+
+interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+};
