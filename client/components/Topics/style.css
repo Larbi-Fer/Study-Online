@@ -1,0 +1,10 @@
+.topics-list .topic-card {
+  cursor: pointer;
+  transition: .3s;
+}
+
+.topics-list .topic-card:hover {
+  background-color: #e2e2e2;
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

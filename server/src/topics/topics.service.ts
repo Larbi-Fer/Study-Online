@@ -7,7 +7,7 @@ export class TopicsService {
 
   async fetchTopics() {
     return await this.prisma.topic.findMany({
-      select: { title: true, id: true }
+      select: { title: true, id: true, description: true, image: true }
     });
   }
 }

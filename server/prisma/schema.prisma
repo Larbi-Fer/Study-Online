@@ -79,6 +79,8 @@ model Topic {
   id      String   @id @default(cuid())
   number  Int
   title   String
+  description String?
+  image   String?
   lessons Lesson[]
   programmes Programme[]
 
