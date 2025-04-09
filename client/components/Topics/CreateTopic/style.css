@@ -11,7 +11,31 @@
   flex-direction: column;
 }
 
-.create-topic-container .create-topic-card > div, .create-topic-container .create-topic-fields > div {
+.create-topic-container .create-topic-card > div {
   width: 100%;
   max-width: 400px;
+}
+.create-topic-container .create-topic-fields > div {
+  width: 100%;
+  max-width: 500px;
+}
+
+.create-topic-container .create-topic-fields > .out-container > form {
+  padding: 35px 20px;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.create-topic-container .create-topic-fields > .out-container {
+  background: linear-gradient(120deg, red, blue);
+  padding: 3px;
+  padding: 3px;
+  border-radius: 15px;
+}
+
+.create-topic-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #4A90E2;
 }

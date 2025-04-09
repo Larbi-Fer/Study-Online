@@ -7,7 +7,6 @@ import Input from "@/ui/Input"
 import ImageUpload from "@/ui/ImageUpload"
 import { removeFile } from "@/actions/imagekit.actions"
 import Button from "@/ui/Button"
-import Toast from "@/ui/Toast"
 import { createTopics } from "@/actions/topics.actions"
 
 const animation = {
@@ -43,37 +42,41 @@ const CreateTopic = () => {
 
   return (
     <div className="create-topic-container">
-      <motion.form onSubmit={handleSubmit} variants={animation} initial='hidden' animate='active' className="create-topic-fields">
-        <motion.h2 variants={animation} style={{padding: '10px'}}>
-          Create topic
-        </motion.h2>
-        <Field label="Title" name="title" handleChange={handleChange} />
-        <Field label="Description" name="description" handleChange={handleChange} multiline />
-        <motion.div variants={animation} style={{padding: '10px'}}>
-          <ImageUpload changeFile={changeFile} />
-        </motion.div>
+      <div className="create-topic-fields">
+        <motion.div className="out-container" variants={animation} initial='hidden' animate='active'>
+          <form onSubmit={handleSubmit}>
+            <motion.h2 variants={animation} style={{padding: '10px'}}>
+              Create topic
+            </motion.h2>
+            <Field label="Title" value={topic.title} name="title" handleChange={handleChange} />
+            <Field label="Description" value={topic.description} name="description" handleChange={handleChange} multiline />
+            <motion.div variants={animation} style={{padding: '10px'}}>
+              <ImageUpload changeFile={changeFile} />
+            </motion.div>
 
-        <motion.div variants={animation} style={{padding: '10px'}}>
-          <Button fullWidth loading={loading}>Submit</Button>
+            <motion.div variants={animation} style={{padding: '10px'}}>
+              <Button fullWidth loading={loading}>Submit</Button>
+            </motion.div>
+          </form>
         </motion.div>
-      </motion.form>
+      </div>
 
       <div className="create-topic-card">
-      <motion.h2 variants={animation} style={{padding: '10px'}}>
+        <motion.h2 variants={animation} initial='hidden' animate='active' style={{padding: '10px'}}>
           Topic preview
         </motion.h2>
         <div style={{height: 'max-content'}}>
-          <TopicCard topic={topic} i={0} />
+          <TopicCard topic={topic} i={1} />
         </div>
       </div>
     </div>
   )
 }
 
-const Field = ({label, name, handleChange, multiline}: {label: string, name: string, handleChange: any, multiline?: boolean}) => {
+const Field = ({label, name, value, handleChange, multiline, ...props}: {label: string, name: string, handleChange: any, multiline?: boolean, value: string}) => {
   return (
     <motion.div variants={animation}>
-      <Input label={label} name={name} onBlur={handleChange} multiline={multiline} required />
+      <Input defaultValue={value} label={label} name={name} onBlur={handleChange} multiline={multiline} onFocus={(e: any)=> e.target.select()} required />
     </motion.div>
   )
 }
