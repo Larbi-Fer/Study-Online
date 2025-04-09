@@ -7,16 +7,19 @@ import Input from "@/ui/Input"
 import ImageUpload from "@/ui/ImageUpload"
 import { removeFile } from "@/actions/imagekit.actions"
 import Button from "@/ui/Button"
-import { createTopics } from "@/actions/topics.actions"
+import { createTopics, updateTopic } from "@/actions/topics.actions"
+import { useRouter } from "next/navigation"
+import Toast from "@/ui/Toast"
 
 const animation = {
   hidden: {opacity: 0, y: 10},
   active: {opacity: 1, y: 0, transition: {staggerChildren: 0.15, duration: 0.5}},
 }
 
-const CreateTopic = () => {
-  const [topic, setTopic] = useState<Topic>({id: '', title: 'title', description: 'description', image: {path: '', id: ''}})
+const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: Topic}) => {
+  const [topic, setTopic] = useState<Topic>(defaultTopic || {id: '', title: 'title', description: 'description', image: {path: '', id: ''}})
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleChange = (e: FocusEvent<HTMLInputElement>) => {
     setTopic(prevTopic => ({...prevTopic, [e.target.name]: e.target.value}))
@@ -31,11 +34,19 @@ const CreateTopic = () => {
     e.preventDefault()
     setLoading(true)
 
-    const subTopic: any = topic;
-    delete subTopic.id
-    const data = await createTopics(subTopic)
-    console.log(data);
-    
+    if (id) {
+      // Update existing topic
+      const subTopic: any = topic;
+      delete subTopic.id
+      await updateTopic(id, subTopic);
+      Toast('Edit Successfully', 'success')
+    } else {
+      // Create new topic
+      const subTopic: any = topic;
+      delete subTopic.id
+      const result = await createTopics(subTopic)
+      router.replace(`/topics/${result.payload.id}/edit`)
+    }
 
     setLoading(false)
   }
@@ -81,4 +92,4 @@ const Field = ({label, name, value, handleChange, multiline, ...props}: {label: 
   )
 }
 
-export default CreateTopic
+export default CreateOrUpdateTopic

@@ -29,8 +29,7 @@
 .create-topic-container .create-topic-fields > .out-container {
   background: linear-gradient(120deg, red, blue);
   padding: 3px;
-  padding: 3px;
-  border-radius: 15px;
+  border-radius: 18px;
 }
 
 .create-topic-container h2 {

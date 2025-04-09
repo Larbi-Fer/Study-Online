@@ -12,6 +12,14 @@ export class TopicsService {
     });
   }
 
+  async fetchTopic(id: string) {
+    return await this.prisma.topic.findUnique({
+      where: { id },
+      select: { title: true, id: true, description: true, image: true }
+    });
+  }
+
+  // Admin
   async createTopic(topic: Topic) {
     const number = await this.prisma.topic.count()+1
     return await this.prisma.topic.create({
@@ -19,6 +27,14 @@ export class TopicsService {
         number,
         ...topic
       },
+      select: { id: true }
+    });
+  }
+
+  async updateTopic(id: string, topic: Topic) {
+    return await this.prisma.topic.update({
+      where: { id },
+      data: topic,
       select: { id: true }
     });
   }

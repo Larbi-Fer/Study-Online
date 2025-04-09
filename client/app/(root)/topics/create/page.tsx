@@ -1,9 +1,9 @@
-import CreateTopic from "@/components/Topics/CreateTopic"
+import CreateOrUpdateTopic from "@/components/Topics/CreateTopic"
 
 const CreateTopicPage = () => {
   // TODO: admin check
   return (
-    <CreateTopic />
+    <CreateOrUpdateTopic />
   )
 }
 

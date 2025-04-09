@@ -30,3 +30,25 @@ export const createTopics = async (topic: any): Promise<TopicsActionProps> => {
     return { message: 'ERROR', payload: null };
   }
 };
+
+export const getTopic = async (id: string): Promise<TopicsActionProps> => {
+  try {
+    const res = await api(`${PATH}/${id}`, 'GET');
+    const data = await res.json();
+
+    return { message: 'SUCCESS', payload: data };
+  } catch (error) {
+    return { message: 'ERROR', payload: null };
+  }
+};
+
+export const updateTopic = async (id: string, topic: any): Promise<TopicsActionProps> => {
+  try {
+    const res = await api(`${PATH}/${id}`, 'PUT', topic);
+    const data = await res.json();
+
+    return { message: 'SUCCESS', payload: data };
+  } catch (error) {
+    return { message: 'ERROR', payload: null };
+  }
+};

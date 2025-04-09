@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { TopicsService } from './topics.service';
 import { Topic } from './dto/topics.dto';
 
@@ -14,5 +14,15 @@ export class TopicsController {
   @Post()
   async createTopics(@Body() topic: Topic) {
     return this.topicsService.createTopic(topic);
+  }
+
+  @Get(':id')
+  async getTopic(@Param('id') id: string) {
+    return this.topicsService.fetchTopic(id);
+  }
+
+  @Put(':id')
+  async updateTopic(@Param('id') id: string, @Body() topic: Topic) {
+    return this.topicsService.updateTopic(id, topic);
   }
 }
