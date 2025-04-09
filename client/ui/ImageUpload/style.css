@@ -1,0 +1,21 @@
+.upload-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-container svg, .upload-container p {
+  z-index: 10;
+}
+
+.upload-container span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-image: linear-gradient(120deg, #78ff9c, #8bfb98, #2d5, #20f75d);
+  border-radius: 8px;
+  z-index: 1;
+  transition: .3s ease;
+}
+
+/* 2d5 */

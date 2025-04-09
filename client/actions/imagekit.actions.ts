@@ -15,3 +15,11 @@ export const getImagekitAuth = async () => {
     throw new Error(`Error in getAuth: ${error.message}`)
   }
 }
+
+export const removeFile = async (id: string) => {
+  try {
+    imagekit.deleteFile(id)
+  } catch (error: any) {
+    throw new Error(`Error in getAuth: ${error.message}`)
+  }
+}

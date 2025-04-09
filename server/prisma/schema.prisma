@@ -80,7 +80,7 @@ model Topic {
   number  Int
   title   String
   description String?
-  image   String?
+  image   Json? // {path: string, id: string}
   lessons Lesson[]
   programmes Programme[]
 

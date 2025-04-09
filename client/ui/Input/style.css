@@ -11,7 +11,7 @@
     margin-bottom: 3px;
 }
 
-.text-field input {
+.text-field input, .text-field textarea {
     padding: 7px 15px;
     outline: none;
     border: none;
@@ -21,7 +21,7 @@
     font-size: 15px;
 }
 
-.text-field input:hover, .text-field input:focus {
+.text-field input:hover, .text-field input:focus, .text-field textarea:hover, .text-field textarea:focus {
     background-color: #d5d5d5;
 }
 

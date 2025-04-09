@@ -1,11 +1,10 @@
 'use client'
-import api from "@/actions/api";
 import { getImagekitAuth } from "@/actions/imagekit.actions";
-import { IKImage, IKVideo, ImageKitProvider, IKUpload, ImageKitContext } from "imagekitio-next";
+import { ImageKitProvider, IKUpload } from "imagekitio-next";
 import { useRef, useState } from "react";
-import Button from "../Button";
 import Toast from "../Toast";
 import { UploadCloudIcon } from "lucide-react";
+import './style.css'
 
 const authenticator = async () => {
   try {
@@ -16,9 +15,10 @@ const authenticator = async () => {
   }
 }
 
-const ImageUpload = ({changeFile}: {changeFile: (filepath: string) => void}) => {
+const ImageUpload = ({changeFile}: {changeFile: (path: string, id: string) => void}) => {
   const ikUploadRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState<{filePath: string} | null>(null)
+  const [file, setFile] = useState<{filePath: string, fileId: string} | null>(null)
+  const [progress, setProgress] = useState<number>(0)
 
   const onError = (error: any) => {
     console.log(error.message);
@@ -26,7 +26,7 @@ const ImageUpload = ({changeFile}: {changeFile: (filepath: string) => void}) => 
   }
   const onSuccess = (res: any) => {
     setFile(res)
-    changeFile(process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT + res.filePath)
+    changeFile(process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT + res.filePath, res.fileId)
     Toast('Image uploaded successfully', 'success')
   }
 
@@ -42,20 +42,22 @@ const ImageUpload = ({changeFile}: {changeFile: (filepath: string) => void}) => 
         onError={onError}
         onSuccess={onSuccess}
         folder="topics-cover"
-        onUploadProgress={e => console.log(e.loaded, e.total)}
+        onUploadStart={() => setProgress(0)}
+        onUploadProgress={e => setProgress(Math.round(e.loaded / e.total * 100))}
       />
       <div onClick={e => {
         if (ikUploadRef.current) {
-          ikUploadRef.current?.click(); 
+          ikUploadRef.current?.click();
         }
       }} style={{cursor: 'pointer', width: '100%', padding: '10px',
         borderRadius: '8px', display: 'flex', alignItems: 'center',
         justifyContent: 'center', backgroundColor: '#ddd', color: '#333'
-      }}>
+      }} className="upload-container">
         <UploadCloudIcon />
         <p style={{margin: '0 10px'}}>
           {file ? 'upload other image' : 'Upload image'}
         </p>
+        <span style={{width: `${progress}%`}}></span>
       </div>
     </ImageKitProvider>
   )

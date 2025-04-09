@@ -19,3 +19,14 @@ export const getTopics = async (): Promise<TopicsActionProps> => {
     return { message: 'ERROR', payload: null };
   }
 };
+
+export const createTopics = async (topic: any): Promise<TopicsActionProps> => {
+  try {
+    const res = await api(PATH, 'POST', topic);
+    const data = await res.json();
+
+    return { message: 'SUCCESS', payload: data };
+  } catch (error) {
+    return { message: 'ERROR', payload: null };
+  }
+};
