@@ -52,3 +52,14 @@ export const updateTopic = async (id: string, topic: any): Promise<TopicsActionP
     return { message: 'ERROR', payload: null };
   }
 };
+
+export const deleteTopic = async (id: string): Promise<TopicsActionProps> => {
+  try {
+    const res = await api(`${PATH}/${id}`, 'DELETE');
+    const data = await res.json();
+
+    return { message: 'SUCCESS', payload: data };
+  } catch (error) {
+    return { message: 'ERROR', payload: null };
+  }
+};

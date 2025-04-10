@@ -28,7 +28,7 @@ const TopicsList = ({topics, isAdmin}: {topics: Topic[], isAdmin?: boolean}) => 
       {topics.map((topic, i) => (
         
         <Grid size={{ xs: 12, sm: 6, md: 3 }} key={topic.id} className="topic-card">
-          <TopicCard topic={topic} i={i} />
+          <TopicCard topic={topic} i={i} edit={isAdmin} />
         </Grid>
       ))}
       {isAdmin && (

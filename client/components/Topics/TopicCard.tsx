@@ -1,15 +1,21 @@
-import { Card, CardContent, CardMedia, IconButton, Menu, MenuItem, Typography } from "@mui/material"
+import { deleteTopic } from "@/actions/topics.actions"
+import Button from "@/ui/Button"
+import Toast from "@/ui/Toast"
+import { Card, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Typography } from "@mui/material"
 import { MoreVerticalIcon } from "lucide-react"
 import * as motion from 'motion/react-client'
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-type Option = 'Edit' | 'delete'
-const options: Option[] = ['Edit', 'delete']
+type Option = 'Edit' | 'Delete'
+const options: Option[] = ['Edit', 'Delete']
 const ITEM_HEIGHT = 48;
 
 const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [option, setOption] = useState<Option | null>(null)
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const router = useRouter()
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -19,14 +25,40 @@ const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    if (!option) return
-    console.log(option);
-    setOption(null)
-  }, [option])
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+    handleClose(); // Close the menu
+  };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDelete = async () => {
+    const { message } = await deleteTopic(topic.id)
+    if (message === 'SUCCESS') {
+      handleCloseDialog();
+      router.refresh()
+    } else {
+      // Show error in dialog
+      Toast('Failed to delete topic', 'success');
+      handleCloseDialog();
+    }
+  };
+
+  const handleOptionSelect = async (selectedOption: Option) => {
+    switch (selectedOption) {
+      case 'Edit':
+        router.push(`/topics/${topic.id}/edit`)
+        break
+      case 'Delete':
+        handleOpenDialog();
+        break
+    }
+  }
   
 
   return (
+    <>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -63,10 +95,7 @@ const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}
               }}
             >
               {options.map((option) => (
-                <MenuItem key={option} onClick={() => {
-                  setOption(option)
-                  handleClose()
-                }}>
+                <MenuItem key={option} onClick={() => handleOptionSelect(option)}>
                   {option}
                 </MenuItem>
               ))}
@@ -86,6 +115,30 @@ const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}
           </CardContent>
         </Card>
       </motion.div>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Delete Topic"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete "{topic.title}"? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} background="#f33" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
 

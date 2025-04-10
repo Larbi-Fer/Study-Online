@@ -38,4 +38,11 @@ export class TopicsService {
       select: { id: true }
     });
   }
+
+  async deleteTopic(id: string) {
+    return await this.prisma.topic.delete({
+      where: { id },
+      select: { id: true }
+    });
+  }
 }

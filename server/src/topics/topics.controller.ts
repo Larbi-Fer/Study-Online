@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { TopicsService } from './topics.service';
 import { Topic } from './dto/topics.dto';
 
@@ -24,5 +24,10 @@ export class TopicsController {
   @Put(':id')
   async updateTopic(@Param('id') id: string, @Body() topic: Topic) {
     return this.topicsService.updateTopic(id, topic);
+  }
+
+  @Delete(':id')
+  async deleteTopic(@Param('id') id: string) {
+    return this.topicsService.deleteTopic(id);
   }
 }
