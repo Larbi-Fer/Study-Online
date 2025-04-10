@@ -12,7 +12,6 @@ import React, { useState } from 'react'
 
 type ListProps = {
   list: LessonArg[],
-  next: boolean
   // key: React.Key
 }
 
@@ -21,9 +20,12 @@ const listVariant = {
   show: {opacity: 1, y: 0}
 }
 
-const List = ({ list, next }: ListProps) => {
+const List = ({ list }: ListProps) => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
+
+  // Calculate current level based on the first lesson in the list
+  const currentLevel = Math.ceil(list[0].number / 3)
 
   const setReview = (id: string) => () => {
     dispatch(setLesson({ lessonId: id }))
@@ -65,7 +67,7 @@ const List = ({ list, next }: ListProps) => {
                 :
                   <Link href={`/lessons/${lesson.id}`}>
                     {lesson.number == user?.lesson?.number ?
-                      <Button disabled={!next}>Start</Button>
+                      <Button disabled={currentLevel > (user?.level || 1)}>Start</Button>
                     :
                       <Button disabled>Start</Button>
                     }
@@ -81,7 +83,7 @@ const List = ({ list, next }: ListProps) => {
                   <Progress progress={lesson.quiz.quizResults[0].percent} small color={lesson.quiz.quizResults[0].percent > 50 ? undefined : '#f44'} />
                 </div>
               : <div className="level">
-                <div className="num">{intToString((i+1)/3)}</div>
+                <div className="num">{intToString(currentLevel)}</div>
                 <div className='level-name'>&nbsp;&nbsp;Quiz&nbsp;&nbsp;</div>
               </div>}
 

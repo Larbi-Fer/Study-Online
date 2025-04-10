@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CODES } from 'src/lib/codes';
+import { QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -47,6 +48,7 @@ export class UserService {
   }
 
   async setNewAnswers(userId: string, quizId: string, answers: quizStatistics[], percent: number) {
+    // First update/create the quiz results
     const res = await this.prisma.quizResults.upsert({
       create: {
         userId, quizId,
@@ -60,6 +62,19 @@ export class UserService {
       where: { userId_quizId: {userId, quizId} },
       omit: {userId: true}
     })
+
+    // If score is > 80%, increase user level
+    if (percent > QUIZ_PASS_PERCENTAGE) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          level: {
+            increment: 1
+          }
+        }
+      })
+    }
+
     return { message: "SUCCESS" }
   }
 

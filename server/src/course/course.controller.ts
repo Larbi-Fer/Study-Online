@@ -1,15 +1,16 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ChallengesService } from 'src/challenges/challenges.service';
 import { LessonsService } from 'src/lessons/lessons.service';
-import { QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
 import { CourseService } from './course.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Controller('course')
 export class CourseController {
   constructor(
     private challengesService: ChallengesService,
     private lessonsService: LessonsService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private prisma: PrismaService
   ) {}
 
   @Get(':userId')
@@ -18,18 +19,25 @@ export class CourseController {
     const points = await this.challengesService.getUserPoints(userId)
 
     const lastLesson = await this.lessonsService.getLastLesson(userId)
+    const lastLessonLevel = Math.ceil(lastLesson.lesson.number / 3)
     const currentLesson = await this.lessonsService.getCurrentLesson(userId)
+
+    const { level } = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        level: true,
+      }
+    })
 
     const lessonOrQuiz: any = {}
 
     if (!lastLesson) lessonOrQuiz.lesson = currentLesson.lesson
     else
       if (lastLesson.lesson.quiz) {
-        if (lastLesson.lesson.quiz.quizResults.length == 0 || lastLesson.lesson.quiz.quizResults[0].percent < QUIZ_PASS_PERCENTAGE) {
+        if (lastLessonLevel == level) {
           lessonOrQuiz.quiz = lastLesson.lesson.quiz
-          lessonOrQuiz.quiz.number = Math.floor(lastLesson.lesson.number / 3)
-        }
-        else lessonOrQuiz.lesson = currentLesson.lesson
+          lessonOrQuiz.quiz.number = lastLessonLevel
+        } else lessonOrQuiz.lesson = currentLesson.lesson
       } else lessonOrQuiz.lesson = currentLesson.lesson
 
     // console.log(lessonOrQuiz);

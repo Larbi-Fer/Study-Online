@@ -2,7 +2,6 @@ import * as motion from "motion/react-client"
 import List from "./List"
 
 import './style.css'
-import { QUIZ_PASS_PERCENTAGE } from "@/lib/constant"
 import LessonSidePeek from "./LessonSidePeek"
 
 type LessonsProps = {
@@ -10,12 +9,6 @@ type LessonsProps = {
 }
 
 const LessonsList = ({ list }: LessonsProps) => {
-  const quizzes = list.flat()
-    .filter(lesson => lesson.quiz?.id)
-    .map(lesson => !!lesson.quiz?.quizResults.length
-                  && lesson.quiz?.quizResults[0].percent > QUIZ_PASS_PERCENTAGE);
-  console.log(quizzes);
-
   return (
     <>
       <LessonSidePeek />
@@ -25,7 +18,7 @@ const LessonsList = ({ list }: LessonsProps) => {
         animate='show'
       >
         {list.map((lessons, i) => (
-          <List list={lessons} key={'lessons-group' + i} next={i < 1 ? true : quizzes[i-1]} />
+          <List list={lessons} key={'lessons-group' + i} />
         ))}
       </motion.div>
     </>

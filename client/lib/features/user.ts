@@ -11,6 +11,7 @@ interface UserProps {
     number: number;
   }
   lessonId?: string;
+  level: number;
 }
 
 export const counterSlice = createSlice({
