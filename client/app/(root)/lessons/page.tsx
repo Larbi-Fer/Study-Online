@@ -17,7 +17,7 @@ const Lessons = async () => {
   )
 
   const user = JSON.parse(data)
-  const jsonLessons = (await getLessons(user.lesson.topicId)).payload
+  const jsonLessons = (await getLessons(user.lesson.topicId, user.id)).payload
 
   const lessons: any[] = []
 

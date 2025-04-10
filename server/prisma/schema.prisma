@@ -164,6 +164,7 @@ model QuizResults {
   quizId     String
   statistics Json
   percent    Int
+  lastAttempt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
   quiz Quiz @relation(fields: [quizId], references: [id])

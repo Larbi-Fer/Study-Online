@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ChallengesService } from 'src/challenges/challenges.service';
 import { LessonsService } from 'src/lessons/lessons.service';
+import { QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
 import { CourseService } from './course.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -35,8 +36,27 @@ export class CourseController {
     else
       if (lastLesson.lesson.quiz) {
         if (lastLessonLevel == level) {
-          lessonOrQuiz.quiz = lastLesson.lesson.quiz
-          lessonOrQuiz.quiz.number = lastLessonLevel
+          // Check if quiz has been attempted and failed recently
+          const lastQuizResult = lastLesson.lesson.quiz.quizResults[0]
+          if (lastQuizResult && lastQuizResult.percent < QUIZ_PASS_PERCENTAGE) {
+            const hoursSinceLastAttempt = Math.floor(
+              (new Date().getTime() - new Date(lastQuizResult.lastAttempt).getTime()) / (1000 * 60 * 60)
+            )
+            
+            // If less than 24 hours have passed since last attempt
+            if (hoursSinceLastAttempt < 24) {
+              lessonOrQuiz.quiz = lastLesson.lesson.quiz
+              lessonOrQuiz.quiz.number = lastLessonLevel
+              lessonOrQuiz.quizLocked = true
+              lessonOrQuiz.unlockTime = new Date(lastQuizResult.lastAttempt.getTime() + 24 * 60 * 60 * 1000)
+            } else {
+              lessonOrQuiz.quiz = lastLesson.lesson.quiz
+              lessonOrQuiz.quiz.number = lastLessonLevel
+            }
+          } else {
+            lessonOrQuiz.quiz = lastLesson.lesson.quiz
+            lessonOrQuiz.quiz.number = lastLessonLevel
+          }
         } else lessonOrQuiz.lesson = currentLesson.lesson
       } else lessonOrQuiz.lesson = currentLesson.lesson
 

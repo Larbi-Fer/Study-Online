@@ -12,6 +12,19 @@ export class QuizService {
         id: true,
         questions: {
           omit: {quizId: true}
+        },
+        lesson: {
+          select: {
+            number: true
+          }
+        },
+        quizResults: {
+          orderBy: { lastAttempt: 'desc' },
+          take: 1,
+          select: {
+            percent: true,
+            lastAttempt: true
+          }
         }
       }
     })

@@ -1,4 +1,3 @@
-
 interface LessonArg {
   id: string;
   number: number;
@@ -21,8 +20,11 @@ interface LessonArg {
   quiz?: {
     id: string,
     quizResults: {
-      percent: number
+      percent: number;
     }[]
+    lastAttempt?: Date;
+    locked?: boolean;
+    unlockTime?: Date;
   }
 }
 
@@ -118,15 +120,13 @@ interface DashboardArgs {
   points: number;
   lessonsC: number;
   lessonsN: number;
-
   lessonOrQuiz: {
-    lesson?: LessonArg,
-    quiz?: QuizArgs & { number: number }
+    lesson?: LessonArg;
+    quiz?: QuizArgs & { number: number };
+    quizLocked?: boolean;
+    unlockTime?: Date;
   };
-
-  streaks: {
-    createdAt: Date;
-  }[]
+  streaks: { createdAt: Date }[];
 }
 
 type ProgrammeTypes = 'challenge' | 'lesson'

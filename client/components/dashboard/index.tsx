@@ -31,7 +31,12 @@ const Dashboard = ({ data }: { data: DashboardArgs }) => {
         </motion.div>
 
         <motion.div variants={animation}>
-          <WhatNaxt lesson={data.lessonOrQuiz.lesson} quiz={data.lessonOrQuiz.quiz} />
+          <WhatNaxt 
+            lesson={data.lessonOrQuiz.lesson} 
+            quiz={data.lessonOrQuiz.quiz} 
+            quizLocked={data.lessonOrQuiz.quizLocked}
+            unlockTime={data.lessonOrQuiz.unlockTime}
+          />
         </motion.div>
 
         <motion.div variants={animation}>

@@ -1,12 +1,36 @@
+'use client'
+
 import Button from "@/ui/Button"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 type WhatNextProps = {
   lesson?: LessonArg,
   quiz?: QuizArgs & { number: number }
+  quizLocked?: boolean
+  unlockTime?: Date
 }
 
-const WhatNaxt = ({ lesson, quiz }: WhatNextProps) => {
+const formatTimeLeft = (unlockTime: Date) => {
+  const now = new Date()
+  const diff = new Date(unlockTime).getTime() - now.getTime()
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  
+  if (hours > 0) {
+    return `Wait ${hours}h${minutes}m`
+  }
+  return `Wait ${minutes}m`
+}
+
+const WhatNaxt = ({ lesson, quiz, quizLocked, unlockTime }: WhatNextProps) => {
+  const [now, setNow] = useState(new Date())
+
+  // Update time every minute
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="dash-details">
@@ -29,9 +53,18 @@ const WhatNaxt = ({ lesson, quiz }: WhatNextProps) => {
           </div>
 
           <div className="action">
-            <Link href={`/quiz/${quiz.id}`}>
-              <Button>Start quiz</Button>
-            </Link>
+            {quizLocked ? (
+              <>
+                <Button disabled>{formatTimeLeft(unlockTime!)}</Button>
+                <Link href={`/quiz/${quiz.id}/statistics`}>
+                  <Button>Statistics</Button>
+                </Link>
+              </>
+            ) : (
+              <Link href={`/quiz/${quiz.id}`}>
+                <Button>Start quiz</Button>
+              </Link>
+            )}
           </div>
         </div>
       :

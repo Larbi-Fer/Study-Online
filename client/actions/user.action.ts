@@ -1,6 +1,8 @@
 'use server'
 
+import { QUIZ_PASS_PERCENTAGE } from "@/lib/constant"
 import api from "./api"
+import { cookies } from "next/headers"
 
 const path = '/user'
 
@@ -31,9 +33,19 @@ export const setQuizResult = async (userId: string, quizId: string, answers: {by
 
     if (data.message != 'SUCCESS') return {message: data.message}
     
+    if (percent > QUIZ_PASS_PERCENTAGE) {
+      // update user level on cookies
+      const cookieStore = await cookies()
+      const userData = cookieStore.get('user')?.value
+      if (!userData) return {message: 'ERROR'}
+      const user = JSON.parse(userData)
+      user.level = Number(user.level) + 1
+      cookieStore.set('user', JSON.stringify(user))
+    }
     
     return {message: 'SUCCESS'}
   } catch (error) {
+    console.error(error)
     return {message: 'ERROR'}
   }
 }

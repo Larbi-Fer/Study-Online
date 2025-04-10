@@ -8,7 +8,7 @@ import Progress from '@/ui/Progress'
 import { CheckCircleIcon } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 type ListProps = {
   list: LessonArg[],
@@ -20,9 +20,28 @@ const listVariant = {
   show: {opacity: 1, y: 0}
 }
 
+const formatTimeLeft = (unlockTime: Date) => {
+  const now = new Date()
+  const diff = new Date(unlockTime).getTime() - now.getTime()
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  
+  if (hours > 0) {
+    return `Wait ${hours}h${minutes}m`
+  }
+  return `Wait ${minutes}m`
+}
+
 const List = ({ list }: ListProps) => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
+  const [now, setNow] = useState(new Date())
+
+  // Update time every minute
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Calculate current level based on the first lesson in the list
   const currentLevel = Math.ceil(list[0].number / 3)
@@ -99,9 +118,24 @@ const List = ({ list }: ListProps) => {
 
               <div className="action">
                 {lesson.quiz.quizResults.length > 0 ? (
-                  <Link href={`/quiz/${lesson.quiz.id}/statistics`}>
-                    <Button>Statistics</Button>
-                  </Link>
+                  lesson.quiz.locked ? (
+                    <>
+                      <Button disabled>{formatTimeLeft(lesson.quiz.unlockTime!)}</Button>
+                      <Link href={`/quiz/${lesson.quiz.id}/statistics`}>
+                        <Button>Statistics</Button>
+                      </Link>
+                    </>
+                  ) : (
+                    lesson.quiz.quizResults[0].percent >= 80 ? (
+                      <Link href={`/quiz/${lesson.quiz.id}/statistics`}>
+                        <Button>Statistics</Button>
+                      </Link>
+                    ) : (
+                      <Link href={`/quiz/${lesson.quiz.id}`}>
+                        <Button>Retake</Button>
+                      </Link>
+                    )
+                  )
                 ) : (
                   <Link href={`/quiz/${lesson.quiz.id}`}>
                     <Button disabled={lesson.completed.length == 0}>Start quiz</Button>
