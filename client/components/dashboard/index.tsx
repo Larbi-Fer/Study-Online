@@ -15,7 +15,7 @@ const animation = {
   show: { y: 0, opacity: 1, transition: { staggerChildren: 0.15 } },
 }
 
-const Dashboard = ({ data }: { data: DashboardArgs }) => {
+const Dashboard = ({ data, level }: { data: DashboardArgs, level: number }) => {
   return (
     <div className="dashboard-container">
       <motion.div className="left" variants={animation} initial='hidden' animate='show'>
@@ -46,7 +46,7 @@ const Dashboard = ({ data }: { data: DashboardArgs }) => {
 
       <motion.div className="right" variants={animation} initial='hidden' animate='show'>
         <motion.div variants={animation}>
-          <LevelCard level={Math.floor(data.lessonsC / 3) + 1} />
+          <LevelCard level={level} />
         </motion.div>
 
         <motion.div variants={animation}>

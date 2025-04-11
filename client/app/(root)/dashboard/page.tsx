@@ -12,7 +12,7 @@ const Dashboard = async() => {
   )
 
   return (
-    <Dash data={data.payload} />
+    <Dash data={data.payload} level={user.level} />
   )
 }
 
