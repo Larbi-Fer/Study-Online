@@ -12,45 +12,46 @@ export class UserService {
       where: {id},
       include: {
         lesson: {select: {id: true, number: true, topicId: true}},
-        topicEnrollments: {select: {topic: {select: {id: true, title: true, type: true, color: true}}}}
+        topicEnrollments: {select: {
+          currentLesson: {select: { id: true, number: true }},
+          level: true,
+          topic: {select: {id: true, title: true, type: true, color: true}}
+        }}
       }
     })
   }
 
-  async nextLesson(id: string) {
-    const user = (await this.prisma.user.findUnique({
-      where: { id },
-      select: {lesson: {select: {number: true, topicId: true, id: true}}}
+  async nextLesson(id: string, topicId: string) {
+    const user = (await this.prisma.topicEnrollment.findUnique({
+      where: { userId_topicId: {userId: id, topicId} },
+      select: {currentLesson: {select: {number: true, topicId: true, id: true}}}
     }))
 
     if (!user) return { message: CODES.USER.USER_NOT_FOUND }
 
-    const { lesson: { number, topicId } } = user
+    const { currentLesson: { number } } = user
 
-    const {lesson: newLesson} = await this.prisma.user.update({
+    // create completed lesson
+    await this.prisma.completedLessons.create({
       data: {
-        lesson: { connect: {
-          topicId_number: {
-            number: number + 1,
-            topicId
-          }
-        } },
-        completedLessons: {
-          create: {
-            lesson: { connect: { id: user.lesson.id } },
-          }
-        }
-      },
-      where: {id},
-      select: { lesson: { select: {id: true, number: true, topicId: true} } }
+        lesson: {connect: {id: user.currentLesson.id}},
+        user: {connect: {id}}
+      }
+    })
+
+    // update current lesson on topicEnrollment to next lesson
+    const {currentLesson: newLesson} = await this.prisma.topicEnrollment.update({
+      where: { userId_topicId: {userId: id, topicId} },
+      data: {currentLesson: {connect: {topicId_number: {number: number + 1, topicId}}}},
+      select: {currentLesson: {select: {id: true, number: true}}}
     })
 
     return { message: 'SUCCESS', payload: newLesson }
   }
 
-  async setNewAnswers(userId: string, quizId: string, answers: quizStatistics[], percent: number) {
+  async setNewAnswers(userId: string, quizId: string, answers: quizStatistics[], percent: number, topicId: string) {
     // First update/create the quiz results
-    const res = await this.prisma.quizResults.upsert({
+    await this.prisma.quizResults.upsert({
       create: {
         userId, quizId,
         statistics: answers,
@@ -66,11 +67,16 @@ export class UserService {
 
     // If score is > 80%, increase user level
     if (percent > QUIZ_PASS_PERCENTAGE) {
+      // update user level on topicEnrollment and user
       await this.prisma.user.update({
-        where: { id: userId },
+        where: {id: userId},
         data: {
-          level: {
-            increment: 1
+          level: {increment: 1},
+          topicEnrollments: {
+            update: {
+              where: { userId_topicId: {userId, topicId} },
+              data: {level: {increment: 1}}
+            }
           }
         }
       })

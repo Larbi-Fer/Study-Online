@@ -19,9 +19,8 @@ export class CourseController {
     const challenges = await this.challengesService.getChallenges(topicId, 4, userId)
     const points = await this.challengesService.getUserPoints(userId, topicId)
 
-    const lastLesson = await this.lessonsService.getLastLesson(userId)
-    const lastLessonLevel = Math.ceil(lastLesson.lesson.number / 3)
-    const currentLesson = await this.lessonsService.getCurrentLesson(userId)
+    const lastLesson = await this.lessonsService.getLastLesson(userId, topicId)
+    const currentLesson = await this.lessonsService.getCurrentLesson(userId, topicId)
 
     const { level } = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -32,9 +31,10 @@ export class CourseController {
 
     const lessonOrQuiz: any = {}
 
-    if (!lastLesson) lessonOrQuiz.lesson = currentLesson.lesson
+    if (!lastLesson) lessonOrQuiz.lesson = currentLesson
     else
       if (lastLesson.lesson.quiz) {
+        const lastLessonLevel = Math.ceil(lastLesson.lesson.number / 3)
         if (lastLessonLevel == level) {
           // Check if quiz has been attempted and failed recently
           const lastQuizResult = lastLesson.lesson.quiz.quizResults[0]
@@ -57,8 +57,8 @@ export class CourseController {
             lessonOrQuiz.quiz = lastLesson.lesson.quiz
             lessonOrQuiz.quiz.number = lastLessonLevel
           }
-        } else lessonOrQuiz.lesson = currentLesson.lesson
-      } else lessonOrQuiz.lesson = currentLesson.lesson
+        } else lessonOrQuiz.lesson = currentLesson
+      } else lessonOrQuiz.lesson = currentLesson
 
     // console.log(lessonOrQuiz);
 
@@ -73,7 +73,8 @@ export class CourseController {
         topic: {
           select: {
             title: true,
-            type: true
+            type: true,
+            color: true,
           }
         }
       }

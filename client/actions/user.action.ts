@@ -11,9 +11,9 @@ type UserActionProps = {
   message?: string,
 }
 
-export const nextLesson = async (id: string): Promise<UserActionProps> => {
+export const nextLesson = async (id: string, topicId: string): Promise<UserActionProps> => {
   try {
-    const res = await api(`${path}/${id}/next-lesson`, 'PATCH')
+    const res = await api(`${path}/${id}/next-lesson?topicId=${topicId}`, 'PATCH')
     const data = await res.json()
 
     if (data.message != 'SUCCESS') return {message: data.message}
@@ -24,10 +24,10 @@ export const nextLesson = async (id: string): Promise<UserActionProps> => {
   }
 }
 
-export const setQuizResult = async (userId: string, quizId: string, answers: {byField: QuizStatistics[], general: QuizGeneralResults[]}, percent: number): Promise<UserActionProps> => {
+export const setQuizResult = async (userId: string, quizId: string, answers: {byField: QuizStatistics[], general: QuizGeneralResults[]}, percent: number, topicId: string): Promise<UserActionProps> => {
   try {
     const res = await api(`${path}/${userId}/quiz/answers`, 'PUT', {
-      quizId, answers, percent
+      quizId, answers, percent, topicId
     })
     const data = await res.json()
 

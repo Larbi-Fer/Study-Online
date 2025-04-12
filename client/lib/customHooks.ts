@@ -8,7 +8,7 @@ import { setCongrationMsg } from "./features/programmes"
 
 export const useAfterComplete = (currentLessonId: string) => {
   const dispatch = useDispatch()
-  const {id, lessonId} = useAppSelector(state => ({id: state.user?.id, lessonId: state.user?.lessonId}))
+  const {id, lessonId, topicId} = useAppSelector(state => ({id: state.user?.id, lessonId: state.user?.selectedTopic?.currentLesson.id, topicId: state.user?.selectedTopic?.id}))
   const router = useRouter()
 
   return (async() => {
@@ -18,15 +18,12 @@ export const useAfterComplete = (currentLessonId: string) => {
       return
     }
       // update lesson field in user
-      const newLesson = await nextLesson(id!)
+      const newLesson = await nextLesson(id!, topicId!)
       if (newLesson.message != 'SUCCESS') return Toast('There is something wrong', 'error')
     
       dispatch(nextLessonUser({
-        lesson: {
-          number: newLesson.payload.number,
-          topicId: newLesson.payload.topicId
-        },
-        lessonId: newLesson.payload.id
+        id: newLesson.payload.id,
+        number: newLesson.payload.number
       }))
       dispatch(setCongrationMsg(false))
     

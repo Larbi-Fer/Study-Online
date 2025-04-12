@@ -10,10 +10,10 @@ export const counterSlice = createSlice({
     clearUser: (state) => {
       state = null;
     },
-    nextLessonUser: (state, {payload}: {payload: { lesson?: {topicId: string, number: number}, lessonId?: string }}) => {
-      if(!state) return
-      state.lesson = payload.lesson
-      state.lessonId = payload.lessonId
+    nextLessonUser: (state, {payload}: {payload: { id: string, number: number}}) => {
+      if(!state || !state.selectedTopic) return
+
+      state.selectedTopic.currentLesson = payload
     }
   }
 })

@@ -8,9 +8,11 @@ import '../LessonPreviewStyle.css'
 import './style.css'
 import Countdown from "./Countdown"
 import { setQuizResult } from "@/actions/user.action"
-import { useAppSelector } from "@/lib/hooks"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import Toast from "@/ui/Toast"
 import { useRouter } from "next/navigation"
+import { QUIZ_PASS_PERCENTAGE } from "@/lib/constant"
+import { setUser } from "@/lib/features/user"
 
 const slideVariant = {
   hidden: {
@@ -42,7 +44,10 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const [rate, setRate] = useState(0)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const userId = useAppSelector(state => state.user?.id)
+  const user = useAppSelector(state => state.user)
+  const userId = user?.id
+  const topicId = user?.selectedTopic?.id
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (!qst.time) return
@@ -100,9 +105,15 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
       }
     }
 
-    const res = await setQuizResult(userId!, quiz.id, {byField: answers, general: statistics.general}, rate)
+    const res = await setQuizResult(userId!, quiz.id, {byField: answers, general: statistics.general}, rate, topicId!)
 
     if (res.message != 'SUCCESS') return Toast('Something went wrong', 'error')
+    
+    if (rate > QUIZ_PASS_PERCENTAGE) {
+      // update user level in user store
+      const newUserData: UserProps = { ...user!, level: Number(user?.level) + 1, selectedTopic: { ...user?.selectedTopic!, level: Number(user?.selectedTopic?.level) + 1 } }
+      dispatch(setUser(newUserData))
+    }
 
     router.push(`/quiz/${quiz.id}/statistics`)
   }

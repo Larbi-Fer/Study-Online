@@ -16,18 +16,20 @@ export async function middleware(request: NextRequest) {
 
     let selectedTopicId = request.cookies.get('selectedTopicId')?.value
     let selectedTopic = selectedTopicId 
-      ? enrollments.find(enrollment => enrollment.topic.id === selectedTopicId)?.topic
-      : enrollments[enrollments.length - 1].topic
+      ? enrollments.find(enrollment => enrollment.topic.id === selectedTopicId)
+      : enrollments[enrollments.length - 1]
 
     if (!selectedTopic) {
-      selectedTopic = enrollments[enrollments.length - 1].topic
+      selectedTopic = enrollments[enrollments.length - 1]
     }
 
-    response.cookies.set('selectedTopicId', selectedTopic.id)
+    response.cookies.set('selectedTopicId', selectedTopic.topic.id)
     
     user.selectedTopic = {
-      id: selectedTopic.id,
-      color: selectedTopic.color
+      id: selectedTopic.topic.id,
+      color: selectedTopic.topic.color,
+      currentLesson: selectedTopic.currentLesson,
+      level: selectedTopic.level
     }
 
     response.cookies.set('user', JSON.stringify(user))
@@ -36,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/lesson/:path*', '/challenges/:path*'],
+  matcher: ['/dashboard/:path*', '/lessons/:path*', '/challenges/:path*', '/quiz/:path*'],
 }

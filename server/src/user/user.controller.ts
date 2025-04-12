@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { NewAnswersDto, QuizIdDto } from './dto';
+import { NewAnswersDto, QuizIdDto, TopicIdDto } from './dto';
 
 @Controller('user/:id')
 export class UserController {
@@ -12,13 +12,13 @@ export class UserController {
   }
 
   @Patch('/next-lesson')
-  nextLesson(@Param('id') id: string) {
-    return this.userService.nextLesson(id)
+  nextLesson(@Param('id') id: string, @Query() {topicId}: TopicIdDto) {
+    return this.userService.nextLesson(id, topicId)
   }
 
   @Put('/quiz/answers')
-  setNewAnswers(@Param('id') userId: string, @Body() {quizId, answers, percent}: NewAnswersDto) {
-    return this.userService.setNewAnswers(userId, quizId, answers, percent)
+  setNewAnswers(@Param('id') userId: string, @Body() {quizId, answers, percent, topicId}: NewAnswersDto) {
+    return this.userService.setNewAnswers(userId, quizId, answers, percent, topicId)
   }
 
   @Get('/quiz/result')

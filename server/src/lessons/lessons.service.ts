@@ -15,7 +15,7 @@ export class LessonsService {
 
     const lessons = await this.prisma.lesson.findMany({
       where: {topicId},
-      omit: {data: true, topicId: true},
+      omit: {topicId: true},
       include: {
         _count: {select: {programmes: true}},
         completed: {where: {userId}, select: {createdAt: true}},
@@ -96,9 +96,9 @@ export class LessonsService {
     })
   }
 
-  async getLastLesson(userId: string) {
+  async getLastLesson(userId: string, topicId: string) {
     return await this.prisma.completedLessons.findFirst({
-      where: {userId},
+      where: {userId, lesson: {topicId}},
       orderBy: {createdAt: 'desc'},
       select: {
         lesson: {
@@ -124,7 +124,29 @@ export class LessonsService {
     })
   }
 
-  getCurrentLesson(userId: string) {
+  async getCurrentLesson(userId: string, topicId: string) {
+    const {currentLesson} = await this.prisma.topicEnrollment.findUnique({
+      where: {userId_topicId: {userId, topicId}},
+      select: {
+        currentLesson: {
+          include: {
+            _count: {select: {programmes: true}},
+            completed: {where: {userId}, select: {createdAt: true}},
+            topic: {select: {title: true}},
+            quiz: {
+              select: {
+                id: true,
+                quizResults: {
+                  where: {userId},
+                  select: {percent: true}
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+    return currentLesson
     return this.prisma.user.findUnique({
       where: {id: userId},
       select: {

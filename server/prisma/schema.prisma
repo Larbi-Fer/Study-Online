@@ -61,6 +61,7 @@ model Lesson {
   users      User[]
   completed CompletedLessons[]
   quiz       Quiz?
+  topicEnrollment TopicEnrollment[]
 
   @@unique([topicId, number])
   @@map("lessons")
@@ -101,11 +102,15 @@ enum TopicType {
 }
 
 model TopicEnrollment {
-  userId String
-  topicId String
+  userId          String
+  topicId         String
+  completed       Boolean @default(false)
+  currentLessonId String?
+  level           Int @default(1)
 
   user User @relation(fields: [userId], references: [id])
   topic Topic @relation(fields: [topicId], references: [id])
+  currentLesson Lesson? @relation(fields: [currentLessonId], references: [id])
 
   @@id([userId, topicId])
   @@map("topic_enrollments") 

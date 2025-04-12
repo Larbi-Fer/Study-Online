@@ -44,7 +44,14 @@ interface UserProps {
   selectedTopic?: {
     id: string;
     color: string;
+    currentLesson: CurrentLessonProps
+    level: number;
   };
+}
+
+interface CurrentLessonProps {
+  id: string;
+  number: number;
 }
 
 interface ProgrammeArgs {
@@ -156,6 +163,8 @@ interface TopicEnrollment {
     type: TopicType;
     color: string;
   };
+  currentLesson: CurrentLessonProps
+  level: number;
 }
 
 type ProgrammeTypes = 'challenge' | 'lesson'

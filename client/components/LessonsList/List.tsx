@@ -43,6 +43,7 @@ const List = ({ list }: ListProps) => {
     return () => clearInterval(interval)
   }, [])
 
+
   // Calculate current level based on the first lesson in the list
   const currentLevel = Math.ceil(list[0].number / 3)
 
@@ -55,7 +56,7 @@ const List = ({ list }: ListProps) => {
       {list.map((lesson, i) => (
         <React.Fragment key={i}>
           <motion.div key={'lesson-' + i} id={'lesson-' + i} className='element'>
-            {user?.lesson?.number! > lesson.number ?
+            {lesson.completed.length ?
               <div className='level complete-icon'>
                 <div><CheckCircleIcon size={30} color='#1f1' /></div>
               </div>
@@ -85,8 +86,8 @@ const List = ({ list }: ListProps) => {
                   <Button onClick={setReview(lesson.id)}>Review</Button>
                 :
                   <Link href={`/lessons/${lesson.id}`}>
-                    {lesson.number == user?.lesson?.number ?
-                      <Button disabled={currentLevel > (user?.level || 1)}>Start</Button>
+                    {lesson.number == user?.selectedTopic?.currentLesson.number ?
+                      <Button disabled={currentLevel > (user?.selectedTopic?.level || 1)}>Start</Button>
                     :
                       <Button disabled>Start</Button>
                     }

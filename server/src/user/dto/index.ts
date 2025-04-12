@@ -13,4 +13,14 @@ export class NewAnswersDto extends QuizIdDto {
 
   @IsNumber()
   percent: number
+
+  @IsNotEmpty()
+  @IsString()
+  topicId: string;
+}
+
+export class TopicIdDto {
+  @IsNotEmpty()
+  @IsString()
+  topicId: string;
 }

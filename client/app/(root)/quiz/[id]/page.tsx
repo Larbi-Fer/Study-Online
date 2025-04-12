@@ -3,11 +3,12 @@ import QuizSlides from "@/components/LessonsList/QuizSlides";
 import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { QUIZ_PASS_PERCENTAGE } from "@/lib/constant";
+import { getUserData } from "@/lib/serverUtils";
 
 const Quiz = async({params}: {params: Promise<{id: string}>}) => {
-  const userData = (await cookies()).get('user')?.value
-  if (!userData) return redirect('/login')
-  const user = JSON.parse(userData)
+  const user = await getUserData()
+
+  if (!user) return redirect('/login')
 
   const data = await getQuizById((await params).id)
 
@@ -17,7 +18,7 @@ const Quiz = async({params}: {params: Promise<{id: string}>}) => {
   const lessonLevel = Math.ceil(data.payload.lesson.number / 3)
   
   // Check if user's level matches the quiz level
-  if (lessonLevel !== user.level) return redirect('/lessons')
+  if (lessonLevel !== user.selectedTopic?.level) return redirect('/lessons')
 
   // Check if quiz is locked due to recent failure
   if (data.payload.quizResults?.length > 0) {
