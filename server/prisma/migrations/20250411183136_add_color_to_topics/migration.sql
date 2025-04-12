@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `topics` ADD COLUMN `color` VARCHAR(191) NOT NULL DEFAULT '#0059FF';

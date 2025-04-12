@@ -21,8 +21,9 @@ export default function StoreProvider({
       if (!storeRef.current) return
 
       const user = await getUserFromCookies()
-      
-      if (user) storeRef.current.dispatch(setUser(user))
+
+      if (!user) return
+      storeRef.current.dispatch(setUser(user))
     } )()
     
   }, [storeRef.current])

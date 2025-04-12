@@ -1,19 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface UserProps {
-  id?: string;
-  fullname?: string;
-  email: string;
-  createdAt?: string;
-  updatedAt?: string;
-  lesson?: {
-    topicId: string;
-    number: number;
-  }
-  lessonId?: string;
-  level: number;
-}
-
 export const counterSlice = createSlice({
   name: 'user',
   initialState: null as UserProps | null,

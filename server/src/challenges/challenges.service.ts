@@ -34,20 +34,21 @@ export class ChallengesService {
     })
   }
 
-  async getUserPoints(userId: string) {
+  async getUserPoints(userId: string, topicId?: string) {
     const challenges = await this.prisma.challenge.findMany({
-      where: { userId },
+      where: { userId, programme: { topicId: topicId || undefined } },
       include: {
         programme: {
           select: {
-            points: true
+            points: true,
+            topicId: true
           }
         }
       }
     })
 
     const totalPoints = challenges.reduce((sum, challenge) => {
-      return sum + (challenge.programme?.points || 0); // Add the points of each related Programme
+      return sum + (challenge.programme?.points || 0);
     }, 0);
 
     return totalPoints

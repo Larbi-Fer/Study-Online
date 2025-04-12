@@ -32,6 +32,7 @@ model User {
   role Role @default(student)
 
   otp Otp?
+  topicEnrollments TopicEnrollment[]
 }
 
 enum Role {
@@ -82,12 +83,32 @@ model Topic {
   title   String
   description String?
   image   Json? // {path: string, id: string}
+  type    TopicType @default(optional)
+  color   String @default("#0059FF")
+  dependencies Topic[] @relation("TopicDependencies")
+  dependents Topic[] @relation("TopicDependencies")
   lessons Lesson[]
   programmes Programme[]
-
   finalQuiz Quiz?
+  topicEnrollments TopicEnrollment[]
 
   @@map("topics")
+}
+
+enum TopicType {
+  required
+  optional
+}
+
+model TopicEnrollment {
+  userId String
+  topicId String
+
+  user User @relation(fields: [userId], references: [id])
+  topic Topic @relation(fields: [topicId], references: [id])
+
+  @@id([userId, topicId])
+  @@map("topic_enrollments") 
 }
 
 model Programme {

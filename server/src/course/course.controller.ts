@@ -17,7 +17,7 @@ export class CourseController {
   @Get(':userId')
   async dashboardData(@Param('userId') userId: string, @Query('topicId') topicId: string) {
     const challenges = await this.challengesService.getChallenges(topicId, 4, userId)
-    const points = await this.challengesService.getUserPoints(userId)
+    const points = await this.challengesService.getUserPoints(userId, topicId)
 
     const lastLesson = await this.lessonsService.getLastLesson(userId)
     const lastLessonLevel = Math.ceil(lastLesson.lesson.number / 3)
@@ -65,13 +65,27 @@ export class CourseController {
     const lessonsC = await this.lessonsService.getCompletedLessons(topicId, userId)
     const lessonsN = (await this.lessonsService.getLessons(topicId, userId)).payload.length
 
+    const topicEnrollments = await this.prisma.topicEnrollment.findMany({
+      where: {
+        userId
+      },
+      select: {
+        topic: {
+          select: {
+            title: true,
+            type: true
+          }
+        }
+      }
+    })
+    
     // calendar
     const streaks = await this.courseService.completedLessonsForMonth(userId, new Date().getMonth())
 
     return {
       message: 'SUCCESS',
       payload: {
-        challenges, points, lessonsC, lessonsN, lessonOrQuiz, streaks
+        challenges, points, lessonsC, lessonsN, lessonOrQuiz, streaks, topicEnrollments
       }
     }
   }

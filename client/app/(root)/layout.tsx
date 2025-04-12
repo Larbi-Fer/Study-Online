@@ -13,8 +13,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userId = (await cookies()).get('userId');
-  if (!userId) return redirect('/login');
+  // const userId = (await cookies()).get('userId');
+  // if (!userId) return redirect('/login');
   return (
     <>
       <Navbar type="user" />

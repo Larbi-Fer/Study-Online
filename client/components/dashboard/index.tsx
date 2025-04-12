@@ -4,6 +4,7 @@ import WhatNaxt from "./LeftSide/WhatNaxt"
 import RecomChallenges from "./LeftSide/RecomChallenges"
 import LevelCard from "./RightSide/LevelCard"
 import StreakCalendar from "./RightSide/StreakCalendar"
+import TopicEnrollments from "./LeftSide/TopicEnrollments"
 import * as motion from 'motion/react-client'
 
 import './style.css'
@@ -28,6 +29,10 @@ const Dashboard = ({ data, level }: { data: DashboardArgs, level: number }) => {
               <Card name="Points" description="You should collect 50 points from the Challenges section." progress={data.points} total={CHALLENGES_PONTS_REQUIRED}/>
             </Grid>
           </Grid>
+        </motion.div>
+
+        <motion.div variants={animation}>
+          <TopicEnrollments enrollments={data.topicEnrollments} />
         </motion.div>
 
         <motion.div variants={animation}>

@@ -1,8 +1,10 @@
-import { cookies } from "next/headers"
+import { cookies } from 'next/headers'
+import { getUserFromCookies } from '../actions/auth.actions'
 
-export const getUserData = async() => {
+
+export async function getUserData() {
   'use server'
   const user = (await cookies()).get('user')?.value
   if (!user) return
-  return JSON.parse(user)
+  return JSON.parse(user) as UserProps
 }

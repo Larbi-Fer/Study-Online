@@ -1,7 +1,7 @@
 'use server'
 
 import CODES, { AuthCodeProps } from "@/lib/CODES";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import api from "./api";
 
 type AuthActionProps = {
@@ -26,7 +26,6 @@ export const loginAction = async (email: string, password: string): Promise<Auth
         throw new Error(data.message + '|' + CODES.AUTH[data.message as AuthCodeProps])
       }
 
-      (await cookies()).set('user', JSON.stringify(data));
       (await cookies()).set('userId', data.id);
       return { type: 'LOGIN', payload: data }
     } catch (error: any) {
@@ -73,14 +72,26 @@ export const activateAction = async (code: string, email: string) : Promise<Auth
   }
 }
 
-export const getUserFromCookies = async () => {
-  const userId = (await cookies()).get('userId')?.value
-  
-  if(!userId) return null
+export async function setSelectedTopic(topicId: string) {
+  (await cookies()).set('selectedTopicId', topicId)
+}
 
-  const res = await api(`/user/${userId}/main-data`, 'GET')
-  
-  const user = await res.json()
+export async function setUserCookie(user: UserProps) {
+  (await cookies()).set('user', JSON.stringify(user))
+}
 
-  return user
+export async function setSelectedTopicAndUserCookie(topicId: string, user: UserProps) {
+  const cookiesStore = await cookies()
+  cookiesStore.set('selectedTopicId', topicId)
+  cookiesStore.set('user', JSON.stringify(user))
+}
+
+export async function getUserFromCookies() {
+  'use server'
+  
+  const user = (await cookies()).get('user')?.value
+  
+  if(!user) return
+
+  return JSON.parse(user) as UserProps
 }

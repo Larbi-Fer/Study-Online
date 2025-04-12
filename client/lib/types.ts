@@ -28,6 +28,24 @@ interface LessonArg {
   }
 }
 
+interface UserProps {
+  id?: string;
+  fullname?: string;
+  email: string;
+  createdAt?: string;
+  updatedAt?: string;
+  lesson?: {
+    topicId: string;
+    number: number;
+  }
+  lessonId?: string;
+  level: number;
+  topicEnrollments: TopicEnrollment[];
+  selectedTopic?: {
+    id: string;
+    color: string;
+  };
+}
 
 interface ProgrammeArgs {
   code: string;
@@ -127,6 +145,17 @@ interface DashboardArgs {
     unlockTime?: Date;
   };
   streaks: { createdAt: Date }[];
+  topicEnrollments: TopicEnrollment[];
+}
+
+type TopicType = 'required' | 'optional'
+interface TopicEnrollment {
+  topic: {
+    id: string;
+    title: string;
+    type: TopicType;
+    color: string;
+  };
 }
 
 type ProgrammeTypes = 'challenge' | 'lesson'

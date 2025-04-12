@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 const StreakCalendar = ({ streaks }: { streaks: string[] }) => {
   const [days, setDays] = useState<Date[]>([]);
   const today = useRef(new Date())
-  const [monthStreaks, setMonthStreaks] = useState(streaks);
+  const [monthStreaks, setMonthStreaks] = useState<string[]>(streaks);
   const currentMonth = useRef(new Date().getMonth())
   const userId = useAppSelector(state => state.user?.id)!;
   const [loading, setLoading] = useState(false)
@@ -36,7 +36,7 @@ const StreakCalendar = ({ streaks }: { streaks: string[] }) => {
   const isStreakDay = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
 
-    return monthStreaks.filter(s => s == formattedDate);
+    return monthStreaks.filter(s => s === formattedDate);
   };
 
   const handleNextOrPrevious = (type: 'next' | 'previous') => async() => {
@@ -49,7 +49,9 @@ const StreakCalendar = ({ streaks }: { streaks: string[] }) => {
     if (newStreaks.message != 'SUCCESS') return Toast('Something went wrong', 'error')
       
     setMonthDays(date)
-    setMonthStreaks(newStreaks.payload.map((s: {createdAt: Date}) => format(s.createdAt, 'yyyy-MM-dd')))
+    setMonthStreaks(newStreaks.payload.map((s: any) => 
+      typeof s.createdAt === 'string' ? s.createdAt : format(s.createdAt, 'yyyy-MM-dd')
+    ))
     setLoading(false)
   }
 

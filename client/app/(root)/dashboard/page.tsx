@@ -1,12 +1,14 @@
+import { getUserFromCookies } from '@/actions/auth.actions';
 import { getDashboardData } from '@/actions/dashboard.actions';
 import Dash from '@/components/dashboard'
+import { getUserData } from '@/lib/serverUtils';
 import { cookies } from 'next/headers'
 
 const Dashboard = async() => {
-  const user = JSON.parse((await cookies()).get('user')?.value!)
-  
-  const data = await getDashboardData(user.id, user.lesson.topicId)
-  
+  let user = (await getUserData())!
+
+  const data = await getDashboardData(user.id!, user.selectedTopic?.id!)
+
   if (data.message != 'SUCCESS') return (
     <h2>Something went wrong</h2>
   )

@@ -11,7 +11,8 @@ export class UserService {
     return await this.prisma.user.findUnique({
       where: {id},
       include: {
-        lesson: {select: {id: true, number: true, topicId: true}}
+        lesson: {select: {id: true, number: true, topicId: true}},
+        topicEnrollments: {select: {topic: {select: {id: true, title: true, type: true, color: true}}}}
       }
     })
   }

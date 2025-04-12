@@ -1,5 +1,6 @@
 import { getLessons } from "@/actions/lessons.actions";
 import LessonsList from "@/components/LessonsList";
+import { getUserData } from "@/lib/serverUtils";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -8,16 +9,10 @@ export const metadata: Metadata = {
 };
 
 const Lessons = async () => {
-  const data = (await cookies()).get('user')?.value
+  const user = (await getUserData())!
 
-  if(!data) return (
-    <div>
-      <h3>You have to login first</h3>
-    </div>
-  )
-
-  const user = JSON.parse(data)
-  const jsonLessons = (await getLessons(user.lesson.topicId, user.id)).payload
+  
+  const jsonLessons = (await getLessons(user.selectedTopic?.id!, user.id!)).payload
 
   const lessons: any[] = []
 
