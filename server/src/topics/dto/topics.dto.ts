@@ -10,4 +10,11 @@ export class Topic {
     path: string;
     id: string;
   };
+  @IsObject()
+  icon: {
+    path: string;
+    id: string;
+  };
+  @IsString()
+  color: string;
 };

@@ -83,7 +83,8 @@ model Topic {
   number  Int
   title   String
   description String?
-  image   Json? // {path: string, id: string}
+  icon   Json? @default("{\"path\": \"\", \"id\": \"\"}") // {path: string, id: string}
+  image   Json? @default("{\"path\": \"\", \"id\": \"\"}") // {path: string, id: string}
   type    TopicType @default(optional)
   color   String @default("#0059FF")
   isRequired Boolean @default(false)

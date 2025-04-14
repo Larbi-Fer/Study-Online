@@ -7,15 +7,12 @@ export class TopicsService {
   constructor(private prisma: PrismaService) {}
 
   async fetchTopics() {
-    return await this.prisma.topic.findMany({
-      select: { title: true, id: true, description: true, image: true }
-    });
+    return await this.prisma.topic.findMany();
   }
 
   async fetchTopic(id: string) {
     return await this.prisma.topic.findUnique({
-      where: { id },
-      select: { title: true, id: true, description: true, image: true }
+      where: { id }
     });
   }
 
