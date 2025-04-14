@@ -86,6 +86,8 @@ model Topic {
   image   Json? // {path: string, id: string}
   type    TopicType @default(optional)
   color   String @default("#0059FF")
+  isRequired Boolean @default(false)
+
   dependencies Topic[] @relation("TopicDependencies")
   dependents Topic[] @relation("TopicDependencies")
   lessons Lesson[]
@@ -153,7 +155,7 @@ model Challenge {
 
 model Quiz {
   id        String     @id @default(cuid())
-  type      QuizType
+  type      QuizType   @default(miniQuiz)
   questions Question[]
 
   topicId  String? @unique
@@ -181,7 +183,7 @@ model Question {
 }
 
 enum QuizType {
-  global
+  finalQuiz
   miniQuiz
 }
 

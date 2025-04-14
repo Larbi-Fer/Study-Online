@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { ChallengesService } from 'src/challenges/challenges.service';
 import { CODES } from 'src/lib/codes';
-import { QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
+import { CHALLENGES_PONTS_REQUIRED, QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private utils: UtilsService,
+    private challengesService: ChallengesService
+  ) {}
 
   async getUserMainData(id: string) {
     return await this.prisma.user.findUnique({
@@ -22,27 +28,38 @@ export class UserService {
   }
 
   async nextLesson(id: string, topicId: string) {
-    const user = (await this.prisma.topicEnrollment.findUnique({
+    const enrollment = (await this.prisma.topicEnrollment.findUnique({
       where: { userId_topicId: {userId: id, topicId} },
       select: {currentLesson: {select: {number: true, topicId: true, id: true}}}
     }))
 
-    if (!user) return { message: CODES.USER.USER_NOT_FOUND }
+    if (!enrollment) return { message: CODES.USER.NO_ENROLLMENT }
 
-    const { currentLesson: { number } } = user
-
+    const { currentLesson: { number } } = enrollment
+    
     // create completed lesson
-    await this.prisma.completedLessons.create({
-      data: {
-        lesson: {connect: {id: user.currentLesson.id}},
-        user: {connect: {id}}
-      }
+    await this.prisma.completedLessons.upsert({
+      create: {
+        lessonId: enrollment.currentLesson.id,
+        userId: id
+      },
+      update: {},
+      where: {userId_lessonId: {lessonId: enrollment.currentLesson.id, userId: id}}
     })
+
+    // check if it is the last lesson
+    const nextLesson = await this.prisma.lesson.findUnique({
+      where: {topicId_number: {number: number + 1, topicId}},
+      select: {id: true}
+    })
+
+    console.log(nextLesson);
+    if (!nextLesson) return { message: 'SUCCESS', payload: null }
 
     // update current lesson on topicEnrollment to next lesson
     const {currentLesson: newLesson} = await this.prisma.topicEnrollment.update({
       where: { userId_topicId: {userId: id, topicId} },
-      data: {currentLesson: {connect: {topicId_number: {number: number + 1, topicId}}}},
+      data: {currentLessonId: nextLesson.id},
       select: {currentLesson: {select: {id: true, number: true}}}
     })
 
@@ -51,7 +68,7 @@ export class UserService {
 
   async setNewAnswers(userId: string, quizId: string, answers: quizStatistics[], percent: number, topicId: string) {
     // First update/create the quiz results
-    await this.prisma.quizResults.upsert({
+    const {quiz} = await this.prisma.quizResults.upsert({
       create: {
         userId, quizId,
         statistics: answers,
@@ -62,7 +79,9 @@ export class UserService {
         percent: percent
       },
       where: { userId_quizId: {userId, quizId} },
-      omit: {userId: true}
+      select: {
+        quiz: {select: {type: true}}
+      },
     })
 
     // If score is > 80%, increase user level
@@ -75,14 +94,32 @@ export class UserService {
           topicEnrollments: {
             update: {
               where: { userId_topicId: {userId, topicId} },
-              data: {level: {increment: 1}}
-            }
+              data: {
+                level: {increment: 1},
+              }
+            },
           }
         }
       })
+
+      if (quiz.type !== 'finalQuiz') return
+
+      const {type: topicType, number: topicNumber} = await this.prisma.topic.findUnique({
+        where: {id: topicId},
+        select: {type: true, number: true}
+      })
+
+      const userPoints = await this.challengesService.getUserPoints(userId, topicId)
+
+      if (topicType == 'required' && userPoints >= CHALLENGES_PONTS_REQUIRED) {
+        // enroll user in next topic
+        const nextTopicId = await this.utils.enrollNextTopic(userId, topicId, topicNumber)
+
+        return nextTopicId
+      }
     }
 
-    return { message: "SUCCESS" }
+    return
   }
 
   async quizResult(userId: string, quizId: string) {

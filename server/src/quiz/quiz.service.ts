@@ -10,6 +10,7 @@ export class QuizService {
       where: { id },
       select: {
         id: true,
+        type: true,
         questions: {
           omit: {quizId: true}
         },
@@ -25,7 +26,7 @@ export class QuizService {
             percent: true,
             lastAttempt: true
           }
-        }
+        },
       }
     })
   }

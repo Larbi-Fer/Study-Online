@@ -23,6 +23,7 @@ export class LessonsService {
         quiz: {
           select: {
             id: true,
+            type: true,
             quizResults: {
               where: {userId},
               orderBy: { lastAttempt: 'desc' },

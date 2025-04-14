@@ -48,8 +48,9 @@ export class ChallengesController {
 
   @Post('/:id')
   async challengeDone(@Param('id') progId: string, @Query() {userId}: ChallengeDoneDto) {
-    await this.challengeServise.challangeDone(progId, userId)
+    const topicId = await this.challengeServise.challangeDone(progId, userId)
 
+    if (topicId) return {message: 'SUCCESS', payload: topicId}
     return {message: 'SUCCESS'}
   }
 }

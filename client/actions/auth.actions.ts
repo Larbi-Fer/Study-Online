@@ -72,10 +72,6 @@ export const activateAction = async (code: string, email: string) : Promise<Auth
   }
 }
 
-export async function setSelectedTopic(topicId: string) {
-  (await cookies()).set('selectedTopicId', topicId)
-}
-
 export async function setUserCookie(user: UserProps) {
   (await cookies()).set('user', JSON.stringify(user))
 }

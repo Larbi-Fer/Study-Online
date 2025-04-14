@@ -17,8 +17,12 @@ export class UserController {
   }
 
   @Put('/quiz/answers')
-  setNewAnswers(@Param('id') userId: string, @Body() {quizId, answers, percent, topicId}: NewAnswersDto) {
-    return this.userService.setNewAnswers(userId, quizId, answers, percent, topicId)
+  async setNewAnswers(@Param('id') userId: string, @Body() {quizId, answers, percent, topicId}: NewAnswersDto) {
+    const nextTopicId = await this.userService.setNewAnswers(userId, quizId, answers, percent, topicId)
+    return {
+      message: 'SUCCESS',
+      payload: nextTopicId
+    }
   }
 
   @Get('/quiz/result')

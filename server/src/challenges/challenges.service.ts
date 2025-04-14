@@ -2,10 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { createChallengeDto } from './dto';
+import { CHALLENGES_PONTS_REQUIRED, QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class ChallengesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private utils: UtilsService
+  ) {}
 
   async getChallenges(topicId: string, take?: number, userId?: string) {
     const query: {
@@ -62,13 +67,51 @@ export class ChallengesService {
   }
 
   async challangeDone(programmeId: string, userId: string) {
-    await this.prisma.challenge.upsert({
+    const { programme: {topicId, points, topic: {type: topicType, number}} } = await this.prisma.challenge.upsert({
       where: {
         userId_programmeId: { userId, programmeId }
       },
       update: {},
-      create: { userId, programmeId }
+      create: { userId, programmeId },
+      select: {
+        programme: {
+          select: {
+            topicId: true,
+            points: true,
+            topic: {
+              select: {type: true, number: true}
+            }
+          }
+        }
+      }
     });
+
+    if (topicType == 'optional') return
+
+    // calculate user points
+    const userPoints = await this.getUserPoints(userId, topicId)
+
+    if (userPoints >= CHALLENGES_PONTS_REQUIRED && (userPoints - points) < CHALLENGES_PONTS_REQUIRED) {
+      // Check if the user solved last quiz
+      const quizResult = await this.prisma.quizResults.findFirst({
+        where: {
+          userId,
+          quiz: {
+            topicId,
+            type: 'finalQuiz'
+          },
+          percent: {
+            gte: QUIZ_PASS_PERCENTAGE
+          }
+        },
+      });
+
+      console.log(quizResult);
+      if (!quizResult) return;
+      // enroll user in next topic
+      const nextTopicId = await this.utils.enrollNextTopic(userId, topicId, number)
+      return nextTopicId
+    }
   }
 
   // Admin
@@ -96,3 +139,4 @@ export class ChallengesService {
     })
   }
 }
+

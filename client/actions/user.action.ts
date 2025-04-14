@@ -32,6 +32,8 @@ export const setQuizResult = async (userId: string, quizId: string, answers: {by
     const data = await res.json()
 
     if (data.message != 'SUCCESS') return {message: data.message}
+
+    if (data.payload) setSelectedTopic(data.payload)
     
     if (percent > QUIZ_PASS_PERCENTAGE) {
       // update user level on cookies
@@ -72,4 +74,8 @@ export const getStreaks = async (userId: string, month: number): Promise<UserAct
     console.error(error);
     return {message: 'ERROR'}
   }
+}
+
+export async function setSelectedTopic(topicId: string) {
+  (await cookies()).set('selectedTopicId', topicId)
 }

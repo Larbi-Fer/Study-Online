@@ -91,6 +91,7 @@ type LessonSlidesProps = LessonSlideProps[][]
 
 interface QuizArgs {
   id: string;
+  type: 'finalQuiz' | 'miniQuiz'
   questions: {
     id: string;
     question: string;

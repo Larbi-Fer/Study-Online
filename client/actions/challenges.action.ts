@@ -1,6 +1,7 @@
 'use server'
 
 import api from "./api"
+import { setSelectedTopic } from "./user.action"
 
 const PATH = '/challenges'
 
@@ -35,6 +36,8 @@ export const challengeDone = async (userId: string, progId: string) : Promise<Ch
   try {
     const res = await api(`${PATH}/${progId}/?userId=${userId}`, 'POST')
     const data = await res.json()
+
+    if (data.payload) await setSelectedTopic(data.payload)
 
     return data
   } catch (error) {
