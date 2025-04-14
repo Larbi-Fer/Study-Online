@@ -17,7 +17,7 @@ const animation = {
 }
 
 const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: Topic}) => {
-  const [topic, setTopic] = useState<Topic>(defaultTopic || {id: '', title: 'title', description: 'description', image: {path: '', id: ''}})
+  const [topic, setTopic] = useState<Topic>(defaultTopic || {id: '', title: 'title', description: 'description', icon: {path: '', id: ''}, image: {path: '', id: ''}, color: '#0059FF'})
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -25,9 +25,9 @@ const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: To
     setTopic(prevTopic => ({...prevTopic, [e.target.name]: e.target.value}))
   }
 
-  const changeFile = (path: string, id: string) => {
-    if (topic.image.path) removeFile(topic.image.id)
-    setTopic(prevTopic => ({...prevTopic, image: {path, id}}))
+  const changeFile = (field: 'image' | 'icon') => (path: string, id: string) => {
+    if (topic[field].path) removeFile(topic.image.id)
+    setTopic(prevTopic => ({...prevTopic, [field]: {path, id}}))
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -59,10 +59,14 @@ const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: To
             <motion.h2 variants={animation} style={{padding: '10px'}}>
               Create topic
             </motion.h2>
+            <motion.div variants={animation} style={{padding: '10px'}}>
+              <ImageUpload changeFile={changeFile('icon')} lable="Upload icon" />
+            </motion.div>
             <Field label="Title" value={topic.title} name="title" handleChange={handleChange} />
             <Field label="Description" value={topic.description} name="description" handleChange={handleChange} multiline />
+            <Field label="Color" value={topic.color} name="color" handleChange={handleChange} type="color" />
             <motion.div variants={animation} style={{padding: '10px'}}>
-              <ImageUpload changeFile={changeFile} />
+              <ImageUpload changeFile={changeFile('image')} />
             </motion.div>
 
             <motion.div variants={animation} style={{padding: '10px'}}>
@@ -84,10 +88,10 @@ const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: To
   )
 }
 
-const Field = ({label, name, value, handleChange, multiline, ...props}: {label: string, name: string, handleChange: any, multiline?: boolean, value: string}) => {
+const Field = ({label, name, value, handleChange, multiline, type, ...props}: {label: string, name: string, handleChange: any, multiline?: boolean, value: string, type?: string}) => {
   return (
     <motion.div variants={animation}>
-      <Input defaultValue={value} label={label} name={name} onBlur={handleChange} multiline={multiline} onFocus={(e: any)=> e.target.select()} required />
+      <Input defaultValue={value} label={label} name={name} onBlur={handleChange} multiline={multiline} onFocus={(e: any)=> e.target.select()} type={type || 'text'} required />
     </motion.div>
   )
 }

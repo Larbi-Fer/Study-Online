@@ -15,7 +15,7 @@ const authenticator = async () => {
   }
 }
 
-const ImageUpload = ({changeFile}: {changeFile: (path: string, id: string) => void}) => {
+const ImageUpload = ({changeFile, lable='Upload image'}: {changeFile: (path: string, id: string) => void, lable?: string}) => {
   const ikUploadRef = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<{filePath: string, fileId: string} | null>(null)
   const [progress, setProgress] = useState<number>(0)
@@ -55,7 +55,7 @@ const ImageUpload = ({changeFile}: {changeFile: (path: string, id: string) => vo
       }} className="upload-container">
         <UploadCloudIcon />
         <p style={{margin: '0 10px'}}>
-          {file ? 'upload other image' : 'Upload image'}
+          {file ? 'upload other image' : lable}
         </p>
         <span style={{width: `${progress}%`}}></span>
       </div>

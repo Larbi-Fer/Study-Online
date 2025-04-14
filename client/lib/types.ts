@@ -32,6 +32,7 @@ interface UserProps {
   id?: string;
   fullname?: string;
   email: string;
+  role: string;
   createdAt?: string;
   updatedAt?: string;
   lesson?: {
@@ -175,8 +176,13 @@ interface Topic {
   id: string;
   title: string;
   description: string;
+  icon: {
+    path: string;
+    id: string;
+  };
   image: {
     path: string;
     id: string;
   };
+  color: string;
 };
