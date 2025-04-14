@@ -164,6 +164,10 @@ interface TopicEnrollment {
     title: string;
     type: TopicType;
     color: string;
+    icon: {
+      path: string;
+      id: string;
+    };
   };
   currentLesson: CurrentLessonProps
   level: number;

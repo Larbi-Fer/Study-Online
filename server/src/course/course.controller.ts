@@ -78,6 +78,7 @@ export class CourseController {
             type: true,
             color: true,
             id: true,
+            icon: true
           }
         },
         currentLesson: { select: {id: true, number: true} },

@@ -30,23 +30,19 @@ const Dashboard = ({ data: dashData, level }: { data: DashboardArgs, level: numb
   const [loading, setLoading] = useState(false)
   const isFirstRender = useRef(true)
 
-  const { selectedTopic, user } = useAppSelector(state => ({selectedTopic: state.user?.selectedTopic!, user: state.user!}))
+  const user = useAppSelector(state => state.user)
+  const selectedTopic = user?.selectedTopic
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+  const loadTopicData = async(topicId: string) => {
+    if (!selectedTopic) return
+    setLoading(true)
+    try {
+      const data = await getDashboardData(user?.id!, topicId)
+      setData(data.payload)
+    } finally {
+      setLoading(false)
     }
-    (async () => {
-      setLoading(true)
-      try {
-        const data = await getDashboardData(user?.id!, selectedTopic?.id)
-        setData(data.payload)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [selectedTopic])
+  }
 
   return (
     <LoadingContext.Provider value={loading}>
@@ -64,7 +60,7 @@ const Dashboard = ({ data: dashData, level }: { data: DashboardArgs, level: numb
           </motion.div>
 
           <motion.div variants={animation}>
-            <TopicEnrollments enrollments={data.topicEnrollments} />
+            <TopicEnrollments loadTopicData={loadTopicData} enrollments={data.topicEnrollments} />
           </motion.div>
 
           <motion.div variants={animation}>
