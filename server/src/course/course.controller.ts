@@ -16,6 +16,8 @@ export class CourseController {
 
   @Get(':userId')
   async dashboardData(@Param('userId') userId: string, @Query('topicId') topicId: string) {
+    // wait for 2 seconds
+    await new Promise(resolve => setTimeout(resolve, 2000))
     const challenges = await this.challengesService.getChallenges(topicId, 4, userId)
     const points = await this.challengesService.getUserPoints(userId, topicId)
 
@@ -75,8 +77,12 @@ export class CourseController {
             title: true,
             type: true,
             color: true,
+            id: true,
           }
-        }
+        },
+        currentLesson: { select: {id: true, number: true} },
+        level: true,
+        completed: true
       }
     })
     

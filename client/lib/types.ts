@@ -166,6 +166,7 @@ interface TopicEnrollment {
   };
   currentLesson: CurrentLessonProps
   level: number;
+  completed: true;
 }
 
 type ProgrammeTypes = 'challenge' | 'lesson'

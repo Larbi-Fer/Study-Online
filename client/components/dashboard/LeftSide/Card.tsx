@@ -1,5 +1,7 @@
 import Progress from "@/ui/Progress"
-import { Grid2 as Grid, Typography } from "@mui/material"
+import { Grid2 as Grid, Skeleton, Typography } from "@mui/material"
+import { useContext } from 'react'
+import { LoadingContext } from '../index'
 
 type CardProps = {
   name: string,
@@ -9,15 +11,26 @@ type CardProps = {
 }
 
 const Card = ({ name, description, progress, total }: CardProps) => {
+  const isLoading = useContext(LoadingContext)
+  
   return (
     <Grid container className='card'>
       <Grid size={8} className='card-details'>
-        <Typography variant="h6" fontWeight="bold">{name}</Typography>
-        <Typography variant="body2" color="textSecondary">{description}</Typography>
+        {isLoading ? (
+          <>
+            <Skeleton variant="text" sx={{ fontSize: '1rem', maxWidth: '130px' }} />
+            <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+          </>
+        ) : (
+          <>
+            <Typography variant="h6" fontWeight="bold">{name}</Typography>
+            <Typography variant="body2" color="textSecondary">{description}</Typography>
+          </>
+        )}
       </Grid>
 
       <Grid size={4}>
-        <Progress progress={progress} total={total} />
+        <Progress progress={isLoading ? 0 : progress} total={total} />
       </Grid>
     </Grid>
   )

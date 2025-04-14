@@ -18,7 +18,7 @@ const Progress = ({ progress, total, small, color }: ProgressProps) => {
   useEffect(() => {
       const controls = animate(count, progress, { duration: 1 })
       return () => controls.stop()
-  }, [])
+  }, [progress])
 
     const radius = 55;
     const strokeWidth = 7;

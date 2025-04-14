@@ -2,7 +2,9 @@
 
 import Button from "@/ui/Button"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { LoadingContext } from ".."
+import Loading from "@/ui/Loading"
 
 type WhatNextProps = {
   lesson?: LessonArg,
@@ -25,12 +27,20 @@ const formatTimeLeft = (unlockTime: Date) => {
 
 const WhatNaxt = ({ lesson, quiz, quizLocked, unlockTime }: WhatNextProps) => {
   const [now, setNow] = useState(new Date())
+  const isLoading = useContext(LoadingContext)
 
   // Update time every minute
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 60000)
     return () => clearInterval(interval)
   }, [])
+
+  if (isLoading) return <div className="dash-details">
+    <h2>What next</h2>
+    <div style={{height: '110px', position: 'relative'}}>
+      <Loading />
+    </div>
+  </div>
 
   return (
     <div className="dash-details">
