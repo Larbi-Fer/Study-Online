@@ -19,6 +19,8 @@ const TopicEnrollments: React.FC<TopicEnrollmentsProps> = ({ enrollments, loadTo
 
   // if (optionalEnrollments.length === 0) return null;
 
+  if (enrollments.length == 1) return
+
   const selectNewTopic = (enroll: TopicEnrollment) => async() => {
     if (enroll.topic.id == user.selectedTopic?.id) return
     await setSelectedTopic(enroll.topic.id);
@@ -35,11 +37,12 @@ const TopicEnrollments: React.FC<TopicEnrollmentsProps> = ({ enrollments, loadTo
       }
     }))
     loadTopicData(enroll.topic.id)
+    document.body.style.setProperty('--topic-pramiry-color', enroll.topic.color);
   }
 
   return (
     <div className="dash-details">
-      <h2>Your Enrolled Topics</h2>
+      <h2 style={{marginBottom: '10px'}}>Your Enrolled Topics</h2>
         <Grid sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           {enrollments.map((enrollment, i) => (
             <Card 

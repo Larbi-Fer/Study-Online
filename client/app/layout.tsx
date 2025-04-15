@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
+import { getUserData } from "@/lib/serverUtils";
 
 export const metadata: Metadata = {
   title: {
@@ -10,14 +11,16 @@ export const metadata: Metadata = {
   description: "Online study and testing environment",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUserData()
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      {/* @ts-ignore */}
+      <body style={{ '--topic-pramiry-color': user?.selectedTopic?.color || '#0059FF' }}>
         <StoreProvider>
           {children}
         </StoreProvider>

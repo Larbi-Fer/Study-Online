@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
   --bg: #f4f7fc; /* Softer background color */
-  --primary-color: #0059FF; /* Green accent */
+  --primary-color: var(--topic-pramiry-color); /* Dynamic accent */
   --text-color: #333; /* Dark text for readability */
   --border-color: #ddd; /* Soft border */
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for cards */

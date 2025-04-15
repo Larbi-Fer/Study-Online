@@ -105,11 +105,12 @@
 }
 
 .button.primary {
-    background-color: #0059FF;   
+    background-color: var(--topic-pramiry-color);   
 }
 
 .button.primary:hover {
-    background-color: #0554E7;
+    background-color: var(--topic-pramiry-color);
+    opacity: 0.9;
 }
 
 .button:disabled, .button:disabled:hover {

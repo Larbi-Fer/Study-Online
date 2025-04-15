@@ -36,5 +36,5 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #4A90E2;
+  color: var(--topic-pramiry-color);
 }
