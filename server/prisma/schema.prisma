@@ -28,7 +28,8 @@ model User {
   lessonId String?
   challenge Challenge[]
   quizResults QuizResults[]
-
+  codeReviews CodeReview[] @relation("CodeReviewer")
+  codeReviewsCodeReviewer CodeReview[] @relation("CodeReviewerCodeReviewer")
   role Role @default(student)
 
   otp Otp?
@@ -38,6 +39,7 @@ model User {
 enum Role {
   admin
   student
+  code_reviewer
 }
 
 model Otp {
@@ -137,6 +139,7 @@ model Programme {
   lesson Lesson? @relation(fields: [lessonId], references: [id])
   topic Topic? @relation(fields: [topicId], references: [id])
   challenge Challenge[]
+  reviews CodeReview[]
 
   @@map("programmes")
 }
@@ -200,4 +203,24 @@ model QuizResults {
 
   @@id([userId, quizId])
   @@map("quiz-results")
+}
+
+// Teachers
+
+model CodeReview {
+  id String @id @default(cuid())
+  userId String
+  reviewerId String?
+  subject String
+  explication String
+  code String @db.LongText
+  programmeId String?
+  createdAt DateTime @default(now())
+  comments Json @default("[]") // [{ sender: 'student' | 'reviewer', message: string }]
+
+  user User @relation(name: "CodeReviewer", fields: [userId], references: [id])
+  reviewer User? @relation(name: "CodeReviewerCodeReviewer", fields: [reviewerId], references: [id])
+  challenge Programme? @relation(fields: [programmeId], references: [id])
+
+  @@map("code_reviews")
 }

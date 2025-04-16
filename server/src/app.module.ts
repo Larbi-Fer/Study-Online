@@ -10,9 +10,10 @@ import { ChallengesModule } from './challenges/challenges.module';
 import { CourseModule } from './course/course.module';
 import { TopicsModule } from './topics/topics.module';
 import { UtilsModule } from './utils/utils.module';
+import { CodeReviewModule } from './code-review/code-review.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, LessonsModule, UserModule, QuizModule, ChallengesModule, CourseModule, TopicsModule, UtilsModule],
+  imports: [PrismaModule, AuthModule, LessonsModule, UserModule, QuizModule, ChallengesModule, CourseModule, TopicsModule, UtilsModule, CodeReviewModule],
   controllers: [AppController],
   providers: [AppService],
 })

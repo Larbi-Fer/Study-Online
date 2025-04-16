@@ -32,7 +32,7 @@ interface UserProps {
   id?: string;
   fullname?: string;
   email: string;
-  role: string;
+  role: UserRole;
   createdAt?: string;
   updatedAt?: string;
   lesson?: {
@@ -49,6 +49,8 @@ interface UserProps {
     level: number;
   };
 }
+
+type UserRole = 'student' | 'admin' | 'code_reviewer'
 
 interface CurrentLessonProps {
   id: string;
@@ -190,3 +192,12 @@ interface Topic {
   };
   color: string;
 };
+
+interface CodeReviewArgs {
+  id: string
+  subject: string
+  explication: string
+  reviewerId: string | null
+  comments: Array<{ sender: 'student' | 'reviewer', message: string }>
+  createdAt: Date
+}
