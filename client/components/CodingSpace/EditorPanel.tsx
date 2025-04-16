@@ -7,9 +7,9 @@ import Button from '@/ui/Button'
 import Image from 'next/image'
 import { RotateCcwIcon } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
-import { setOutput } from '@/lib/features/programmes'
+import { setOutput, setSubmit, setCode } from '@/lib/features/programmes'
 import Loading from '@/ui/Loading'
-import { Autocomplete, createTheme, TextField, ThemeProvider } from '@mui/material'
+import { Autocomplete, createTheme, TextField, ThemeProvider, Tooltip } from '@mui/material'
 import { getTopics } from '@/actions/topics.actions'
 import Toast from '@/ui/Toast'
 import { createChallenge, updateChallenge } from '@/actions/challenges.action'
@@ -23,7 +23,7 @@ const darkTheme = createTheme({
 
 const EditorPanel = ({ code }: {code: string}) => {
   const editorRef = useRef<MonacoDiffEditor>(null);
-  const isEditing = useAppSelector(state => state.programmes.edit)
+  const { isEditing, userRole } = useAppSelector(state => ({isEditing: state.programmes.edit, userRole: state.user?.role}))
 
   const handleEditorDidMount = (editor: MonacoDiffEditor) => {
     editorRef.current = editor;
@@ -34,7 +34,7 @@ const EditorPanel = ({ code }: {code: string}) => {
   }
 
   return (
-    <Workspace header={<Header reset={reset} editor={editorRef} isEditing={isEditing} />}>
+    <Workspace header={<Header reset={reset} editor={editorRef} isEditing={isEditing} userRole={userRole} />}>
       <div style={{overflow: 'hidden'}}>
         <Editor
           defaultLanguage='python'
@@ -47,6 +47,7 @@ const EditorPanel = ({ code }: {code: string}) => {
             minimap: { enabled: false },
             cursorBlinking: "smooth",
             smoothScrolling: true,
+            readOnly: userRole == 'code_reviewer',
             padding: { top: 10 }
           }}
         />
@@ -55,7 +56,7 @@ const EditorPanel = ({ code }: {code: string}) => {
   )
 }
 
-const Header = ({reset, editor, isEditing}: {reset: () => void, editor: React.RefObject<MonacoDiffEditor>, isEditing?: boolean}) => {
+const Header = ({reset, editor, isEditing, userRole}: {reset: () => void, editor: React.RefObject<MonacoDiffEditor>, isEditing?: boolean, userRole?: string}) => {
   const dispatch = useAppDispatch()
   const program = useAppSelector(state => state.programmes.codes[state.programmes.i])
   const [loading, setLoading] = useState(false)
@@ -73,6 +74,10 @@ const Header = ({reset, editor, isEditing}: {reset: () => void, editor: React.Re
 
   const executeProgramme = async() => {
     setLoading(true)
+    const code = editor.current.getValue()
+    console.log(code);
+
+    dispatch(setCode(code))
 
     const data = await fetch('https://emkc.org/api/v2/piston/execute', {
         method: 'POST',
@@ -126,6 +131,15 @@ const Header = ({reset, editor, isEditing}: {reset: () => void, editor: React.Re
     }
   }
 
+  const handleReview = () => {
+    // Put code value in store
+    const code = editor.current.getValue()
+    console.log(code);
+
+    dispatch(setCode(code))
+    dispatch(setSubmit(true))
+  }
+
   return (
     <div className='code-header'>
       <div className="left">
@@ -163,6 +177,13 @@ const Header = ({reset, editor, isEditing}: {reset: () => void, editor: React.Re
         <div className="action reset">
           <Button transparent onClick={reset}> <RotateCcwIcon size={20} /> </Button>
         </div>
+        {userRole == 'student' &&
+          <div className="action">
+            <Tooltip title='Submit this code for review'>
+              <Button onClick={handleReview}>Review</Button>
+            </Tooltip>
+          </div>
+        }
         <div className="action run">
           {isEditing ?
             <Button onClick={saveProgramme} loading={loading}>Save</Button>

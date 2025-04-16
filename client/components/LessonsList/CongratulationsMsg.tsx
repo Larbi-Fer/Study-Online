@@ -1,14 +1,17 @@
 'use client'
 
-import { useAppSelector } from '@/lib/hooks'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import Button from '@/ui/Button'
 import { CheckCircle } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as motion from 'motion/react-client'
 import Image from 'next/image'
 import './CongrationsMsg.css'
+import { Tooltip } from '@mui/material'
+import { setSubmit } from '@/lib/features/programmes'
 
 const CongratulationsMsg = ({ handleNext }: { handleNext: () => void }) => {
+  const dispatch = useAppDispatch()
   const {i, progsCount, isShowMsg} = useAppSelector(
     state => ({
       i: state.programmes.i,
@@ -45,8 +48,11 @@ const CongratulationsMsg = ({ handleNext }: { handleNext: () => void }) => {
                 <h4>You've completed the lesson</h4>
               </div>
             }
-            <div className="actions">
+            <div className="actions" style={{gap: '10px'}}>
               <Button onClick={handleNext}>Next</Button>
+              <Tooltip title='Submit this code for review'>
+                <Button onClick={() => dispatch(setSubmit(true))}>Review</Button>
+              </Tooltip>
             </div>
           </motion.div>
         </motion.div>

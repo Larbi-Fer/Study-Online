@@ -14,6 +14,7 @@ import { nextProgramme, setEditingProgramme } from '@/lib/features/programmes'
 import CongratulationsMsg from '../LessonsList/CongratulationsMsg'
 import { useEffect } from 'react'
 import DescriptionPanel from './DescriptionPanel'
+import SubmitCode from './SubmitCode'
 
 const CodingSapce = ({ afterComplete, edit }: {afterComplete?: () => void, edit?: boolean}) => {
   const {programme, i, progsCount} = useAppSelector(
@@ -58,6 +59,7 @@ const CodingSapce = ({ afterComplete, edit }: {afterComplete?: () => void, edit?
     </div>
 
       <CongratulationsMsg handleNext={handleNext} />
+      <SubmitCode />
     </>
   )
 }
