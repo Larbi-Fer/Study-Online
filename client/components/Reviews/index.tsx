@@ -1,11 +1,12 @@
 'use client'
 
-import { assignReviewer } from "@/actions/reviews.actions"
+import { useRouter } from "next/navigation"
 import Button from "@/ui/Button"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import './style.css'
 import { formatDistanceToNowStrict } from "date-fns"
+
+import { assignReviewer } from "@/actions/reviews.actions"
+import './style.css'
 
 const Reviews = ({reviews, userId, role}: {reviews: CodeReviewArgs[], role: UserRole, userId: string}) => {
 
@@ -43,7 +44,7 @@ const Reviews = ({reviews, userId, role}: {reviews: CodeReviewArgs[], role: User
         <h1 className="text-2xl font-bold">Code Reviews</h1>
         {!isCodeReviewer && (
           <Link href="/reviews/add">
-            <Button>Submit New Code Review</Button>
+            <Button>Submit a new code for review</Button>
           </Link>
         )}
       </div>
