@@ -17,7 +17,7 @@
 }
 
 .review-container .review-form {
-  max-width: 65rem;
+  /* max-width: 65rem; */
   margin: 0 auto;
   display: flex;
   gap: 1.5rem;
