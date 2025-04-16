@@ -16,6 +16,7 @@ const darkTheme = createTheme({
 
 const SubmitCode = () => {
   const [flds, setFlds] = useState({subject: '', explication: ''})
+  const [loading, setLoading] = useState(false)
   const { submit, code, userId } = useAppSelector(state =>
       ({
         submit: state.programmes.submit,
@@ -35,19 +36,23 @@ const SubmitCode = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setLoading(true)
     if (!flds.subject || !flds.explication) {
       Toast('Please fill all fields', 'error')
+      setLoading(false)
       return
     }
 
     const res = await createReview({...flds, code, programmeId: id as string}, userId)
     if (res.message !== 'SUCCESS') {
       Toast('Error submitting code', 'error')
+      setLoading(false)
       return
     }
 
     dispatch(setSubmit(false))
     Toast('Code submitted successfully. You will be notified when a reviewer is assigned to you', 'success')
+    setLoading(false)
   }
 
   return (
@@ -79,7 +84,7 @@ const SubmitCode = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} type="button">Cancel</Button>
-          <Button type="submit">
+          <Button type="submit" loading={loading}>
             Submit
           </Button>
         </DialogActions>
