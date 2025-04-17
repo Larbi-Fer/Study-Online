@@ -12,6 +12,11 @@ export async function middleware(request: NextRequest) {
     
     if (!user) return
     
+    if (user.role === 'code_reviewer') {
+      response.cookies.set('user', JSON.stringify(user))
+      return response
+    }
+
     const enrollments = user.topicEnrollments
 
     let selectedTopicId = request.cookies.get('selectedTopicId')?.value
@@ -38,5 +43,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/lessons/:path*', '/challenges/:path*', '/quiz/:path*'],
+  matcher: ['/dashboard/:path*', '/lessons/:path*', '/challenges/:path*', '/quiz/:path*', '/reviews/:path*'],
 }

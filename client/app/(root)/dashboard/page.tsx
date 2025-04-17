@@ -2,10 +2,17 @@ import { getUserFromCookies } from '@/actions/auth.actions';
 import { getDashboardData } from '@/actions/dashboard.actions';
 import Dash from '@/components/dashboard'
 import { getUserData } from '@/lib/serverUtils';
-import { cookies } from 'next/headers'
 
 const Dashboard = async() => {
   let user = (await getUserData())!
+
+  if (user.role === 'code_reviewer') {
+    return (
+      <div>
+        <h1>Code Reviewer Dashboard</h1>
+      </div>
+    )
+  }
 
   const data = await getDashboardData(user.id!, user.selectedTopic?.id!)
 
