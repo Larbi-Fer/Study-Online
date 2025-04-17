@@ -24,7 +24,7 @@ const Progress = ({ progress, total, small, color }: ProgressProps) => {
     const strokeWidth = 7;
     const circumference = 2 * Math.PI * radius;
     const strokeDasharray = circumference;
-    const strokeDashoffset = circumference - (progress / (total || 100)) * circumference;
+    const strokeDashoffset = progress >= total! ? 0 : (circumference - (progress / (total || 100)) * circumference);
     
   return (
     <div style={{position: 'relative', width: 'fit-content'}} >
