@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
     
     if (!user) return
     
-    if (user.role === 'code_reviewer') {
+    if (user.role !== 'student') {
       response.cookies.set('user', JSON.stringify(user))
       return response
     }

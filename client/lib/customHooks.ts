@@ -21,10 +21,10 @@ export const useAfterComplete = (currentLessonId: string) => {
       const newLesson = await nextLesson(id!, topicId!)
       if (newLesson.message != 'SUCCESS') return Toast('There is something wrong', 'error')
     
-      //// dispatch(nextLessonUser({
-      ////   id: newLesson.payload.id,
-      ////   number: newLesson.payload.number
-      //// }))
+      dispatch(nextLessonUser({
+        id: newLesson.payload.id,
+        number: newLesson.payload.number
+      }))
       dispatch(setCongrationMsg(false))
     
       // go to dashboard

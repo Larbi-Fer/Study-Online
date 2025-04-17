@@ -14,6 +14,14 @@ const Dashboard = async() => {
     )
   }
 
+  if (user.role === 'admin') {
+    return (
+      <div>
+        <h1>Admin Dashboard</h1>
+      </div>
+    )
+  }
+
   const data = await getDashboardData(user.id!, user.selectedTopic?.id!)
 
   if (data.message != 'SUCCESS') return (
