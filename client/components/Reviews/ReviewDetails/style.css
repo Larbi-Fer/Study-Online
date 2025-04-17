@@ -25,6 +25,15 @@
 @media (min-width: 768px) {
   .review-grid {
     grid-template-columns: 1fr 2fr;
+    overflow: auto;
+    height: calc(100vh - 170px);
+    position: relative;
+    align-items: start;
+  }
+  
+  .review-right-column {
+    position: sticky;
+    top: 0;
   }
 }
 
