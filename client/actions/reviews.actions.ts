@@ -10,9 +10,9 @@ type ReviewActionProps = {
   message?: string,
 }
 
-export const getReviews = async (userId: string, role: UserRole): Promise<ReviewActionProps> => {
+export const getReviews = async (userId: string, role: UserRole, type?: 'order' | 'reviews'): Promise<ReviewActionProps> => {
   try {
-    const res = await api(`${path}?userId=${userId}&role=${role}`, 'GET')
+    const res = await api(`${path}?userId=${userId}&role=${role}&type=${type}`, 'GET')
 
     const data = await res.json()
 

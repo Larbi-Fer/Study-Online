@@ -23,7 +23,7 @@ export class CodeReviewService {
     return codeReview;
   }
 
-  async findAll(userId: string, role: string) {
+  async findAll(userId: string, role: string, type?: 'order' | 'reviews') {
     // If user is a student, return only their reviews
     if (role === Role.student) {
       return this.prisma.codeReview.findMany({
@@ -37,8 +37,11 @@ export class CodeReviewService {
     }
     
     // If user is a code reviewer, return all reviews
-    if (role === Role.code_reviewer) {
+    if (role === Role.code_reviewer && type === 'order') {
       return this.prisma.codeReview.findMany({
+        where: {
+          reviewerId: null,
+        },
         orderBy: {
           createdAt: 'desc',
         },

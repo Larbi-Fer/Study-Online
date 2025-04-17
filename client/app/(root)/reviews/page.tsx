@@ -5,7 +5,7 @@ import Reviews from '@/components/Reviews'
 const ReviewsPage = async() => {
   const user = (await getUserData())!
 
-  const reviews = await getReviews(user.id!, user.role)
+  const reviews = await getReviews(user.id!, user.role, user.role === 'code_reviewer' ? 'reviews' : undefined)
 
   return (
     <Reviews reviews={reviews.payload} userId={user.id!} role={user.role} />

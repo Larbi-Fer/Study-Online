@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import CodingSapce from "@/components/CodingSpace";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { getUserData } from "@/lib/serverUtils";
 
 export const metadata: Metadata = {
   title: 'Dashboard'
@@ -13,11 +11,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const userId = (await cookies()).get('userId');
-  // if (!userId) return redirect('/login');
+  const user = await getUserData()
   return (
     <>
-      <Navbar type="user" />
+      <Navbar type={user?.role === 'code_reviewer' ? 'reviewer' : 'student'} />
       {children}
     </>
   );

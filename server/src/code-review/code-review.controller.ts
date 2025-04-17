@@ -16,10 +16,10 @@ export class CodeReviewController {
   }
 
   @Get()
-  async findAll(@Query() { userId, role }: { userId: string, role: string }) {
+  async findAll(@Query() { userId, role, type }: { userId: string, role: string, type?: 'order' | 'reviews' }) {
     return {
       message: 'SUCCESS',
-      payload: await this.codeReviewService.findAll(userId, role)
+      payload: await this.codeReviewService.findAll(userId, role, type)
     };
   }
 
