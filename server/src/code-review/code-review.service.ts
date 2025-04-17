@@ -80,7 +80,17 @@ export class CodeReviewService {
             },
           },
         },
-        challenge: true,
+        challenge: {
+          select: {
+            id: true,
+            title: true,
+            topic: {
+              select: {
+                title: true,
+              },
+            },
+          },
+        },
       },
     });
 

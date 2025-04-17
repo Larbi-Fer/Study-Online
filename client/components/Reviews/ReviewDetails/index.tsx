@@ -43,6 +43,13 @@ interface CodeReview {
     email: string
     topicEnrollments?: TopicEnrollment[]
   }
+  challenge?: {
+    id: string
+    title: string
+    topic: {
+      title: string
+    }
+  }
 }
 
 const ReviewDetails = ({review: reviewData, reviewId, userId, role}: {review: CodeReview, reviewId: string, role: UserRole, userId: string}) => {
@@ -111,6 +118,17 @@ const ReviewDetails = ({review: reviewData, reviewId, userId, role}: {review: Co
               )}
             </div>
           </div>
+
+          {review.challenge && (
+            <Link href={'/challenges/' + review.challenge.id} style={{textDecoration: 'none', color: 'inherit'}} target="_blank">
+              <div className="review-card">
+                <h2 className="card-title">Challenge</h2>
+                <div className="card-content">
+                <p>{review.challenge.title} | {review.challenge.topic.title}</p>
+                </div>
+              </div>
+            </Link>
+          )}
 
           <div className="review-card">
             <h2 className="card-title">Question</h2>
