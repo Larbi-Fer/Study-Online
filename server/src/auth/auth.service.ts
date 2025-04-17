@@ -58,7 +58,15 @@ export class AuthService {
             otp, limit: date
           },
         },
-        lesson: { connect: { id: firstLesson.id } }
+        //// lesson: { connect: { id: firstLesson.id } },
+        topicEnrollments: {
+          create: {
+            topicId: firstLesson.topicId,
+            currentLessonId: firstLesson.id,
+            level: 1,
+            completed: false
+          }
+        }
       },
       omit: {
         isActive: true,
