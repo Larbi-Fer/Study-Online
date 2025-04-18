@@ -1,4 +1,69 @@
 
+.lesson-details {
+  margin: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.lesson-details.disabled {
+  opacity: .5;
+}
+
+.lesson-details .lesson-title:hover {
+  background-color: #ccc6
+}
+
+.lesson-details.quiz .lesson-title:hover {
+  background-color: #ff959566;
+}
+
+.lesson-details .lesson-title {
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  height: fit-content;
+  padding: 5px 20px;
+  margin: 0 5px;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.lesson-details h2 {
+  font-size: 22px;
+}
+
+.lesson-details .lesson-title > div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-direction: row-reverse;
+}
+
+.lesson-details .line-percentage {
+  position: absolute;
+}
+
+.lesson-details .lesson-title button {
+  padding: 3px 25px;
+}
+
+.lesson-details i {
+  display: flex;
+}
+
+/* .lesson-details .info {
+  display: flex;
+  justify-content: space-around;
+  flex-grow: 1;
+} */
+
 .list {
   width: calc(100% - 10px);
   max-width: 1300px;

@@ -12,13 +12,7 @@ const Lessons = async () => {
   const user = (await getUserData())!
 
   
-  const jsonLessons = (await getLessons(user.selectedTopic?.id!, user.id!)).payload
-
-  const lessons: any[] = []
-
-  for (let i = 0; i < jsonLessons.length; i += 3) {
-    lessons.push(jsonLessons.slice(i, i + 3));
-  }
+  const lessons = (await getLessons(user.selectedTopic?.id!, user.id!)).payload
 
   return (
     <div>

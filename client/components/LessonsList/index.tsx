@@ -5,22 +5,20 @@ import './style.css'
 import LessonSidePeek from "./LessonSidePeek"
 
 type LessonsProps = {
-  list: any[][]
+  list: any[]
 }
 
 const LessonsList = ({ list }: LessonsProps) => {
+  console.log(list)
   return (
     <>
       <LessonSidePeek />
-      <motion.div
-        variants={{ hidden: {opacity: 0, y: 5}, show: {opacity: 1, y: 0, transition: { staggerChildren: 0.20 }} }}
-        initial='hidden'
-        animate='show'
-      >
+      {/* @ts-ignore */}
+      <div style={{maxWidth: '900px', margin: 'auto', '--primary-topic-bg': 'var(--primary-bg)'}}>
         {list.map((lessons, i) => (
-          <List list={lessons} key={'lessons-group' + i} />
+          <List lesson={lessons} key={'lessons-group' + i} next={i < list.length-1} />
         ))}
-      </motion.div>
+      </div>
     </>
   )
 }

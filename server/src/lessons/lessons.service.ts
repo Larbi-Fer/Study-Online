@@ -10,14 +10,13 @@ export class LessonsService {
     // First get the user's current level
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { level: true }
+      select: { topicEnrollments: {where: {userId, topicId}, select: {level: true}} }
     });
 
     const lessons = await this.prisma.lesson.findMany({
       where: {topicId},
       omit: {topicId: true},
       include: {
-        _count: {select: {programmes: true}},
         completed: {where: {userId}, select: {createdAt: true}},
         topic: {select: {title: true}},
         quiz: {
@@ -40,39 +39,47 @@ export class LessonsService {
 
     // Process each lesson to add quiz locking information
     const processedLessons = lessons.map(lesson => {
-      if (lesson.quiz) {
-        const quizWithLock = lesson.quiz as unknown as { 
-          id: string; 
-          quizResults: { lastAttempt: Date; percent: number; }[];
-          locked: boolean; 
-          unlockTime: Date;
-        }
+      if (!lesson.quiz) return lesson;
+    
+      const quizWithLock = lesson.quiz as unknown as { 
+        id: string; 
+        quizResults: { lastAttempt: Date; percent: number; }[];
+        locked?: boolean; 
+        unlockTime?: Date;
+      };
 
-        const lessonLevel = Math.ceil(lesson.number / 3);
-        
-        // If this is not the current level's quiz, lock it
-        if (lessonLevel !== user.level) {
-          quizWithLock.locked = true;
-          return lesson;
-        }
-
-        // For current level's quiz, check time lock if failed
-        if (quizWithLock.quizResults.length > 0) {
-          const lastResult = quizWithLock.quizResults[0]
-          if (lastResult.percent < QUIZ_PASS_PERCENTAGE) {
-            const hoursSinceLastAttempt = Math.floor(
-              (new Date().getTime() - new Date(lastResult.lastAttempt).getTime()) / (1000 * 60 * 60)
-            )
-            
-            if (hoursSinceLastAttempt < 24) {
-              quizWithLock.locked = true
-              quizWithLock.unlockTime = new Date(lastResult.lastAttempt.getTime() + 24 * 60 * 60 * 1000)
-            }
+      const lessonLevel = Math.ceil(lesson.number / 3);
+    
+      // Lock quiz if it's not the user's current level
+      if (lessonLevel !== user.topicEnrollments[0].level) {
+        return {
+          ...lesson,
+          quiz: { ...quizWithLock, locked: true }
+        };
+      }
+    
+      // Check quiz result if it's the current level
+      if (quizWithLock.quizResults.length > 0) {
+        const lastResult = quizWithLock.quizResults[0];
+        if (lastResult.percent < QUIZ_PASS_PERCENTAGE) {
+          const hoursSinceLastAttempt = Math.floor(
+            (Date.now() - new Date(lastResult.lastAttempt).getTime()) / (1000 * 60 * 60)
+          );
+          if (hoursSinceLastAttempt < 24) {
+            return {
+              ...lesson,
+              quiz: {
+                ...quizWithLock,
+                locked: true,
+                unlockTime: new Date(new Date(lastResult.lastAttempt).getTime() + 24 * 60 * 60 * 1000)
+              }
+            };
           }
         }
       }
-      return lesson
-    })
+    
+      return lesson;
+    });    
 
     return {message: 'SUCCESS', payload: processedLessons}
   }
