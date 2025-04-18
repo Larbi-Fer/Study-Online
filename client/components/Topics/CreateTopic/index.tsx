@@ -1,5 +1,5 @@
 'use client'
-import { FocusEvent, FormEvent, useState } from "react"
+import { FocusEvent, FormEvent, useEffect, useState } from "react"
 import TopicCard from "../TopicCard"
 import * as motion from 'motion/react-client'
 import './style.css'
@@ -7,9 +7,10 @@ import Input from "@/ui/Input"
 import ImageUpload from "@/ui/ImageUpload"
 import { removeFile } from "@/actions/imagekit.actions"
 import Button from "@/ui/Button"
-import { createTopics, updateTopic } from "@/actions/topics.actions"
+import { createTopics, getTopics, updateTopic } from "@/actions/topics.actions"
 import { useRouter } from "next/navigation"
 import Toast from "@/ui/Toast"
+import { Autocomplete, TextField } from "@mui/material"
 
 const animation = {
   hidden: {opacity: 0, y: 10},
@@ -19,7 +20,17 @@ const animation = {
 const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: Topic}) => {
   const [topic, setTopic] = useState<Topic>(defaultTopic || {id: '', title: 'title', description: 'description', icon: {path: '', id: ''}, image: {path: '', id: ''}, color: '#0059FF'})
   const [loading, setLoading] = useState(false)
+  const [topicsList, setTopicsList] = useState<{title: string, id: string}[]>([])
+  const [dependencies, setDependencies] = useState<{title: string, id: string}[]>(defaultTopic?.dependencies || [])
   const router = useRouter()
+
+  useEffect(() => {
+    (async() => {
+      const ts = await getTopics()
+      setTopicsList(id ? ts.payload.filter((t: any) => t.id != id) : ts.payload)
+    })()
+  }, [])
+  
 
   const handleChange = (e: FocusEvent<HTMLInputElement>) => {
     setTopic(prevTopic => ({...prevTopic, [e.target.name]: e.target.value}))
@@ -34,17 +45,31 @@ const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: To
     e.preventDefault()
     setLoading(true)
 
+    const subTopic: any = structuredClone(topic);
+    delete subTopic.id
+    const dep = dependencies.map(d => ({id: d.id}))
+  
     if (id) {
       // Update existing topic
-      const subTopic: any = topic;
-      delete subTopic.id
+      subTopic.dependencies = {
+        connect: [],
+        disconnect: []
+      }
+
+      if (!defaultTopic?.dependencies) subTopic.dependencies.connect = dep
+      else if (dep.length > 0)
+        for (const currentDep of dep)
+          if (defaultTopic.dependencies.findIndex(d => d.id == currentDep.id) == -1) subTopic.dependencies.connect.push({id: currentDep.id})
+
+      if (defaultTopic?.dependencies)
+        for (const defaultDep of defaultTopic?.dependencies)
+          if (dep.findIndex(d => d.id == defaultDep.id) == -1) subTopic.dependencies.disconnect.push({id: defaultDep.id})
+
       await updateTopic(id, subTopic);
       Toast('Edit Successfully', 'success')
     } else {
-      // Create new topic
-      const subTopic: any = topic;
-      delete subTopic.id
-      const result = await createTopics(subTopic)
+      // Create new topicc;
+      const result = await createTopics({...subTopic, dependencies: dep})
       router.replace(`/topics/${result.payload.id}/edit`)
     }
 
@@ -67,6 +92,25 @@ const CreateOrUpdateTopic = ({id, defaultTopic}: {id?: string, defaultTopic?: To
             <Field label="Color" value={topic.color} name="color" handleChange={handleChange} type="color" />
             <motion.div variants={animation} style={{padding: '10px'}}>
               <ImageUpload changeFile={changeFile('image')} />
+            </motion.div>
+
+            <motion.div variants={animation} style={{padding: '10px'}}>
+              <label>Dependencies</label>
+              <Autocomplete
+                multiple
+                id="dependencies"
+                options={topicsList}
+                getOptionLabel={(option) => option.title}
+                value={dependencies}
+                onChange={(_, val) => setDependencies(val)}
+                renderInput={(params) => (
+                  <TextField
+                  {...params}
+                  variant="standard"
+                  placeholder="Select "
+                  />
+                )}
+              />
             </motion.div>
 
             <motion.div variants={animation} style={{padding: '10px'}}>

@@ -191,6 +191,10 @@ interface Topic {
     id: string;
   };
   color: string;
+  dependencies?: {
+    id: string
+    title: string
+  }[]
 };
 
 interface CodeReviewArgs {

@@ -1,37 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Topic } from './dto/topics.dto';
+import { CreateTopicDto, Topic, UpdateTopicDto } from './dto/topics.dto';
 
 @Injectable()
 export class TopicsService {
   constructor(private prisma: PrismaService) {}
 
   async fetchTopics() {
-    return await this.prisma.topic.findMany();
+    return await this.prisma.topic.findMany({
+      include: {
+        dependencies: {
+          select: {title: true, id: true}
+        }
+      }
+    });
   }
 
   async fetchTopic(id: string) {
     return await this.prisma.topic.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        dependencies: true
+      }
     });
   }
 
   // Admin
-  async createTopic(topic: Topic) {
+  async createTopic({dependencies, ...topic}: CreateTopicDto) {
     const number = await this.prisma.topic.count()+1
     return await this.prisma.topic.create({
       data: {
         number,
+        dependencies: dependencies ? {
+          connect: dependencies
+        } : null,
         ...topic
       },
       select: { id: true }
     });
   }
 
-  async updateTopic(id: string, topic: Topic) {
+  async updateTopic(id: string, {dependencies, ...topic}: UpdateTopicDto) {
     return await this.prisma.topic.update({
       where: { id },
-      data: topic,
+      data: {
+        dependencies,
+        ...topic
+      },
       select: { id: true }
     });
   }
