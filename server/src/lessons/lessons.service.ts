@@ -7,6 +7,18 @@ export class LessonsService {
   constructor(private prisma: PrismaService) {}
 
   async getLessons(topicId: string, userId: string) {
+    if (!userId) {
+      const lessons = await this.prisma.lesson.findMany({
+        where: {topicId},
+        omit: {topicId: true},
+        include: {
+          topic: {select: {title: true}},
+          quiz: {select: {id: true, type: true}},
+        }
+      })
+      return {message: 'SUCCESS', payload: lessons}
+    }
+
     // First get the user's current level
     const user = await this.prisma.user.findUnique({
       where: { id: userId },

@@ -14,7 +14,8 @@ import React, { useState, useEffect } from 'react'
 
 type ListProps = {
   lesson: LessonArg,
-  next: boolean
+  next: boolean,
+  justRepresent?: boolean
   // key: React.Key
 }
 
@@ -35,22 +36,49 @@ const formatTimeLeft = (unlockTime: Date) => {
   return `Wait ${minutes}m`
 }
 
-const List = ({ lesson, next }: ListProps) => {
+const List = ({ lesson, next, justRepresent }: ListProps) => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [now, setNow] = useState(new Date())
-
+  
   // Update time every minute
   useEffect(() => {
     console.log(lesson.quiz)
     const interval = setInterval(() => setNow(new Date()), 60000)
     return () => clearInterval(interval)
   }, [])
-
-
+  
   // Calculate current level based on the first lesson in the list
   const currentLevel = Math.ceil(lesson.number / 3)
+  const waitTime = (lesson.number + currentLevel - 1) * 0.4
+  if (justRepresent) {
+    return (
+      <>
+        <div className={'lesson-details'}>
+          <Circle wait={waitTime} content={intToString(lesson.number)} />
+          <motion.div variants={listVariant} initial='hidden' animate='show' transition={{delay: waitTime + 0.3}} style={{width: '100%'}}>
+            <div className='lesson-title'>
+              <h2>{lesson.title}</h2>
+            </div>
+          </motion.div>
+          <Line wait={waitTime} />
+        </div>
+
+        {lesson.quiz && (
+          <div className={'lesson-details quiz'}>
+          <Circle wait={waitTime + 0.4} content={intToString(currentLevel)} />
+          <motion.div variants={listVariant} initial='hidden' animate='show' transition={{delay: waitTime + 0.7}} style={{width: '100%'}}>
+            <div className='lesson-title'>
+              <h2>Quiz</h2>
+            </div>
+          </motion.div>
+          {next && <Line wait={waitTime + 0.4} />}
+        </div>
+        )}
+      </>
+    )
+  }
 
   const setReview = (id: string) => {
     dispatch(setLesson({ lessonId: id }))
@@ -74,8 +102,6 @@ const List = ({ lesson, next }: ListProps) => {
     e.stopPropagation(); 
     router.push(`/quiz/${lesson.quiz?.id!}`)
   }
-
-  const waitTime = (lesson.number + currentLevel - 1) * 0.4
   
   return (
     <>

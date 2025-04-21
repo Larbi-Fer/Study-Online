@@ -10,9 +10,9 @@ type LessonsActionProps = {
   userMesseage?: string
 }
 
-export const getLessons = async (topicId: string, userId: string): Promise<LessonsActionProps> => {
+export const getLessons = async (topicId: string, userId: string | null): Promise<LessonsActionProps> => {
   try {
-    const res = await api(`${path}/?topicId=${topicId}&userId=${userId}`, 'GET')
+    const res = await api(`${path}/?topicId=${topicId}&userId=${userId ?? ''}`, 'GET')
     const data = await res.json()
 
     return data

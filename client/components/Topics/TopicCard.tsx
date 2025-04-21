@@ -1,3 +1,5 @@
+'use client'
+
 import { deleteTopic } from "@/actions/topics.actions"
 import Button from "@/ui/Button"
 import Toast from "@/ui/Toast"
@@ -11,7 +13,7 @@ type Option = 'Edit' | 'Delete'
 const options: Option[] = ['Edit', 'Delete']
 const ITEM_HEIGHT = 48;
 
-const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}) => {
+const TopicCard = ({ topic, i, edit, maxWidth }: {topic: Topic, i: number, edit?: boolean, maxWidth?: number}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -63,9 +65,8 @@ const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: i * 0.1 }}
-        style={{height: '100%'}}
+        style={{height: '100%', position: 'relative'}}
       >
-        <Card className="challenge-card" elevation={3} sx={{borderRadius: 5, height: '100%', position: 'relative'}}>
           {edit && <div style={{position: 'absolute', top: '5px', right: '5px'}}>
             <IconButton
               aria-label="more"
@@ -101,13 +102,14 @@ const TopicCard = ({ topic, i, edit }: {topic: Topic, i: number, edit?: boolean}
               ))}
             </Menu>
           </div>}
+        <Card className="challenge-card" elevation={3} sx={{borderRadius: 5, height: '100%', maxWidth, cursor: 'pointer'}} onClick={() => router.push(`/topics/${topic.id}`)}>
           <CardMedia
             component="img"
-            height="194"
+            height={maxWidth ? '110' : "194"}
             image={topic.image.path || '/images/default-topic.jpg'}
             alt={topic.title}
           />
-          <CardContent>
+          <CardContent >
             <Typography variant="h6" fontWeight="bold">{topic.title}</Typography>
             <Typography variant="body2" color="textSecondary">
               {topic.description}

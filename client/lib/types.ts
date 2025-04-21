@@ -194,7 +194,7 @@ interface Topic {
   dependencies?: {
     id: string
     title: string
-  }[]
+  }[] | Topic[]
 };
 
 interface CodeReviewArgs {
