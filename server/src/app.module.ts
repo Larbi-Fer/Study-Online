@@ -11,9 +11,10 @@ import { CourseModule } from './course/course.module';
 import { TopicsModule } from './topics/topics.module';
 import { UtilsModule } from './utils/utils.module';
 import { CodeReviewModule } from './code-review/code-review.module';
+import { CommunityModule } from './community/community.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, LessonsModule, UserModule, QuizModule, ChallengesModule, CourseModule, TopicsModule, UtilsModule, CodeReviewModule],
+  imports: [PrismaModule, AuthModule, LessonsModule, UserModule, QuizModule, ChallengesModule, CourseModule, TopicsModule, UtilsModule, CodeReviewModule, CommunityModule],
   controllers: [AppController],
   providers: [AppService],
 })

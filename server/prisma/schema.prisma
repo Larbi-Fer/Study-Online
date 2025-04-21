@@ -31,9 +31,12 @@ model User {
   codeReviews CodeReview[] @relation("CodeReviewer")
   codeReviewsCodeReviewer CodeReview[] @relation("CodeReviewerCodeReviewer")
   role Role @default(student)
+  votes Vote[]
 
   otp Otp?
   topicEnrollments TopicEnrollment[]
+  discussions Discussion[]
+  comments    Comment[]
 }
 
 enum Role {
@@ -223,4 +226,41 @@ model CodeReview {
   challenge Programme? @relation(fields: [programmeId], references: [id])
 
   @@map("code_reviews")
+}
+
+model Discussion {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.LongText
+  votes     Vote[]
+  tags      Json     // ["JavaScript", "React", etc]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isUpdated Boolean  @default(false)
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  comments  Comment[]
+}
+
+model Vote {
+  userId       String
+  discussionId String
+
+  discussion Discussion @relation(fields: [discussionId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([userId, discussionId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.LongText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId       String
+  discussionId String
+  user         User       @relation(fields: [userId], references: [id])
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
 }

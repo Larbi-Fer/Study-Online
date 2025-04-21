@@ -205,3 +205,15 @@ interface CodeReviewArgs {
   comments: Array<{ sender: 'student' | 'reviewer', message: string }>
   createdAt: Date
 }
+
+interface DiscussionArgs {
+  id: string
+  title: string
+  content: string
+  votes: number
+  commentsCount: number
+}
+
+interface DiscussionDetailsArgs extends DiscussionArgs {
+
+}

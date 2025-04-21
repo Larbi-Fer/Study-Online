@@ -20,20 +20,23 @@ const Navbar = ({ type }: NavbarProps) => {
           <Link href='/dashboard'>Coding</Link>
         </h2>
         <nav>
-          { type == 'student' ?
           <ul className="nav-links">
-            <li><Link href='/lessons'>Lessons</Link></li>
-            <li><Link href='/challenges'>Challenges</Link></li>
-            <li><Link href='/topics'>Topics</Link></li>
-            <li><Link href='/reviews'>Reviews</Link></li>
-          </ul>
+          { type == 'student' ?
+            <>
+              <li><Link href='/lessons'>Lessons</Link></li>
+              <li><Link href='/challenges'>Challenges</Link></li>
+              <li><Link href='/topics'>Topics</Link></li>
+              <li><Link href='/reviews'>Reviews</Link></li>
+            </>
           : (type == 'reviewer' ?
-            <ul className="nav-links">
+            <>
               <li><Link href='/topics'>Topics</Link></li>
               <li><Link href='/order-reviews'>Order Reviews</Link></li>
               <li><Link href='/reviews'>Reviews</Link></li>
-            </ul>
+            </>
             : null)}
+            <li><Link href='/community'>Community</Link></li>
+          </ul>
         </nav>
         <div className="buttons">
           { type != 'main-page' ?
