@@ -210,10 +210,34 @@ interface DiscussionArgs {
   id: string
   title: string
   content: string
-  votes: number
-  commentsCount: number
+  tags: string[]
+  userId: string
+  user: {
+    id: string
+    fullname: string
+    email: string
+  }
+  _count: {
+    comments: number
+    votes: number
+  }
+  votes: {
+    userId: string
+  }[]
 }
 
 interface DiscussionDetailsArgs extends DiscussionArgs {
-
+  comments: CommentArgs[]
+  createdAt: Date
 }
+
+interface CommentArgs {
+  id: string
+  content: string
+  userId: string
+  user: {
+    id: string
+    fullname: string
+  }
+  createdAt: Date
+}[]

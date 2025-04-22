@@ -16,6 +16,12 @@ body {
   line-height: 1.5;
 }
 
+.html-code {
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
 .text-icon {
   display: flex;
   gap: 5px;

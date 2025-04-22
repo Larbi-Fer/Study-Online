@@ -75,6 +75,45 @@ export class CommunityService {
     };
   }
 
+  async fetchDiscussionDetails(id: string, userId?: string) {
+    return this.prisma.discussion.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullname: true,
+            email: true
+          }
+        },
+        comments: {
+          orderBy: {
+            createdAt: 'asc'
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                fullname: true
+              }
+            }
+          }
+        },
+        _count: {
+          select: {
+            comments: true,
+            votes: true
+          }
+        },
+        votes: {
+          where: {
+            userId
+          }
+        }
+      }
+    });
+  }
+
   async voteDiscussion(id: string, userId: string) {
     const existingVote = await this.prisma.vote.findUnique({
       where: {
@@ -115,5 +154,25 @@ export class CommunityService {
         }
       }
     });
+  }
+
+  async addComment(discussionId: string, content: string, userId: string) {
+    const comment = await this.prisma.comment.create({
+      data: {
+        content,
+        userId,
+        discussionId
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullname: true
+          }
+        }
+      }
+    });
+
+    return comment;
   }
 }

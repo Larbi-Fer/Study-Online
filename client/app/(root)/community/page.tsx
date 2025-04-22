@@ -1,5 +1,5 @@
 import { getDiscussions } from "@/actions/community.actions"
-import Discussions from "@/components/Community/Discussion"
+import Discussions from "@/components/Community/Discussions"
 import { getUserData } from "@/lib/serverUtils"
 import {} from 'next/navigation'
 

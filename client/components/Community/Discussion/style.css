@@ -1,203 +1,110 @@
-/* Discussions Container */
-.discussions {
-  --primary-color: var(--topic-pramiry-color);
+.discussion-details {
   width: 80%;
   margin: 0 auto;
   padding: 20px;
-
 }
 
-/* Header Styles */
-.discussions .header {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  align-items: center;
+.discussion-details h3 {
+  margin: 20px 0;
+  color: #333;
+  position: sticky;
+  top: 47px;
+  background: #fafbfd;
+  padding: 5px;
+  width: fit-content;
+  border-bottom-right-radius: 10px;
+}
+
+.comment-space-login, .comment {
   margin-bottom: 20px;
-}
-
-.header h3 {
-  font-size: 18px;
-  color: #3339;
-}
-
-.filter-option {
-  cursor: pointer;
-  padding: 3px 12px;
-  border: 1px solid var(--primary-color);
-  border-radius: 20px;
-  margin-left: 10px;
-  transition: background-color 0.3s ease;
-  box-shadow: inset 0 0 10px #ddd5;
-}
-
-.filter-option:hover {
-  color: #fff;
-  background-color: var(--primary-color);
-}
-
-/* Discussion List */
-.list {
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
+  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Discussion Item Styling */
-.discussion {
-  padding: 10px 20px;
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s ease;
+.comment-space-login, .comment.border {
+  border: 1px solid #ddd;
+  background-color: #fff;
 }
 
-.discussion:last-child {
-  border-bottom: none;
+.comment-space-login a {
+  width: fit-content;
+  margin: 0 auto;
 }
 
-.discussion > div:first-child {
+.comment-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-/* Header */
-.discussion-header {
-  display: flex;
-  gap: 20px;
   align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
 }
 
-.vote-count {
-  font-size: 1rem;
-  color: #3339;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border: 1px solid transparent;
-  padding: 2px 7px 2px 20px;
-  border-radius: 30px;
-  position: relative;
-  overflow: hidden;
-  transition: .1s;
-}
-
-.vote-count:hover {
+.username {
+  font-weight: bold;
   color: #333;
-  border: 1px solid #7776;
-  background-color: #f0f0f0;
+  text-decoration: none;
 }
 
-.vote-count .vote-icon {
+.username:hover {
+  text-decoration: underline;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.comment-space {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.comment-space .group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.comment-space-login {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  left: 1px;
-  top: 5px;
-  transition: .3s;
+  text-align: center;
+  font-size: 1.2rem;
+  gap: 1rem;
 }
 
-.vote-count.voted .vote-icon {
-  transform: translateY(-50%);
+.comment-space textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none;
+  font-family: inherit;
 }
 
-.vote-count.voted {
-  color: #007bff;
-}
-
-.vote-count svg {
-  width: 18px;
-  height: 18px;
-  margin-bottom: 3px;
-}
-
-.discussion-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-  max-width: 70%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user {
-  font-size: 0.875rem;
-  color: #777;
-  font-weight: bold;
-  margin-left: 10px;
-}
-
-/* Meta Info */
-.discussion-meta {
-  font-size: 0.875rem;
-  color: #777;
+.comment-space .actions {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 
-.comment-count {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.comment-count svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Tags */
 .discussion-tags {
   display: flex;
   gap: 10px;
+  margin-top: 15px;
 }
 
-.tag {
+.discussion-tags .tag, .discussion-tags .tag:hover {
   padding: 3px 12px;
   background-color: #f0f0f0;
   color: #555;
   border-radius: 20px;
   font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.tag:hover {
-  background-color: var(--primary-color);
-  color: #fff;
-}
-
-/* Hover effects for discussion item */
-.discussion:hover {
-  background-color: #f9f9f9;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-  .discussions {
+  .discussion-details {
     width: 95%;
-  }
-
-  .discussion-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .discussion-title {
-    font-size: 1.1rem;
-  }
-
-  .vote-count, .comment-count {
-    font-size: 0.9rem;
-  }
-
-  .discussion-tags {
-    flex-wrap: wrap;
-    justify-content: center;
   }
 }

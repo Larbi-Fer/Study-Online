@@ -14,6 +14,18 @@ export class CommunityController {
     }
   }
 
+  @Get(':id')
+  async getDiscussion(
+    @Param('id') id: string,
+    @Query('userId') userId?: string
+  ) {
+    const discussion = await this.communityService.fetchDiscussionDetails(id, userId)
+    return {
+      message: 'SUCCESS',
+      payload: discussion
+    }
+  }
+
   @Post('vote/:id')
   async voteDiscussion(
     @Param('id') id: string,
@@ -23,6 +35,19 @@ export class CommunityController {
     return {
       message: 'SUCCESS',
       payload: discussion
+    }
+  }
+
+  @Post(':id/comments')
+  async addComment(
+    @Param('id') id: string,
+    @Body('content') content: string,
+    @Body('userId') userId: string
+  ) {
+    const comment = await this.communityService.addComment(id, content, userId)
+    return {
+      message: 'SUCCESS',
+      payload: comment
     }
   }
 }
