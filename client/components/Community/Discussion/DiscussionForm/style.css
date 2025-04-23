@@ -1,0 +1,31 @@
+.discussion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.discussion-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.discussion-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.discussion-form .actions {
+  display: flex;
+  gap: 10px;
+}
+

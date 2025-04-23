@@ -175,4 +175,54 @@ export class CommunityService {
 
     return comment;
   }
+
+  async createDiscussion(data: {
+    title: string,
+    content: string,
+    userId: string,
+    tags: string[]
+  }) {
+    return this.prisma.discussion.create({
+      data: {
+        title: data.title,
+        content: data.content,
+        userId: data.userId,
+        tags: data.tags
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullname: true,
+            email: true
+          }
+        }
+      }
+    });
+  }
+
+  async updateDiscussion(id: string, data: {
+    title: string,
+    content: string,
+    tags: string[]
+  }) {
+    return this.prisma.discussion.update({
+      where: { id },
+      data: {
+        title: data.title,
+        content: data.content,
+        tags: data.tags,
+        isUpdated: true
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullname: true,
+            email: true
+          }
+        }
+      }
+    });
+  }
 }

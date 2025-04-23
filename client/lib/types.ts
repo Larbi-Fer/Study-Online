@@ -229,6 +229,7 @@ interface DiscussionArgs {
 interface DiscussionDetailsArgs extends DiscussionArgs {
   comments: CommentArgs[]
   createdAt: Date
+  isUpdated: boolean
 }
 
 interface CommentArgs {

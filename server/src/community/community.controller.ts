@@ -50,4 +50,36 @@ export class CommunityController {
       payload: comment
     }
   }
+
+  @Post()
+  async createDiscussion(
+    @Body() data: {
+      title: string,
+      content: string,
+      userId: string,
+      tags: string[]
+    }
+  ) {
+    const discussion = await this.communityService.createDiscussion(data)
+    return {
+      message: 'SUCCESS',
+      payload: discussion
+    }
+  }
+
+  @Post(':id')
+  async updateDiscussion(
+    @Param('id') id: string,
+    @Body() data: {
+      title: string,
+      content: string,
+      tags: string[]
+    }
+  ) {
+    const discussion = await this.communityService.updateDiscussion(id, data)
+    return {
+      message: 'SUCCESS',
+      payload: discussion
+    }
+  }
 }

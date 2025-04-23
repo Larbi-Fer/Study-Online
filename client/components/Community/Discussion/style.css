@@ -50,9 +50,31 @@
   text-decoration: underline;
 }
 
+.comment-header .right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.edit-icon {
+  cursor: pointer;
+  color: #333;
+  display: flex;
+}
+
+.edit-icon:hover {
+  color: #000;
+}
+
 .timestamp {
   color: #666;
   font-size: 0.9rem;
+}
+
+.comment-header .right .edited {
+  color: #666;
+  font-size: 0.9rem;
+  margin-right: 10px;
 }
 
 .comment-space {

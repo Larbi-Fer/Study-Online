@@ -52,3 +52,31 @@ export const addComment = async (discussionId: string, content: string, userId: 
     return { message: 'ERROR' }
   }
 }
+
+export const createDiscussion = async (
+  fields: { title: string, content: string },
+  tags: string[],
+  userId: string
+): Promise<CommunityActionProps> => {
+  try {
+    const data = await api.post(PATH, { ...fields, tags, userId })
+    return { message: 'SUCCESS', payload: data.payload }
+  } catch (error) {
+    console.error(error)
+    return { message: 'ERROR' }
+  }
+}
+
+export const updateDiscussion = async (
+  id: string,
+  fields: { title: string, content: string },
+  tags: string[]
+): Promise<CommunityActionProps> => {
+  try {
+    const data = await api.post(`${PATH}/${id}`, { ...fields, tags })
+    return { message: 'SUCCESS', payload: data.payload }
+  } catch (error) {
+    console.error(error)
+    return { message: 'ERROR' }
+  }
+}

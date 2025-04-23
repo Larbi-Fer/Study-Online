@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import './style.css'
-import { ArrowUpIcon, MessageSquareIcon } from "lucide-react"
+import { ArrowUpIcon, MessageSquareIcon, PlusIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useAppSelector } from "@/lib/hooks"
 import { Tooltip } from "@mui/material"
 import { voteDiscussion } from "@/actions/community.actions"
+import Button from "@/ui/Button"
 
 type DiscussionsProps = {
   defaultDisc: {
@@ -60,9 +61,18 @@ const Discussions = ({defaultDisc}: DiscussionsProps) => {
   return (
     <div className="discussions">
       <div className="header">
-        <h3>Filter: </h3>
-        <div className="filter-option selected">vote</div>
-        <div className="filter-option">newer</div>
+        <div>
+          <Tooltip title="Create a new discussion">
+            <Button onClick={() => router.push('/community/discussion/create')}>
+              <PlusIcon size={18} />
+            </Button>
+          </Tooltip>
+        </div>
+        <div className="filter-options">
+          <h3>Filter: </h3>
+          <div className="filter-option selected">vote</div>
+          <div className="filter-option">newer</div>
+        </div>
       </div>
 
       <div className="list">
