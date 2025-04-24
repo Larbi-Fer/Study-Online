@@ -87,7 +87,7 @@ export class CommunityService {
           select: {
             id: true,
             fullname: true,
-            email: true
+            icon: true
           }
         },
         comments: {
@@ -98,7 +98,8 @@ export class CommunityService {
             user: {
               select: {
                 id: true,
-                fullname: true
+                fullname: true,
+                icon: true
               }
             }
           }

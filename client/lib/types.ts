@@ -41,6 +41,7 @@ interface UserProps {
   }
   lessonId?: string;
   level: number;
+  icon: ImageArgs;
   topicEnrollments: TopicEnrollment[];
   selectedTopic?: {
     id: string;
@@ -51,6 +52,10 @@ interface UserProps {
 }
 
 type UserRole = 'student' | 'admin' | 'code_reviewer'
+interface ImageArgs {
+  id: string
+  path: string
+}
 
 interface CurrentLessonProps {
   id: string;
@@ -166,10 +171,7 @@ interface TopicEnrollment {
     title: string;
     type: TopicType;
     color: string;
-    icon: {
-      path: string;
-      id: string;
-    };
+    icon: ImageArgs
   };
   currentLesson: CurrentLessonProps
   level: number;
@@ -182,14 +184,8 @@ interface Topic {
   id: string;
   title: string;
   description: string;
-  icon: {
-    path: string;
-    id: string;
-  };
-  image: {
-    path: string;
-    id: string;
-  };
+  icon: ImageArgs;
+  image: ImageArgs;
   color: string;
   dependencies?: {
     id: string
@@ -215,7 +211,8 @@ interface DiscussionArgs {
   user: {
     id: string
     fullname: string
-    email: string
+    email: string,
+    icon?: ImageArgs
   }
   _count: {
     comments: number
@@ -240,6 +237,7 @@ interface CommentArgs {
   user: {
     id: string
     fullname: string
+    icon: ImageArgs
   }
   createdAt: Date
 }[]
