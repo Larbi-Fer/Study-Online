@@ -10,13 +10,15 @@ export class CommunityService {
     take = 10,
     skip = 0,
     q,
-    tag
+    tag,
+    orderBy = 'newer'
   }: {
     userId?: string,
     take?: number,
     skip?: number,
     q?: string,
-    tag?: string
+    tag?: string,
+    orderBy?: 'vote' | 'newer'
   }) {
     const where = {
       AND: [
@@ -39,10 +41,12 @@ export class CommunityService {
         where,
         take,
         skip,
-        orderBy: {
+        orderBy: orderBy === 'vote' ? {
           votes: {
             _count: 'desc'
           }
+        } : {
+          createdAt: 'desc'
         },
         include: {
           user: {

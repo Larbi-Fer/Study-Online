@@ -224,6 +224,7 @@ interface DiscussionArgs {
   votes: {
     userId: string
   }[]
+  createdAt: Date
 }
 
 interface DiscussionDetailsArgs extends DiscussionArgs {

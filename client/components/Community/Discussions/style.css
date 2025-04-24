@@ -41,6 +41,11 @@
   background-color: var(--primary-color);
 }
 
+.filter-option.selected {
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
 /* Discussion List */
 .list {
   display: flex;
@@ -180,6 +185,12 @@
   background-color: #f9f9f9;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
 
 /* Responsive Design */

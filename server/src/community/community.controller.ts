@@ -6,7 +6,7 @@ export class CommunityController {
   constructor(private communityService: CommunityService) {}
 
   @Get()
-  async getDiscussions(@Query() {take, skip, ...options}: {userId?: string, take?: string, skip?: string, q?: string, tag?: string}) {
+  async getDiscussions(@Query() {take, skip, ...options}: {userId?: string, take?: string, skip?: string, q?: string, tag?: string, orderBy?: 'vote' | 'newer'}) {
     const discussions = await this.communityService.fetchDiscussions({...options, take: parseInt(take), skip: parseInt(skip)})
     return {
       message: 'SUCCESS',

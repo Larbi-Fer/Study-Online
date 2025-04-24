@@ -10,11 +10,11 @@ type CommunityActionProps = {
 }
 
 export const getDiscussions = async (userId?: string, options?: {
-  take?: number, skip?: number, q?: string, tag?: string
+  take?: number, skip?: number, q?: string, tag?: string, orderBy?: 'vote' | 'newer'
 }) : Promise<CommunityActionProps> => {
   try {
-    const {skip, take, q, tag} = options || {}
-    const data = await api.get(`${PATH}/?userId=${userId || ''}&take=${take || DISCUSSIONS_NUMBER}&skip=${skip || 0}&q=${q || ''}&tag=${tag || ''}`)
+    const {skip, take, q, tag, orderBy} = options || {}
+    const data = await api.get(`${PATH}/?userId=${userId || ''}&take=${take || DISCUSSIONS_NUMBER}&skip=${(skip || 0) * (take || DISCUSSIONS_NUMBER)}&q=${q || ''}&tag=${tag || ''}&orderBy=${orderBy || 'newer'}`)
 
     return { message: 'SUCCESS', payload: data.payload }
   } catch (error) {

@@ -9,15 +9,13 @@ export const metadata = {
 
 const CommunityPage = async({searchParams}: {searchParams: Promise<{[key: string]: string | string[] | undefined}>}) => {
   const params = await searchParams; // tag or q
-  
+
   const user = await getUserData()
   // fetch discussions
   const discussions = await getDiscussions(user?.id, {
     q: params.q as string,
     tag: params.tag as string 
   })
-
-  console.log(discussions)
 
   return (
     <div>
