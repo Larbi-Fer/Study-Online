@@ -39,3 +39,28 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+
+.filter-sort-option {
+  cursor: pointer;
+  padding: 3px 12px;
+  border: 1px solid var(--primary-color);
+  border-radius: 20px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 0 10px #ddd5;
+}
+
+.filter-sort-option:hover {
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
+.filter-sort-option.selected {
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
+.filter-sort-options {
+  display: flex;
+  gap: 10px;
+}

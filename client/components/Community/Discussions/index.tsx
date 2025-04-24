@@ -108,10 +108,10 @@ const Discussions = ({ defaultDisc }: DiscussionsProps) => {
             </Button>
           </Tooltip>
         </div>
-        <div className="filter-options">
+        <div className="filter-sort-options">
           <h3>Sort by: </h3>
-          <div className={"filter-option" + (sort === 'vote' ? ' selected' : '')} onClick={searchByFilter('vote')}>vote</div>
-          <div className={"filter-option" + (sort === 'newer' ? ' selected' : '')} onClick={searchByFilter('newer')}>newer</div>
+          <div className={"filter-sort-option" + (sort === 'vote' ? ' selected' : '')} onClick={searchByFilter('vote')}>vote</div>
+          <div className={"filter-sort-option" + (sort === 'newer' ? ' selected' : '')} onClick={searchByFilter('newer')}>newer</div>
         </div>
       </div>
 
