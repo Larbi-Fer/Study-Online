@@ -4,14 +4,19 @@ import api from "./actions/api";
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
   const userId = request.cookies.get('userId')?.value
+  console.log('open');
+  
 
-  if (!userId) return NextResponse.redirect(new URL('/login', request.url))
+  if (!userId) {
+    if (request.nextUrl.pathname.startsWith('/topics') || request.nextUrl.pathname.startsWith('/community')) return;
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
 
     const res = await api(`/user/${userId}/main-data`, 'GET')
     const user: UserProps = await res.json()
     
     if (!user) return
-    
+
     if (user.role !== 'student') {
       response.cookies.set('user', JSON.stringify(user))
       return response
@@ -43,5 +48,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/lessons/:path*', '/challenges/:path*', '/quiz/:path*', '/reviews/:path*'],
+  matcher: ['/dashboard/:path*', '/lessons/:path*', '/challenges/:path*', '/quiz/:path*', '/reviews/:path*', '/topics/:path*', '/community/:path*'],
 }
