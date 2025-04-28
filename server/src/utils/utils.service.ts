@@ -6,10 +6,13 @@ export class UtilsService {
   constructor(private prisma: PrismaService) {}
   
   async enrollNextTopic(userId: string, topicId: string, topicNumber: number) {
-    const {id: nextTopicId} = await this.prisma.topic.findFirst({
+    const nextTopic = await this.prisma.topic.findFirst({
       where: {number: topicNumber+1},
       select: {id: true}
     })
+
+    if (!nextTopic) return null;
+    const {id: nextTopicId} = nextTopic;
 
     await this.prisma.topicEnrollment.update({
       where: {userId_topicId: {userId, topicId}},
