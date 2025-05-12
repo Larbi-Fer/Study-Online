@@ -33,6 +33,13 @@ body {
   color: var(--primary-bg);
 }
 
+.profile-container .user-badge {
+  padding: 2px 10px;
+  border-radius: 30px;
+  width: fit-content;
+  border: 1px solid #0002;
+}
+
 .profile-container .info {
   border-right: 1px solid #0003;
   padding: 10px 30px;
