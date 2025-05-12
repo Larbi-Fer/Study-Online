@@ -91,3 +91,9 @@ export const getProfile = async (profileId: string, userId?: string): Promise<Us
 export async function setSelectedTopic(topicId: string) {
   (await cookies()).set('selectedTopicId', topicId)
 }
+
+export async function userLogout() {
+  const cookiesStore = await cookies();
+  cookiesStore.delete('userId');
+  cookiesStore.delete('selectedTopicId');
+}

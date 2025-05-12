@@ -7,6 +7,7 @@ import Search from "./Search"
 import { UserCircle } from "lucide-react"
 
 import './style.css'
+import ProfileMenu from "./ProfileMenu"
 
 type NavbarProps = {
   type: 'student' | 'reviewer' | 'main-page'
@@ -42,7 +43,9 @@ const Navbar = ({ type }: NavbarProps) => {
           { type != 'main-page' ?
               <>
                 <Search />
-                <div className="text-icon"><UserCircle /></div>
+                <div className="text-icon">
+                  <ProfileMenu />
+                </div>
               </>
             :
               <>
