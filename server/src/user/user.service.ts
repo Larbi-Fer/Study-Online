@@ -163,11 +163,11 @@ export class UserService {
                 votes: true
               }
             },
-            votes: {
+            votes: userId ? {
               where: {
                 userId
               }
-            }
+            } : {}
           }
         },
       }

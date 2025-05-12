@@ -18,6 +18,11 @@ const Profile = ({profile}: {profile: ProfileArgs}) => {
           </div>
         </div>
 
+        <div className="level-container">
+          <span>Level</span>
+          <span>{profile.level}</span>
+        </div>
+
         {profile.role == 'code_reviewer' ? 
           <div>Reviewer</div>
         :

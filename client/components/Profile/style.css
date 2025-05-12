@@ -22,6 +22,17 @@ body {
   gap: 20px;
 }
 
+.profile-container .level-container {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  border: 1px solid #0005;
+  border-radius: 10px;
+  box-shadow: 3px 3px #0005;
+  padding: 5px 10px;
+  color: var(--primary-bg);
+}
+
 .profile-container .info {
   border-right: 1px solid #0003;
   padding: 10px 30px;
