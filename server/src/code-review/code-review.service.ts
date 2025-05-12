@@ -3,10 +3,11 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateCodeReviewDto } from './dto/create-code-review.dto';
 import { AddCommentDto } from './dto/add-comment.dto';
 import { Role } from '@prisma/client';
+import { SocketGateway } from 'src/socket/socket.gateway';
 
 @Injectable()
 export class CodeReviewService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private socketGateway: SocketGateway) {}
 
   async create(createCodeReviewDto: CreateCodeReviewDto) {
     const codeReview = await this.prisma.codeReview.create({
@@ -165,6 +166,8 @@ export class CodeReviewService {
     };
     
     const updatedComments = [...existingComments, newComment];
+
+    this.socketGateway.handleMessage({id: codeReview.id, message: dto.message, sender: role})
 
     // Update the code review with the new comment
     return this.prisma.codeReview.update({

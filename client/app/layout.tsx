@@ -22,7 +22,7 @@ export default async function RootLayout({
       {/* @ts-ignore */}
       <body style={{ '--topic-pramiry-color': user?.role === 'code_reviewer' ? '#0059FF' : (user?.selectedTopic?.color || '#0059FF') }}>
         <StoreProvider>
-          {children}
+            {children}
         </StoreProvider>
       </body>
     </html>

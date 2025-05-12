@@ -12,9 +12,10 @@ import { TopicsModule } from './topics/topics.module';
 import { UtilsModule } from './utils/utils.module';
 import { CodeReviewModule } from './code-review/code-review.module';
 import { CommunityModule } from './community/community.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, LessonsModule, UserModule, QuizModule, ChallengesModule, CourseModule, TopicsModule, UtilsModule, CodeReviewModule, CommunityModule],
+  imports: [PrismaModule, AuthModule, LessonsModule, UserModule, QuizModule, ChallengesModule, CourseModule, TopicsModule, UtilsModule, CodeReviewModule, CommunityModule, SocketModule],
   controllers: [AppController],
   providers: [AppService],
 })
