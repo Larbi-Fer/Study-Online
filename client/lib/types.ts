@@ -241,3 +241,18 @@ interface CommentArgs {
   }
   createdAt: Date
 }[]
+
+interface ProfileArgs {
+  fullname: string
+  email: string
+  icon: ImageArgs
+  level: number
+  role: UserRole
+  topicEnrollments: {
+    topic: {
+      title: string
+      icon: ImageArgs
+    }
+  }[]
+  discussions: DiscussionArgs[]
+}

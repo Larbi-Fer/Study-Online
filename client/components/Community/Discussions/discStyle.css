@@ -1,0 +1,130 @@
+.discussion {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+.discussion:last-child {
+  border-bottom: none;
+}
+
+.discussion > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Header */
+.discussion-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.vote-count {
+  font-size: 1rem;
+  color: #3339;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid transparent;
+  padding: 2px 7px 2px 20px;
+  border-radius: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: .1s;
+}
+
+.vote-count:hover {
+  color: #333;
+  border: 1px solid #7776;
+  background-color: #f0f0f0;
+}
+
+.vote-count .vote-icon {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 1px;
+  top: 5px;
+  transition: .3s;
+}
+
+.vote-count.voted .vote-icon {
+  transform: translateY(-50%);
+}
+
+.vote-count.voted {
+  color: #007bff;
+}
+
+.vote-count svg {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 3px;
+}
+
+.discussion-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user {
+  font-size: 0.875rem;
+  color: #777;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+/* Meta Info */
+.discussion-meta {
+  font-size: 0.875rem;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.comment-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.comment-count svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Tags */
+.discussion-tags-list {
+  display: flex;
+  gap: 10px;
+}
+
+.discussion-tags-list .tag {
+  padding: 3px 12px;
+  background-color: #f0f0f0;
+  color: #555;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.discussion-tags-list .tag:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Hover effects for discussion item */
+.discussion:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}

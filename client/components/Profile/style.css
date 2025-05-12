@@ -1,0 +1,106 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.profile-container {
+  width: 80%;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.profile-container .info {
+  border-right: 1px solid #0003;
+  padding: 10px 30px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-icon img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.profile-info .fullname {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.profile-info .email {
+  font-size: 16px;
+  color: #777;
+}
+
+.completed-topics,
+.discussions {
+  margin-top: 30px;
+}
+
+.completed-topics h2,
+.discussions h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #444;
+}
+
+.topics-list,
+.discussions {
+  display: flex;
+  flex-direction: column;
+}
+
+.discussions-list {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.topic-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  gap: 10px;
+  max-width: 100px;
+  align-items: center;
+}
+
+.topic-icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.topic-title {
+  font-size: 16px;
+}
+
+.topic-item:hover {
+  background-color: #e9e9e9;
+  cursor: pointer;
+}

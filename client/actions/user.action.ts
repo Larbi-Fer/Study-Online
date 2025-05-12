@@ -76,6 +76,18 @@ export const getStreaks = async (userId: string, month: number): Promise<UserAct
   }
 }
 
+export const getProfile = async (profileId: string, userId?: string): Promise<UserActionProps> => {
+  try {
+    const res = await api(`${path}/${profileId}/profile/?${userId ? `userId=${userId}` : ''}`, 'GET')
+    const data = await res.json()
+
+    return { message: data.message, payload: data.payload }
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR'}
+  }
+}
+
 export async function setSelectedTopic(topicId: string) {
   (await cookies()).set('selectedTopicId', topicId)
 }

@@ -129,4 +129,48 @@ export class UserService {
     })
     return { message: 'SUCCESS', payload: res }
   }
+
+  async getProfile(profileId: string, userId?: string) {
+    return await this.prisma.user.findUnique({
+      where: {id: profileId},
+      select: {
+        fullname: true,
+        email: true,
+        icon: true,
+        level: true,
+        role: true,
+        topicEnrollments: {
+          where: {completed: true},
+          select: {
+            topic: {
+              select: {title: true, icon: true}
+            }
+          }
+        },
+        discussions: {
+          take: 4,
+          include: {
+            user: {
+              select: {
+                id: true,
+                fullname: true,
+                email: true
+              }
+            },
+            _count: {
+              select: {
+                comments: true,
+                votes: true
+              }
+            },
+            votes: {
+              where: {
+                userId
+              }
+            }
+          }
+        },
+      }
+    })
+  }
 }

@@ -10,6 +10,7 @@ import { getDiscussions, voteDiscussion } from "@/actions/community.actions"
 import Button from "@/ui/Button"
 import Loading from "@/ui/Loading"
 import { formatDistanceToNowStrict } from "date-fns"
+import Discussion from "./Discussion"
 
 type DiscussionsProps = {
   defaultDisc: {
@@ -29,17 +30,14 @@ const Discussions = ({ defaultDisc }: DiscussionsProps) => {
   const userId = useAppSelector(state => state.user?.id)
   const searchParams = useSearchParams()
   const router = useRouter()
-
+  console.log(defaultDisc);
+  
   useEffect(() => {
     setDiscussions(defaultDisc.discussions)
     setTotal(defaultDisc.total)
     setHasMore(defaultDisc.hasMore)
     setLoading(undefined)
   }, [defaultDisc])
-
-  const goToDiscussion = (id: string) => {
-    router.push(`/community/discussion/${id}`)
-  }
 
   const vote = (discussionId: string) => async (e: React.FormEvent<HTMLSpanElement>) => {
     e.stopPropagation()
@@ -120,41 +118,7 @@ const Discussions = ({ defaultDisc }: DiscussionsProps) => {
       </div> : 
       <div className="list">
         {discussions.map(discussion => (
-          <div key={discussion.id} className="discussion" onClick={() => goToDiscussion(discussion.id)}>
-            <div>
-              <div className="discussion-header">
-                <Tooltip title={userId ? 'vote' : 'You must be logged in'}>
-                  <span
-                    className={"vote-count" + (discussion.votes.length ? ' voted' : '')}
-                    onClick={vote(discussion.id)}
-                    style={{ cursor: userId ? 'pointer' : 'default' }}
-                  >
-                    <div className="vote-icon">
-                      <ArrowUpIcon />
-                      <ArrowUpIcon color={discussion.votes.some(v => v.userId === userId) ? "#007bff" : undefined} />
-                    </div>
-                    {discussion._count.votes}
-                  </span>
-                </Tooltip>
-                <h4>{discussion.title}</h4>
-                <span className="user">@{discussion.user.fullname || discussion.user.email.split('@')[0]}</span>
-              </div>
-              <div className="discussion-meta">
-                <span>
-                  {formatDistanceToNowStrict(discussion.createdAt, { addSuffix: true })}
-                </span>
-                <span className="comment-count">
-                  <MessageSquareIcon /> {discussion._count.comments}
-                </span>
-              </div>
-            </div>
-
-            <div className="discussion-tags-list">
-              {discussion.tags.map(tag => (
-                <span key={tag} className="tag" onClick={searchByTag(tag)}>{tag}</span>
-              ))}
-            </div>
-          </div>
+          <Discussion key={discussion.id} discussion={discussion} searchByTag={searchByTag} userId={userId} vote={vote} />
         ))}
         {hasMore &&
         <div className="load-more">

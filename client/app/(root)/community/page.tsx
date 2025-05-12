@@ -1,7 +1,6 @@
 import { getDiscussions } from "@/actions/community.actions"
 import Discussions from "@/components/Community/Discussions"
 import { getUserData } from "@/lib/serverUtils"
-import {} from 'next/navigation'
 
 export const metadata = {
   title: 'Community'
@@ -16,6 +15,8 @@ const CommunityPage = async({searchParams}: {searchParams: Promise<{[key: string
     q: params.q as string,
     tag: params.tag as string 
   })
+  console.log(params);
+  
 
   return (
     <div>
