@@ -25,6 +25,26 @@ export class TopicsService {
     });
   }
 
+  async enrollInTopic(id: string, userId: string) {
+    const lesson = await this.prisma.lesson.findFirst({
+      where: {
+        topicId: id,
+        number: 1
+      },
+      select: {id: true}
+    })
+
+    await this.prisma.topicEnrollment.create({
+      data: {
+        topicId: id,
+        userId,
+        currentLessonId: lesson.id
+      },
+    })
+
+    return lesson.id
+  }
+
   // Admin
   async createTopic({dependencies, ...topic}: CreateTopicDto) {
     const number = await this.prisma.topic.count()+1

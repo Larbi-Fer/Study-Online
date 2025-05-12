@@ -1,7 +1,7 @@
-import Button from "@/ui/Button"
 import Image from "next/image"
 import TopicCard from "../TopicCard"
 import * as motion from 'motion/react-client'
+import EnrollButton from "./EnrollButton";
 
 const containerVariants = {
   hidden: { opacity: 0, x: -10 },
@@ -16,6 +16,7 @@ const containerVariants = {
 };
 const TopicSide = ({topic}: {topic: Topic}) => {
   const dependencies = (topic.dependencies as Topic[]).map(d => ({...d, description: d.description.split(' ').slice(0, 5).join(' ') + ' ...'}))
+
   return (
     <motion.div 
       className="topic-side"
@@ -25,13 +26,13 @@ const TopicSide = ({topic}: {topic: Topic}) => {
     >
       <motion.div className="topic-details" variants={containerVariants}>
         <motion.div variants={containerVariants} className="topic-side-enroll">
-          <Button background={topic.color}>Enroll</Button>
+          <EnrollButton topic={topic} id={topic.id} />
         </motion.div>
         <motion.div variants={containerVariants} className="topic-side-image">
-          <Image src={topic.image.path} alt={topic.title} width={100} height={100} />
+          <Image src={topic.image.path || '/images/default-topic.jpg'} alt={topic.title} width={100} height={100} />
         </motion.div>
         <motion.div variants={containerVariants} className="topic-side-header">
-          <Image src={topic.icon.path} alt={topic.title} width={35} height={35} />
+          {topic.icon.path && <Image src={topic.icon.path} alt={topic.title} width={35} height={35} />}
           <h1>{topic.title}</h1>
         </motion.div>
         <motion.div variants={containerVariants} className="topic-side-content">

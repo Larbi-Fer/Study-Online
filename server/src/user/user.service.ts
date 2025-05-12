@@ -21,6 +21,7 @@ export class UserService {
         topicEnrollments: {select: {
           currentLesson: {select: { id: true, number: true }},
           level: true,
+          completed: true,
           topic: {select: {id: true, title: true, type: true, color: true}}
         }}
       }

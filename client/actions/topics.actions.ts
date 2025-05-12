@@ -42,6 +42,17 @@ export const getTopic = async (id: string): Promise<TopicsActionProps> => {
   }
 };
 
+export const enrollInTopic = async (id: string, userId: string): Promise<TopicsActionProps> => {
+  try {
+    const res = await api(`${PATH}/${id}/enroll`, 'POST', {userId});
+    const data = await res.json();
+
+    return { message: 'SUCCESS', payload: data };
+  } catch (error) {
+    return { message: 'ERROR', payload: null };
+  }
+};
+
 export const updateTopic = async (id: string, topic: any): Promise<TopicsActionProps> => {
   try {
     const res = await api(`${PATH}/${id}`, 'PUT', topic);

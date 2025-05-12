@@ -5,3 +5,4 @@ export const LESSON_CONTNET_TYPES: LessonContentType[] = ['markdown', 'code', 'i
 export const DEFAULT_LESSON_ITEM = '#### Simple example'
 
 export const DISCUSSIONS_NUMBER = 5
+export const REQUIRED_TOPICS_NUMBER = 2

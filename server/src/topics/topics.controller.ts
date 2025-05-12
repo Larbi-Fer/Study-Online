@@ -21,6 +21,12 @@ export class TopicsController {
     return this.topicsService.fetchTopic(id);
   }
 
+  @Post(':id/enroll')
+  async enroll(@Param('id') id: string, @Body() {userId}: {userId: string}) {
+    const lessonId = await this.topicsService.enrollInTopic(id, userId);
+    return {lessonId}
+  }
+
   @Put(':id')
   async updateTopic(@Param('id') id: string, @Body() topic: UpdateTopicDto) {
     return this.topicsService.updateTopic(id, topic);

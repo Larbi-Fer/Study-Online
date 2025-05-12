@@ -175,7 +175,7 @@ interface TopicEnrollment {
   };
   currentLesson: CurrentLessonProps
   level: number;
-  completed: true;
+  completed: boolean;
 }
 
 type ProgrammeTypes = 'challenge' | 'lesson'
@@ -187,6 +187,7 @@ interface Topic {
   icon: ImageArgs;
   image: ImageArgs;
   color: string;
+  type: TopicType
   dependencies?: {
     id: string
     title: string
