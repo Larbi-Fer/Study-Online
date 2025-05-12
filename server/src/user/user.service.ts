@@ -110,9 +110,11 @@ export class UserService {
         select: {type: true, number: true}
       })
 
+      if (topicType == 'required') return
+
       const userPoints = await this.challengesService.getUserPoints(userId, topicId)
 
-      if (topicType == 'required' && userPoints >= CHALLENGES_PONTS_REQUIRED) {
+      if (userPoints >= CHALLENGES_PONTS_REQUIRED) {
         // enroll user in next topic
         const nextTopicId = await this.utils.enrollNextTopic(userId, topicId, topicNumber)
 
