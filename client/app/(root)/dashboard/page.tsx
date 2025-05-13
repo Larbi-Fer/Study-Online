@@ -1,7 +1,7 @@
-import { getUserFromCookies } from '@/actions/auth.actions';
 import { getDashboardData } from '@/actions/dashboard.actions';
 import Dash from '@/components/dashboard'
 import { getUserData } from '@/lib/serverUtils';
+import AdminDashboard from '../../../components/dashboard/Admin';
 
 const Dashboard = async() => {
   let user = (await getUserData())!
@@ -16,9 +16,7 @@ const Dashboard = async() => {
 
   if (user.role === 'admin') {
     return (
-      <div>
-        <h1>Admin Dashboard</h1>
-      </div>
+      <AdminDashboard />
     )
   }
 

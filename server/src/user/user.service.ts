@@ -4,6 +4,7 @@ import { CODES } from 'src/lib/codes';
 import { CHALLENGES_PONTS_REQUIRED, QUIZ_PASS_PERCENTAGE } from 'src/lib/constant';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UtilsService } from 'src/utils/utils.service';
+import * as argon from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -12,6 +13,39 @@ export class UserService {
     private utils: UtilsService,
     private challengesService: ChallengesService
   ) {}
+
+  async createReviewer(data: { email: string; fullname: string; password: string }) {
+    try {
+      // Check if user with email already exists
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: data.email }
+      });
+
+      if (existingUser) {
+        return null;
+      }
+
+      // Hash the password using argon2
+      const hashedPassword = await argon.hash(data.password);
+
+      // Create the reviewer
+      const reviewer = await this.prisma.user.create({
+        data: {
+          email: data.email,
+          fullname: data.fullname,
+          password: hashedPassword,
+          role: 'code_reviewer',
+          level: 1,
+          isActive: true
+        }
+      });
+
+      return reviewer;
+    } catch (error) {
+      console.error('Error creating reviewer:', error);
+      return null;
+    }
+  }
 
   async getUserMainData(id: string) {
     return await this.prisma.user.findUnique({

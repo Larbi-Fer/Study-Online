@@ -9,6 +9,7 @@ const path = '/user'
 type UserActionProps = {
   payload?: any,
   message?: string,
+  viewMessage?: string,
 }
 
 export const nextLesson = async (id: string, topicId: string): Promise<UserActionProps> => {
@@ -82,6 +83,20 @@ export const getProfile = async (profileId: string, userId?: string): Promise<Us
     const data = await res.json()
 
     return { message: data.message, payload: data.payload }
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR'}
+  }
+}
+
+export const createReviewer = async (email: string, fullname: string, password: string): Promise<UserActionProps> => {
+  try {
+    const res = await api(`${path}/123/create-reviewer`, 'POST', {email, fullname, password})
+    const data = await res.json()
+
+    if (data.message != 'SUCCESS') return {message: data.message, viewMessage: data.viewMessage}
+    
+    return {message: 'SUCCESS', payload: data.payload}
   } catch (error) {
     console.error(error);
     return {message: 'ERROR'}

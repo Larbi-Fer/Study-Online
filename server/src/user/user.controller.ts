@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { NewAnswersDto, QuizIdDto, TopicIdDto } from './dto';
 
@@ -6,7 +6,16 @@ import { NewAnswersDto, QuizIdDto, TopicIdDto } from './dto';
 export class UserController {
   constructor(private userService: UserService) { }
 
-  @Get('main-data')
+  @Post('/create-reviewer')
+  async createReviewer(
+    @Body() data: { email: string; fullname: string; password: string }
+  ) {
+    const reviewer = await this.userService.createReviewer(data);
+    if (!reviewer) return { message: 'ERROR', viewMessage: 'User already exists' };
+    return { message: 'SUCCESS', payload: reviewer };
+  }
+
+  @Get('/main-data')
   userMainData(@Param('id') id: string) {
     return this.userService.getUserMainData(id)
   }
