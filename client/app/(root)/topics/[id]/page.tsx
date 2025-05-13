@@ -18,21 +18,20 @@ export const generateMetadata = async ({params}: {params: Promise<{id: string}>}
       type: 'website',
       title: topic.title,
       description: topic.description,
-      images: [
+      images: topic.image.path ? [
         {
           url: topic.image.path,
         },
-      ],
+      ] : [],
     },
-    icons: [{
+    icons: topic.icon.path ? [{
       url: topic.icon.path
-    }]
+    }] : []
   }
 }
 
 const TopicPage = async ({params}: {params: Promise<{id: string}>}) => {
   const topicId = (await params).id
-  const user = (await getUserData())!
 
   const topic = (await getTopic(topicId)).payload
   if (!topic) return notFound()
@@ -42,6 +41,7 @@ const TopicPage = async ({params}: {params: Promise<{id: string}>}) => {
     <div className="topic-page">
       <TopicSide topic={topic} />
       <LessonsSide lessons={lessons} color={topic.color} />
+      hello
     </div>
   )
 }
