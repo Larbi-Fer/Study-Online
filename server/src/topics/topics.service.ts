@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTopicDto, Topic, UpdateTopicDto } from './dto/topics.dto';
+import { REQUIRED_TOPICS_NUMBER } from 'src/lib/constant';
 
 @Injectable()
 export class TopicsService {
@@ -26,6 +27,17 @@ export class TopicsService {
   }
 
   async enrollInTopic(id: string, userId: string) {
+    const lastTopic = await this.prisma.topicEnrollment.findFirst({
+      where: {
+        topic: {
+          number: REQUIRED_TOPICS_NUMBER
+        }
+      }
+    })
+
+    if (!lastTopic) return null;
+    if (!lastTopic.completed) return null;
+
     const lesson = await this.prisma.lesson.findFirst({
       where: {
         topicId: id,
