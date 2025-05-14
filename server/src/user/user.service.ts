@@ -25,7 +25,6 @@ export class UserService {
         return null;
       }
 
-      // Hash the password using argon2
       const hashedPassword = await argon.hash(data.password);
 
       // Create the reviewer
@@ -88,7 +87,6 @@ export class UserService {
       select: {id: true}
     })
 
-    console.log(nextLesson);
     if (!nextLesson) return { message: 'SUCCESS', payload: null }
 
     // update current lesson on topicEnrollment to next lesson
