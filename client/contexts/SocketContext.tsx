@@ -21,8 +21,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     setSocket(newSocket);
 
     newSocket.on('receive-notification-' + userId, (notification: NotificationProps) => {
-      console.log('notification, ', document.location.pathname);
-
       dispatch(receiveNotification(notification))
       if (notification.type == 'review' && document.location.pathname == '/reviews/' + notification.id) return;
       Toast(notification.content, 'info')
