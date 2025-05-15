@@ -177,7 +177,7 @@ export class CodeReviewService {
     if (codeReview.reviewerId) {
       this.utils.createNotification({
         id: codeReview.id,
-        content: role == 'student' ? 'A student add comment on `' + codeReview.subject + '`' : 'The code reviewer made a feedback on your code-review request - `' + codeReview.subject + '`',
+        content: role == 'student' ? 'A student commented on `' + codeReview.subject + '`' : 'The code reviewer provided feedback on your request: `' + codeReview.subject + '`',
         link: '/reviews/' + codeReview.id,
         type: 'review',
         userId: role == 'student' ? codeReview.reviewerId : codeReview.userId
