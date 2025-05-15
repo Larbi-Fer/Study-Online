@@ -208,4 +208,28 @@ export class UserService {
       }
     })
   }
+
+  async getNotifications(id: string) {
+    return await this.prisma.notification.findMany({
+      where: { userId: id },
+      take: 10,
+      orderBy: {
+        time: 'desc'
+      }
+    })
+  }
+
+  async notificationSeen(userId: string, id: string) {
+    return await this.prisma.notification.update({
+      where: { id_userId: {
+        id,
+        userId
+      } },
+      data: {
+        isSeen: true
+      }
+    })
+  }
+
+
 }

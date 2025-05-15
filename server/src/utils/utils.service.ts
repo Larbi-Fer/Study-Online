@@ -1,9 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { SocketGateway } from 'src/socket/socket.gateway';
+
+type NotificationProps = {
+  id: string
+  userId: string
+  content: string
+  link: string
+  type: string
+}
+
 
 @Injectable()
 export class UtilsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private socket: SocketGateway) {}
   
   async enrollNextTopic(userId: string, topicId: string, topicNumber: number) {
     const nextTopic = await this.prisma.topic.findFirst({
@@ -32,6 +42,23 @@ export class UtilsService {
     })
 
     return nextTopicId
+  }
+
+  async createNotification(data: NotificationProps) {
+    await this.prisma.notification.upsert({
+      create: { ...data, isSeen: false },
+      update: { ...data, isSeen: false },
+      where: {id_userId: {
+        id: data.id,
+        userId: data.userId
+      }}
+    })
+
+    this.socket.notifyUser(data.userId, {
+      ...data,
+      isSeen: false,
+      time: new Date()
+    })
   }
 
 }

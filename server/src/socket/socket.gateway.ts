@@ -28,4 +28,8 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     
     this.server.emit('review-message-' + payload.id, payload.message, payload.sender);
   }
+  
+  notifyUser(userId: string, notification: any) {
+    this.server.emit('receive-notification-' + userId, notification);
+  }
 }

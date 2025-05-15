@@ -33,6 +33,7 @@ model User {
   codeReviewsCodeReviewer CodeReview[] @relation("CodeReviewerCodeReviewer")
   role Role @default(student)
   votes Vote[]
+  notifications Notification[]
 
   otp Otp?
   topicEnrollments TopicEnrollment[]
@@ -263,4 +264,19 @@ model Comment {
   discussionId String
   user         User       @relation(fields: [userId], references: [id])
   discussion   Discussion @relation(fields: [discussionId], references: [id])
+}
+
+model Notification {
+  id String
+  userId String
+  content String
+  link String
+
+  time DateTime @updatedAt
+  isSeen Boolean
+  type String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([id, userId])
 }

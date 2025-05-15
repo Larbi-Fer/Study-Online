@@ -2,13 +2,15 @@ import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './features/user'
 import programmesReducer from './features/programmes'
 import lessonReducer from './features/lesson'
+import notificationsReducer from './features/notifications'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
       programmes: programmesReducer,
-      lesson: lessonReducer
+      lesson: lessonReducer,
+      notifications: notificationsReducer
     }
   })
 }

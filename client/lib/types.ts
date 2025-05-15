@@ -257,3 +257,13 @@ interface ProfileArgs {
   }[]
   discussions: DiscussionArgs[]
 }
+
+interface NotificationProps {
+  id: string
+  userId: string
+  content: string
+  link: string
+  type: string
+  isSeen: boolean
+  time: Date
+}

@@ -49,4 +49,20 @@ export class UserController {
       payload: p
     }
   }
+
+  @Get('/notifications')
+  async getNotifs(@Param('id') id: string) {
+    const notifs = await this.userService.getNotifications(id)
+    
+    return {
+      message: 'SUCCESS',
+      payload: notifs
+    }
+  }
+
+  @Post('/notifications/:gid')
+  async notifSeen(@Param('id') userId: string, @Param('gid') id: string) {
+    await this.userService.notificationSeen(userId, id)
+    return {message: 'SUCCESS'}
+  }
 }

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class CommunityService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private utils: UtilsService) {}
   
   async fetchDiscussions({
     userId,
@@ -174,9 +175,31 @@ export class CommunityService {
             id: true,
             fullname: true
           }
+        },
+        discussion: {
+          select: {
+            title: true,
+            userId: true,
+          }
         }
       }
     });
+
+    const discussion = comment.discussion
+
+    if (userId != discussion.userId) {
+      console.log('test');
+      
+      this.utils.createNotification({
+        content: 'You have new comments on your discussion: ' + discussion.title,
+        id: comment.discussionId,
+        link: '/community/discussion/' + comment.discussionId,
+        type: 'discussion',
+        userId: discussion.userId
+      })
+    }
+
+    delete comment.discussion
 
     return comment;
   }

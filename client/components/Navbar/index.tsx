@@ -8,6 +8,7 @@ import { UserCircle } from "lucide-react"
 
 import './style.css'
 import ProfileMenu from "./ProfileMenu"
+import NotificationMenu from "./NotificationsMenu"
 
 type NavbarProps = {
   type: 'student' | 'reviewer' | 'main-page'
@@ -45,6 +46,9 @@ const Navbar = ({ type }: NavbarProps) => {
                 <Search />
                 <div className="text-icon">
                   <ProfileMenu />
+                </div>
+                <div className="text-icon">
+                  <NotificationMenu />
                 </div>
               </>
             :

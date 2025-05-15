@@ -4,10 +4,15 @@ import { CreateCodeReviewDto } from './dto/create-code-review.dto';
 import { AddCommentDto } from './dto/add-comment.dto';
 import { Role } from '@prisma/client';
 import { SocketGateway } from 'src/socket/socket.gateway';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class CodeReviewService {
-  constructor(private prisma: PrismaService, private socketGateway: SocketGateway) {}
+  constructor(
+    private prisma: PrismaService,
+    private socketGateway: SocketGateway,
+    private utils: UtilsService
+  ) {}
 
   async create(createCodeReviewDto: CreateCodeReviewDto) {
     const codeReview = await this.prisma.codeReview.create({
@@ -168,6 +173,16 @@ export class CodeReviewService {
     const updatedComments = [...existingComments, newComment];
 
     this.socketGateway.handleMessage({id: codeReview.id, message: dto.message, sender: role})
+    
+    if (codeReview.reviewerId) {
+      this.utils.createNotification({
+        id: codeReview.id,
+        content: role == 'student' ? 'A student add comment on `' + codeReview.subject + '`' : 'The code reviewer made a feedback on your code-review request - `' + codeReview.subject + '`',
+        link: '/reviews/' + codeReview.id,
+        type: 'review',
+        userId: role == 'student' ? codeReview.reviewerId : codeReview.userId
+      })
+    }
 
     // Update the code review with the new comment
     return this.prisma.codeReview.update({

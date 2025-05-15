@@ -3,6 +3,7 @@
 import { QUIZ_PASS_PERCENTAGE } from "@/lib/constant"
 import api from "./api"
 import { cookies } from "next/headers"
+import apiv2 from "./apiv2"
 
 const path = '/user'
 
@@ -100,6 +101,30 @@ export const createReviewer = async (email: string, fullname: string, password: 
   } catch (error) {
     console.error(error);
     return {message: 'ERROR'}
+  }
+}
+
+export const getNotifications = async (userId: string): Promise<UserActionProps> => {
+  try {
+    const data = await apiv2.get(`${path}/${userId}/notifications`)
+
+    return data
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR', payload: null}
+  }
+}
+
+export const notificationSeen = async (userId: string, id: string): Promise<UserActionProps> => {
+  try {
+    console.log(userId, id);
+    
+    const data = await apiv2.post(`${path}/${userId}/notifications/${id}`)
+
+    return data
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR', payload: null}
   }
 }
 
