@@ -18,7 +18,7 @@ const Quiz = async({params}: {params: Promise<{id: string}>}) => {
   const lessonLevel = Math.ceil(data.payload.lesson.number / 3)
   
   // Check if user's level matches the quiz level
-  if (lessonLevel !== user.selectedTopic?.level) return redirect('/lessons')
+  // if (lessonLevel !== user.selectedTopic?.level) return redirect('/lessons')
 
   // Check if quiz is locked due to recent failure
   if (data.payload.quizResults?.length > 0) {
@@ -28,9 +28,9 @@ const Quiz = async({params}: {params: Promise<{id: string}>}) => {
         (new Date().getTime() - new Date(lastResult.lastAttempt).getTime()) / (1000 * 60 * 60)
       )
       
-      if (hoursSinceLastAttempt < 24) {
-        return redirect(`/quiz/${(await params).id}/statistics`)
-      }
+      // if (hoursSinceLastAttempt < 24) {
+      //   return redirect(`/quiz/${(await params).id}/statistics`)
+      // }
     }
   }
 
