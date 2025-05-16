@@ -8,6 +8,7 @@ import Search from "./Search"
 import './style.css'
 import ProfileMenu from "./ProfileMenu"
 import NotificationMenu from "./NotificationsMenu"
+import Image from "next/image"
 
 type NavbarProps = {
   type: 'student' | 'reviewer' | 'main-page'
@@ -18,7 +19,9 @@ const Navbar = ({ type }: NavbarProps) => {
     <nav>
       <header className={type == 'main-page' ? 'main-page-nav' : ''}>
         <h2 className="logo">
-          <Link href={type == 'main-page' ? '/' : '/dashboard'}>Coding</Link>
+          <Link href={type == 'main-page' ? '/' : '/dashboard'} style={{display: 'flex'}}>
+            <Image src='/logo.png' alt="CodeForm PY" width={150} height={25} />
+          </Link>
         </h2>
         <nav>
           <ul className="nav-links">
