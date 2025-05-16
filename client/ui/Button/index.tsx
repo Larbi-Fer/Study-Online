@@ -10,7 +10,7 @@ type ButtonProps = {
   transparent?: boolean
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button = ({ children, transparent, onClick, background, fullWidth, loading, ...props } : ButtonProps) => {
+const Button = ({ children, transparent, onClick, background, fullWidth, className, loading, ...props } : ButtonProps) => {
   const btnRef = useRef<HTMLButtonElement>(null)
   const [spans, setSpans] = useState<React.ReactNode[]>([])
 
@@ -42,7 +42,7 @@ const Button = ({ children, transparent, onClick, background, fullWidth, loading
 
   return (
     <div className={"button-container" + (loading ? ' loading' : '')}>
-      <button {...props} className={'button' + ( transparent ? ' transparent' : ' primary' )} onClick={handelClick} ref={btnRef} style={btnStyle} disabled={loading || props.disabled}>
+      <button {...props} className={'button ' + ( transparent ? 'transparent ' : 'primary ' ) + (className ?? '')} onClick={handelClick} ref={btnRef} style={btnStyle} disabled={loading || props.disabled}>
         <div>{children}</div>
         { spans.map(span => span) }
       </button>

@@ -16,6 +16,7 @@ header {
   background-color: var(--nav-bg);
   backdrop-filter: blur(10px);
   box-shadow: 0px 3px 20px #0005;
+  transition: .3s;
   z-index: 5;
 }
 

@@ -4,7 +4,6 @@ import Link from "next/link"
 
 import Button from "@/ui/Button"
 import Search from "./Search"
-import { UserCircle } from "lucide-react"
 
 import './style.css'
 import ProfileMenu from "./ProfileMenu"
@@ -17,9 +16,9 @@ type NavbarProps = {
 const Navbar = ({ type }: NavbarProps) => {
   return (
     <nav>
-      <header className="fade">
+      <header className={type == 'main-page' ? 'main-page-nav' : ''}>
         <h2 className="logo">
-          <Link href='/dashboard'>Coding</Link>
+          <Link href={type == 'main-page' ? '/' : '/dashboard'}>Coding</Link>
         </h2>
         <nav>
           <ul className="nav-links">
@@ -36,7 +35,9 @@ const Navbar = ({ type }: NavbarProps) => {
               <li><Link href='/order-reviews'>Order Reviews</Link></li>
               <li><Link href='/reviews'>Reviews</Link></li>
             </>
-            : null)}
+            : (type == 'main-page' ?
+              <li><Link href='/topics'>Topics</Link></li>
+            : null))}
             <li><Link href='/community'>Community</Link></li>
           </ul>
         </nav>
@@ -53,8 +54,7 @@ const Navbar = ({ type }: NavbarProps) => {
               </>
             :
               <>
-                <Link href='/signup' className="cta"><Button>GET STARTED</Button></Link>
-                <Link href='/login' className="cta"><Button>LOGIN</Button></Link>
+                <Link href='/login' className="cta"><Button transparent>LOGIN</Button></Link>
               </>
           }
         </div>
