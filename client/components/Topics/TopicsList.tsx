@@ -25,12 +25,28 @@ const TopicsList = ({topics, isAdmin}: {topics: Topic[], isAdmin?: boolean}) => 
           Explore various topics to enhance your coding skills.
         </Typography>
       </Grid>
-      {topics.map((topic, i) => (
-        
-        <Grid size={{ xs: 12, sm: 6, md: 3 }} key={topic.id} className="topic-card">
-          <TopicCard topic={topic} i={i} edit={isAdmin} />
-        </Grid>
-      ))}
+      <Grid size={12}>
+        <h3>Required Topics</h3>
+      </Grid>
+      {topics.map((topic, i) => {
+        if (topic.type == 'optional') return;
+        return ( 
+          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={topic.id} className="topic-card">
+            <TopicCard topic={topic} i={i} edit={isAdmin} />
+          </Grid>
+      )})}
+
+      <Grid size={12}>
+        <h3>Optional Topics</h3>
+      </Grid>
+      {topics.map((topic, i) => {
+        if (topic.type == 'required') return;
+        return ( 
+          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={topic.id} className="topic-card">
+            <TopicCard topic={topic} i={i} edit={isAdmin} />
+          </Grid>
+      )})}
+
       {isAdmin && (
         <Grid size={{ xs: 12, sm: 6, md: 3 }} className="add-topic">
           <motion.div

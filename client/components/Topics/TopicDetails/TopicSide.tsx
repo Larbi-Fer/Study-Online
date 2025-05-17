@@ -29,10 +29,10 @@ const TopicSide = ({topic}: {topic: Topic}) => {
           <EnrollButton topic={topic} id={topic.id} />
         </motion.div>
         <motion.div variants={containerVariants} className="topic-side-image">
-          <Image src={topic.image.path || '/images/default-topic.jpg'} alt={topic.title} width={100} height={100} />
+          <img src={topic.image.path || '/images/default-topic.jpg'} alt={topic.title} width={100} height={100} />
         </motion.div>
         <motion.div variants={containerVariants} className="topic-side-header">
-          {topic.icon.path && <Image src={topic.icon.path} alt={topic.title} width={35} height={35} />}
+          {topic.icon.path && <img src={topic.icon.path} alt={topic.title} width={35} height={35} />}
           <h1>{topic.title}</h1>
         </motion.div>
         <motion.div variants={containerVariants} className="topic-side-content">

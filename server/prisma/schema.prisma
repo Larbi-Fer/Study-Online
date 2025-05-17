@@ -87,7 +87,7 @@ model CompletedLessons {
 
 model Topic {
   id      String   @id @default(cuid())
-  number  Int
+  number  Int?
   title   String
   description String?
   icon   Json? @default("{\"path\": \"\", \"id\": \"\"}") // {path: string, id: string}

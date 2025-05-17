@@ -41,7 +41,6 @@ const TopicPage = async ({params}: {params: Promise<{id: string}>}) => {
     <div className="topic-page">
       <TopicSide topic={topic} />
       <LessonsSide lessons={lessons} color={topic.color} />
-      hello
     </div>
   )
 }

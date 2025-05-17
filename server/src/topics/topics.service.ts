@@ -9,6 +9,9 @@ export class TopicsService {
 
   async fetchTopics() {
     return await this.prisma.topic.findMany({
+      orderBy: {
+        number: 'asc'
+      },
       include: {
         dependencies: {
           select: {title: true, id: true}
@@ -59,10 +62,10 @@ export class TopicsService {
 
   // Admin
   async createTopic({dependencies, ...topic}: CreateTopicDto) {
-    const number = await this.prisma.topic.count()+1
+    // const number = await this.prisma.topic.count()+1
     return await this.prisma.topic.create({
       data: {
-        number,
+        // number,
         dependencies: dependencies ? {
           connect: dependencies
         } : null,
