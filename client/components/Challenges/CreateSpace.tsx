@@ -13,7 +13,7 @@ const CreateSpace = () => {
   const [isDone, setIsDone] = useState(false)
 
   useEffect(() => {
-    dispatch(setProgrammes([{code: '', description: 'Description here', goal: '', title: 'Untitled'}]))
+    dispatch(setProgrammes([{code: '', description: 'Description here', goal: '', title: 'Untitled', points: 10, requiredLvl: 1}]))
     dispatch(setEditingProgramme(true))
     setIsDone(true)
 
