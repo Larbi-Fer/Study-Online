@@ -33,28 +33,6 @@ const DescriptionPanel = ({programme, editing}: {programme: ProgrammeArgs, editi
     <Workspace header={
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         {editing ? (
-          // isEdit=='title' ?
-            /* <input
-              type="text"
-              name="title"
-              defaultValue={programme.title}
-              onBlur={e => changeData('title', e.target.value)}
-              autoFocus
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  changeData('title', e.currentTarget.value)
-                }
-              }}
-              onFocus={e => e.target.select()}
-              className="without-border"
-              placeholder="Title"
-              style={{
-                color: 'white',
-                fontSize: '15px',
-              }}
-            />
-          :
-          <div onDoubleClick={() => setIsEdit('title')}>{programme.title}</div> */
           <>
             <div className="text-icon">
               <TextIcon color='#59ff7c' />
