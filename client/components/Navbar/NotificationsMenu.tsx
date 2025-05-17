@@ -87,7 +87,10 @@ const NotificationMenu = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {notifs.length == 0 ?
-          <div style={{padding: '10px 20px', color: '#888'}}>There is no notification</div>
+          <div style={{padding: '10px 20px', color: '#888', textAlign: 'center'}}>
+            <Image src='/icons/no_notification.png' alt="no-notification" width={90} height={90} />
+            <h3>There is no notification</h3>
+          </div>
         :
           notifs.map(n => (
             <div key={n.id}>

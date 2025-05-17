@@ -20,7 +20,7 @@ const Navbar = ({ type }: NavbarProps) => {
       <header className={type == 'main-page' ? 'main-page-nav' : ''}>
         <h2 className="logo">
           <Link href={type == 'main-page' ? '/' : '/dashboard'} style={{display: 'flex'}}>
-            <Image src='/logo.png' alt="CodeForm PY" width={150} height={25} />
+            <Image src='/logo.png' alt="CodeForm PY" width={150} height={25} draggable='false' />
           </Link>
         </h2>
         <nav>
