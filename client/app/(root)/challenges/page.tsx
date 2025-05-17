@@ -6,7 +6,6 @@ import Image from "next/image";
 const Challenges = async() => {
   const user = (await getUserData())!
 
-  if (user.role == 'admin') {}
   const userLvl = user.selectedTopic?.level!
   if (userLvl < 2) return (
     <div style={{textAlign: 'center', marginTop: '60px'}}>

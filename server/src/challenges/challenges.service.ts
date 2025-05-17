@@ -13,7 +13,7 @@ export class ChallengesService {
   ) {}
 
   async getChallenges(topicId: string, take?: number, userId?: string) {
-    let level;
+    let level: number;
     if (userId) {
       const user = await this.prisma.topicEnrollment.findUnique({
         where: {
@@ -35,7 +35,7 @@ export class ChallengesService {
         } : {}
       },
     }
-    if (userId) query.where.challenge = {
+    if (take) query.where.challenge = {
       every: {
         NOT: {
           userId
