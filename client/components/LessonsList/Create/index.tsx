@@ -1,6 +1,6 @@
 'use client'
 import Slides from "@/ui/Slides"
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import EditingSpace from "./EditingSpace"
 import * as motion from 'motion/react-client'
 import { PlusCircleIcon } from "lucide-react"
@@ -10,12 +10,24 @@ import Button from "@/ui/Button"
 import Toast from "@/ui/Toast"
 import { createLesson } from "@/actions/lessons.actions"
 import { Autocomplete, TextField } from "@mui/material"
+import { getTopics } from "@/actions/topics.actions"
 
 const CreateLesson = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [slides, setSlides] = useState<LessonSlideAndIdProps[][]>([[{id: Math.random(), type: 'markdown', markdown: DEFAULT_LESSON_ITEM}, {id: Math.random(), type: 'markdown', markdown: '#### Simple example 2'}, {id: Math.random(), type: 'markdown', markdown: '#### Simple example 3'}]])
   const [active, setActive] = useState<number>(0)
+  const [listTopics, setListTopics] = useState<[{title: string, id: string}] | []>([])
   const [loading, setLoading] = useState(false)
+  const [topic, setTopic] = useState<{title: string, id: string} | null>(null)
+  const [lessonTitle, setLessonTitle] = useState('Untitled')
+
+  useEffect(() => {
+    (async() => {
+      const fetchedTopics = await getTopics()
+      if (fetchedTopics.message == 'SUCCESS') setListTopics(fetchedTopics.payload)
+    })()
+  }, [])
+  
 
   const changeContent = (content: LessonSlideAndIdProps, slide: number, i: number) => {
     setSlides(prevSlides => {
@@ -32,7 +44,6 @@ const CreateLesson = () => {
   }
 
   const removeSlide = () => {
-    // TODO: change this messege
     if (slides.length == 1) return Toast('This is the last slide', 'warning')
     const current = currentSlide
     setCurrentSlide(prev => prev == 0 ? 0 : (prev-1))
@@ -68,26 +79,22 @@ const CreateLesson = () => {
   const submitLesson = async(e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
-    // THEN
-    /* await createLesson(slides.map(slide => slide.map(item => {
-      //// const newItem: LessonSlidesProps | LessonSlideAndIdProps = {...item};
-      return item
-    }))) */
-
+    await createLesson(lessonTitle, topic?.id!, slides)
     setLoading(false)
   }
 
   return (
     <div>
-      <form className="lesson-data">
-        <div className="lesson-fields" onSubmit={submitLesson}>
-          <TextField placeholder="Lesson Title" defaultValue='Untitled' required sx={{'input': {padding: '7.5px 10px'}}} />
+      <form className="lesson-data" onSubmit={submitLesson}>
+        <div className="lesson-fields">
+          <TextField placeholder="Lesson Title" value={lessonTitle} onChange={e => setLessonTitle(e.target.value)} required sx={{'input': {padding: '7.5px 10px'}}} />
           <Autocomplete
             disablePortal
-            // TODO: fetch topics
-            options={['Basics', 'oop']}
+            options={listTopics}
+            getOptionLabel={(option) => option.title}
             sx={{ width: 300, '.MuiInputBase-root': {padding: '0 10px'} }}
+            onChange={(_, nv) => setTopic(nv)}
+            value={topic}
             renderInput={(params) => <TextField {...params} placeholder="Topic" required />}
           />
         </div>

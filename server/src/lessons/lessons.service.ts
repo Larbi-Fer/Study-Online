@@ -189,4 +189,26 @@ export class LessonsService {
       }
     })
   }
+
+  async createLesson(title: string, topicId: string, data: any) {
+    const topic = await this.prisma.topic.findUnique({
+      where: {id: topicId},
+      select: {_count: {
+        select: {
+          lessons: true
+        }
+      }}
+    })
+
+    await this.prisma.lesson.create({
+      data: {
+        title, topicId,
+        tags: '',
+        number: topic._count.lessons + 1,
+        data: {
+          lesson: data
+        },
+      }
+    })
+  }
 }

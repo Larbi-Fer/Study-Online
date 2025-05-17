@@ -32,9 +32,9 @@ export const getLesson = async (lessonId: string): Promise<LessonsActionProps> =
   }
 }
 
-export const createLesson = async (data: LessonSlidesProps): Promise<LessonsActionProps> => {
+export const createLesson = async (title: string, topicId: string, lessonData: LessonSlidesProps): Promise<LessonsActionProps> => {
   try {
-    const res = await api(`${path}/create`, 'POST')
+    const res = await api(`${path}/create`, 'POST', {title, topicId, data: lessonData})
     const data = await res.json()
 
     return data
