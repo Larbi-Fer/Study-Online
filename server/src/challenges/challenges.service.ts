@@ -13,12 +13,26 @@ export class ChallengesService {
   ) {}
 
   async getChallenges(topicId: string, take?: number, userId?: string) {
+    let level;
+    if (userId) {
+      const user = await this.prisma.topicEnrollment.findUnique({
+        where: {
+          userId_topicId: {userId, topicId}
+        },
+        select: {level: true}
+      })
+      level = user.level
+    }
+
     const query: {
       where: Prisma.ProgrammeWhereInput,
       take?: number
     } = {
       where: {
-        topicId
+        topicId,
+        requiredLvl: level ? {
+          lt: level
+        } : {}
       },
     }
     if (userId) query.where.challenge = {

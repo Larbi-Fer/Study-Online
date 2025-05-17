@@ -1,17 +1,19 @@
 import { getChallengesData } from "@/actions/challenges.action";
 import ChallengesList from "@/components/Challenges";
 import { getUserData } from "@/lib/serverUtils";
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation";
+import Image from "next/image";
 
 const Challenges = async() => {
   const user = (await getUserData())!
-  const userLvl = Math.floor(user.lesson?.number! / 3) + 1
-  /*if (userLvl < 2) return (
-    <div>
-      <h2>Complete level 1 first</h2>
+
+  if (user.role == 'admin') {}
+  const userLvl = user.selectedTopic?.level!
+  if (userLvl < 2) return (
+    <div style={{textAlign: 'center', marginTop: '60px'}}>
+      <Image src='/icons/challenge.jpg' alt="challenge" width={100} height={100} />
+      <h2>Finish the first level to start taking on challenges!</h2>
     </div>
-  )*/
+  )
 
   // Get chellenges & points
   const data = await getChallengesData(user.id!, user.selectedTopic?.id!)

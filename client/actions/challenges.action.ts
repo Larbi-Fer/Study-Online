@@ -10,13 +10,14 @@ type ChallengesActionProps = {
   message?: string,
 }
 
-export const getChallengesData = async (userId: string, topicId: string) : Promise<ChallengesActionProps> => {
+export const getChallengesData = async (userId: string | null, topicId: string) : Promise<ChallengesActionProps> => {
   try {
-    const res = await api(`${PATH}/?userId=${userId}&topicId=${topicId}`, 'GET')
+    const res = await api(`${PATH}/?${userId ? ('userId=' + userId + '&') : ''}topicId=${topicId}`, 'GET')
     const data = await res.json()
 
     return data
   } catch (error) {
+    console.error(error);
     return {message: 'ERROR'}
   }
 }

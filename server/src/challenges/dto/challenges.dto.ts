@@ -9,7 +9,7 @@ export class GetChallengesDto {
   @Allow()
   take?: string
   
-  @IsString()
+  @Allow()
   userId: string
 }
 

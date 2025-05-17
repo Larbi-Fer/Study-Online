@@ -11,6 +11,11 @@ type ChallengesListProps = {
 const ChallengesPreviw = ({ challenges, sm=6 }: ChallengesListProps) => {
   return (
     <Grid container spacing={3} className="challenges-list">
+      {challenges.length == 0 && (
+        <h2 style={{margin: 'auto'}}>
+          No challenge
+        </h2>
+      )}
       {challenges.map((ch, index) => (
         <Grid size={{ xs: 12, sm }} key={ch.id}>
           <motion.div
@@ -22,7 +27,7 @@ const ChallengesPreviw = ({ challenges, sm=6 }: ChallengesListProps) => {
               <CardContent>
                 <Typography variant="h6" fontWeight="bold">{ch.title}</Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {ch.points} points | Required Level: {ch.requiredLvl}
+                  {ch.points} points
                 </Typography>
                 <Box mt={2} display="flex" justifyContent="flex-end">
                   <Link href={`/challenges/${ch.id}`} passHref>

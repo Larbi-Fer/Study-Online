@@ -8,8 +8,10 @@ export class ChallengesController {
 
   @Get()
   async getChallengeData(@Query() {topicId, userId}: GetChallengesDto) {
-    const challenges = await this.challengeServise.getChallenges(topicId)
-    const p = await this.challengeServise.getUserPoints(userId)
+    const challenges = await this.challengeServise.getChallenges(topicId, undefined, userId)
+    let p: number;
+    if (userId)
+      p = await this.challengeServise.getUserPoints(userId)
 
     return { message: 'SUCCESS', payload: {
       points: p,

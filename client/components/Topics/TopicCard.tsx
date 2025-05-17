@@ -9,8 +9,8 @@ import * as motion from 'motion/react-client'
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-type Option = 'Edit' | 'Delete'
-const options: Option[] = ['Edit', 'Delete']
+type Option = 'Edit' | 'Delete' | 'Go To Challenges'
+const options: Option[] = ['Edit', 'Delete', 'Go To Challenges']
 const ITEM_HEIGHT = 48;
 
 const TopicCard = ({ topic, i, edit, maxWidth }: {topic: Topic, i: number, edit?: boolean, maxWidth?: number}) => {
@@ -54,6 +54,9 @@ const TopicCard = ({ topic, i, edit, maxWidth }: {topic: Topic, i: number, edit?
         break
       case 'Delete':
         handleOpenDialog();
+        break
+      case 'Go To Challenges':
+        router.push(`/challenges/topic/${topic.id}`)
         break
     }
   }
