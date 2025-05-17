@@ -8,8 +8,10 @@ import { TextareaAutosize } from "@mui/material"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
+type IsEditProps = 'title' | 'description' | 'points' | 'requiredLvl' | null
+
 const DescriptionPanel = ({programme, editing}: {programme: ProgrammeArgs, editing?: boolean}) => {
-  const [isEdit, setIsEdit] = useState<'title' | 'description' | null>(null)
+  const [isEdit, setIsEdit] = useState<IsEditProps>(null)
   const {programmes, i} = useAppSelector(state => ({programmes: state.programmes.codes, i: state.programmes.i}))
   const dispatch = useAppDispatch()
 
@@ -29,11 +31,10 @@ const DescriptionPanel = ({programme, editing}: {programme: ProgrammeArgs, editi
 
   return (
     <Workspace header={
-      <div className='text-icon'>
-        <TextIcon color='#59ff7c' />
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
         {editing ? (
-          isEdit=='title' ?
-            <input
+          // isEdit=='title' ?
+            /* <input
               type="text"
               name="title"
               defaultValue={programme.title}
@@ -53,10 +54,25 @@ const DescriptionPanel = ({programme, editing}: {programme: ProgrammeArgs, editi
               }}
             />
           :
-          <div onDoubleClick={() => setIsEdit('title')}>{programme.title}</div>
+          <div onDoubleClick={() => setIsEdit('title')}>{programme.title}</div> */
+          <>
+            <div className="text-icon">
+              <TextIcon color='#59ff7c' />
+              <EditInput width="100px" isEdit={isEdit == 'title'} value={programme.title} changeData={v => changeData('title', v)} setIsEdit={() => setIsEdit('title')} text={programme.title} />
+            </div>
+            <EditInput width="18px" isEdit={isEdit == 'points'} value={programme.points} changeData={v => changeData('points', v)} setIsEdit={() => setIsEdit('points')} text={programme.points + ' points'} />
+            <EditInput width="18px" isEdit={isEdit == 'requiredLvl'} value={programme.requiredLvl} changeData={v => changeData('requiredLvl', v)} setIsEdit={() => setIsEdit('requiredLvl')} text={'Level: ' + programme.requiredLvl} />
+          </>
         )
         :
-          <div>{programme.title}</div>
+          <>
+            <div className="text-icon">
+              <TextIcon color='#59ff7c' />
+              {programme.title}
+            </div>
+            <div>{programme.points} points</div>
+            <div>Level: {programme.requiredLvl}</div>
+          </>
         }
       </div>
     }>
@@ -88,6 +104,34 @@ const DescriptionPanel = ({programme, editing}: {programme: ProgrammeArgs, editi
         </div>
       }
     </Workspace>
+  )
+}
+
+const EditInput = ({isEdit, value, changeData, setIsEdit, text, width}: {isEdit: boolean, value: string | number, changeData: (value: string) => void, setIsEdit: () => void, text: string, width: string}) => {
+  return (
+    isEdit ?
+      <input
+        type="text"
+        name="title"
+        defaultValue={value}
+        onBlur={e => changeData(e.target.value)}
+        autoFocus
+        onKeyDown={e => {
+          if (e.key === 'Enter') {
+            changeData(e.currentTarget.value)
+          }
+        }}
+        onFocus={e => e.target.select()}
+        className="without-border"
+        placeholder="Title"
+        style={{
+          color: 'white',
+          fontSize: '15px',
+          width
+        }}
+      />
+    :
+    <div onDoubleClick={setIsEdit}>{text}</div>
   )
 }
 

@@ -67,6 +67,8 @@ interface ProgrammeArgs {
   description: string;
   goal: string;
   title: string;
+  points: number | string;
+  requiredLvl: number | string;
 }
 
 // Lesson content

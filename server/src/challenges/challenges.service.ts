@@ -62,7 +62,7 @@ export class ChallengesService {
   async getProgramme(id: string) {
     return await this.prisma.programme.findUnique({
       where: {id},
-      select: { title: true, description: true, goal: true, code: true }
+      select: { title: true, description: true, goal: true, code: true, points: true, requiredLvl: true }
     })
   }
 

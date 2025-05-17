@@ -107,7 +107,7 @@ const Header = ({reset, editor, isEditing, userRole}: {reset: () => void, editor
     
     const code = editor.current.getValue()
     const goal = (document.getElementById('output-goal') as HTMLTextAreaElement)?.value || ''
-    // post method
+
     if (!topic && !progId) {
       setLoading(false)
       return Toast('Please select a topic', 'error')
@@ -116,7 +116,9 @@ const Header = ({reset, editor, isEditing, userRole}: {reset: () => void, editor
     const data = {
       title: program.title,
       description: program.description,
-      code, goal
+      code, goal,
+      points: parseInt(program.points as string),
+      requiredLvl: parseInt(program.requiredLvl as string)
     }
 
     const res = progId ? await updateChallenge(progId, data, topic?.id)
