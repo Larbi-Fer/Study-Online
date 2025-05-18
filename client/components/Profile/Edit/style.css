@@ -1,0 +1,23 @@
+
+.edit-form {
+  width: 90%;
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 20px 30px;
+  border: 1px solid#afafaf;
+  border-radius: 20px;
+}
+
+.edit-form button {
+  margin-top: 10px;
+}
+
+.p-icon {
+  display: flex;
+  gap: 20px;
+  justify-items: center;
+}
+
+.p-icon img {
+  border-radius: 100%;
+}

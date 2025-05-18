@@ -231,5 +231,12 @@ export class UserService {
     })
   }
 
+  async updateProfile(id:string, data: any) {
+    const a = await this.prisma.user.update({
+      where: {id},
+      data
+    })
+  }
+
 
 }

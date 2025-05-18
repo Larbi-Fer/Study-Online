@@ -65,4 +65,10 @@ export class UserController {
     await this.userService.notificationSeen(userId, id)
     return {message: 'SUCCESS'}
   }
+
+  @Patch('/edit')
+  async update(@Param('id') userId: string, @Body() data: any) {    
+    await this.userService.updateProfile(userId, data)
+    return {message: 'SUCCESS'}
+  }
 }

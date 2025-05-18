@@ -117,11 +117,22 @@ export const getNotifications = async (userId: string): Promise<UserActionProps>
 
 export const notificationSeen = async (userId: string, id: string): Promise<UserActionProps> => {
   try {
-    console.log(userId, id);
-    
     const data = await apiv2.post(`${path}/${userId}/notifications/${id}`)
 
     return data
+  } catch (error) {
+    console.error(error);
+    return {message: 'ERROR', payload: null}
+  }
+}
+
+export const editProfile = async (userId: string, data: any): Promise<UserActionProps> => {
+  try {
+    const res = await apiv2.patch(`${path}/${userId}/edit`, data)
+    console.log(res);
+    
+
+    return res
   } catch (error) {
     console.error(error);
     return {message: 'ERROR', payload: null}

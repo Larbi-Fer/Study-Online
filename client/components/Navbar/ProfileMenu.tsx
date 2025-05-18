@@ -2,8 +2,8 @@
 
 import { userLogout } from "@/actions/user.action";
 import { useAppSelector } from "@/lib/hooks";
-import { Avatar, Box, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
-import { LogOutIcon, UserCircle, UserIcon } from "lucide-react";
+import { Avatar, Box, Divider, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
+import { EditIcon, LogOutIcon, UserCircle, UserIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -91,6 +91,13 @@ const ProfileMenu = () => {
           </ListItemIcon>
           Profile
         </MenuItem>
+        <MenuItem onClick={goTo('/profile/edit')}>
+          <ListItemIcon>
+            <EditIcon />
+          </ListItemIcon>
+          Edit
+        </MenuItem>
+        <Divider />
         <MenuItem onClick={logout}>
           <ListItemIcon>
             <LogOutIcon fontSize="small" />
