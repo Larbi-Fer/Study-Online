@@ -6,6 +6,7 @@ import Login from './Login';
 import Signup from './Signup';
 import Activate from './Activate';
 import Reset from './Reset';
+import Image from 'next/image';
 
 const AuthForm = () => {
   const path = usePathname();
