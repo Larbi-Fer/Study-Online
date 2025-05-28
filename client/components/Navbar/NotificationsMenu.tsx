@@ -1,6 +1,6 @@
 'use client'
 
-import { notificationSeen, userLogout } from "@/actions/user.action";
+import { notificationSeen } from "@/actions/user.action";
 import { setNotificationSeen } from "@/lib/features/notifications";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Avatar, Box, Divider, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";

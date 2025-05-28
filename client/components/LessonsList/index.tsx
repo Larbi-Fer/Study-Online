@@ -9,7 +9,7 @@ type LessonsProps = {
 }
 
 const LessonsList = ({ list }: LessonsProps) => {
-  console.log(list)
+
   return (
     <>
       <LessonSidePeek />

@@ -146,5 +146,6 @@ export async function setSelectedTopic(topicId: string) {
 export async function userLogout() {
   const cookiesStore = await cookies();
   cookiesStore.delete('userId');
+  cookiesStore.delete('user');
   cookiesStore.delete('selectedTopicId');
 }

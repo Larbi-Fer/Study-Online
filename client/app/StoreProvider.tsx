@@ -6,6 +6,7 @@ import { setUser } from '@/lib/features/user'
 import { getUserFromCookies } from '@/actions/auth.actions'
 import { getNotifications } from '@/actions/user.action'
 import { setNotifications } from '@/lib/features/notifications'
+import { usePathname } from 'next/navigation'
 
 export default function StoreProvider({
   children
@@ -13,6 +14,7 @@ export default function StoreProvider({
   children: React.ReactNode
 }) {
   const storeRef = useRef<AppStore | null>(null)
+  const path = usePathname()
   // const [makedStore, setMakedStore] = useState(false)
   if (!storeRef.current) {
     storeRef.current = makeStore()  
@@ -20,8 +22,11 @@ export default function StoreProvider({
 
   useEffect(() => {
     ( async() => {
-      if (!storeRef.current) return
-
+      console.log(111);
+      if (!storeRef.current) return;
+      if (storeRef.current.getState().user) return;
+      
+      console.log(222);
       const user = await getUserFromCookies()
 
       if (!user) return
@@ -32,7 +37,7 @@ export default function StoreProvider({
       storeRef.current.dispatch(setNotifications(notifs.payload))
     } )()
     
-  }, [storeRef.current])
+  }, [storeRef.current, path])
 
   return <Provider store={storeRef.current}>{children}</Provider>
 }

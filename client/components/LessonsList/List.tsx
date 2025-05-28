@@ -49,7 +49,7 @@ const List = ({ lesson, next, justRepresent }: ListProps) => {
     return () => clearInterval(interval)
   }, [])
   
-  // Calculate current level based on the first lesson in the list
+  // Calculate current level based on the lesson number
   const currentLevel = Math.ceil(lesson.number / 3)
   const waitTime = (lesson.number + currentLevel - 1) * 0.4
   if (justRepresent) {

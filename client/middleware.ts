@@ -4,7 +4,6 @@ import api from "./actions/api";
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
   const userId = request.cookies.get('userId')?.value
-  console.log('open');
   
 
   if (!userId) {
