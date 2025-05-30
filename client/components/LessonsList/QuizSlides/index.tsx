@@ -50,17 +50,23 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (!qst.time) return
-    setTimeoutVal(setTimeout(() => setIsTimeOut(true), qst.time * 1000))
-  }, [currentSlide])
-  
-
-  const changeSlide = () => {
     if (timeoutVal) {
       clearTimeout(timeoutVal)
       setIsTimeOut(false)
       setTimeoutVal(undefined)
     }
+    if (!qst.time) return
+    setTimeoutVal(setTimeout(() => setIsTimeOut(true), qst.time * 1000))
+  }, [currentSlide])
+
+  useEffect(() => {
+    console.log(isTimeOut);
+  }, [isTimeOut])
+  
+  
+
+  const changeSlide = () => {
+    
     setCurrentSlide(prev => ({ slide: prev.slide+1, selected: -1, stop: false }))
   }
 
@@ -71,8 +77,11 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
     if (i == qst.correct) setRate(prevRate => prevRate + Math.round( 1 / quiz.questions.length * ( isTimeOut ? 50 : 100 ) ))
 
     const prev = statistics
+    console.log('--------------------------');
     // by field
     const type = isTimeOut ? 'timeout' : (i == qst.correct ? 'correct' : 'incorrect')
+    console.log('type, ', type);
+    
     qst.tags.forEach(tag => {
       if (!prev.byField[tag]) prev.byField[tag] = {
         correct: 0, incorrect: 0, timeout: 0
@@ -82,6 +91,7 @@ const QuizSlides = ({ quiz }: { quiz: QuizArgs }) => {
 
     // general
     ++prev.general[type == 'correct' ? 0 : (type == 'incorrect' ? 1 : 2)].value
+    console.log(prev);
 
     setStatistics(prev)
   }
