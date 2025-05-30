@@ -3,6 +3,13 @@ import Profile from "@/components/Profile"
 import { getUserData } from "@/lib/serverUtils"
 import { notFound } from "next/navigation"
 
+export async function generateMetadata({ params }: {params: Promise<{ id: string }>}) {
+  const data = await getProfile((await params).id)
+
+  return {
+    title: data.payload.fullname,
+  }
+}
 
 const ProfilePage = async ({params}: {params: Promise<{id: string}>}) => {
   const id = (await params).id

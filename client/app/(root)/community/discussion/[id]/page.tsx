@@ -1,6 +1,16 @@
 import Discussion from "@/components/Community/Discussion"
 import { getDiscussionDetails } from "@/actions/community.actions"
 import { getUserData } from "@/lib/serverUtils"
+import { Metadata } from "next"
+
+export const generateMetadata = async ({params}: {params: Promise<{id: string}>}): Promise<Metadata> => {
+  const discId = (await params).id
+  const {payload} = await getDiscussionDetails(discId)
+
+  return {
+    title: payload.title
+  }
+}
 
 const DiscussionPage = async({params}: {params: Promise<{id: string}>}) => {
   const discId = (await params).id

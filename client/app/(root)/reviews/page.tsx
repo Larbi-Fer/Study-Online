@@ -2,6 +2,10 @@ import { getReviews } from '@/actions/reviews.actions'
 import { getUserData } from '@/lib/serverUtils'
 import Reviews from '@/components/Reviews'
 
+export const metadata = {
+  title: 'Reviews'
+}
+
 const ReviewsPage = async() => {
   const user = (await getUserData())!
 

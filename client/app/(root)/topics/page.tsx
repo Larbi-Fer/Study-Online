@@ -2,6 +2,10 @@ import { getTopics } from "@/actions/topics.actions";
 import TopicsList from "@/components/Topics/TopicsList";
 import { getUserData } from "@/lib/serverUtils";
 
+export const metadata = {
+  title: 'Topics',
+}
+
 const TopicsPage = async () => {
   const topics = await getTopics();
 
