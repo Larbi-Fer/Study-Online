@@ -72,7 +72,7 @@ export const updateChallenge = async (programmeId: string, data: ProgrammeArgs, 
 
 export const deleteChallenge = async (programmeId: string): Promise<ChallengesActionProps> => {
   try {
-    const res = await api(`${PATH}/delete/?programmeId=${programmeId}`, 'DELETE');
+    const res = await api(`${PATH}/delete/`, 'DELETE', {programmeId});
     const responseData = await res.json();
 
     return responseData;

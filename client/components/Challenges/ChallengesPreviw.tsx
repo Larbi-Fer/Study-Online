@@ -1,14 +1,28 @@
+'use client'
+import { deleteChallenge } from "@/actions/challenges.action"
 import Button from "@/ui/Button"
 import { Box, Card, CardContent, Grid2 as Grid, Typography } from "@mui/material"
 import * as motion from 'motion/react-client'
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 type ChallengesListProps = {
   challenges: ChallengesArgs[],
   sm?: number
+  isAdmin?: boolean
 }
 
-const ChallengesPreviw = ({ challenges, sm=6 }: ChallengesListProps) => {
+const ChallengesPreviw = ({ challenges, sm=6, isAdmin }: ChallengesListProps) => {
+  const router = useRouter()
+  const [loading, setLoading] = useState<string | undefined>()
+  const removeChallenge = async (id: string) => {
+    setLoading(id)
+    await deleteChallenge(id);
+    setLoading(undefined)
+    router.refresh()
+  }
+
   return (
     <Grid container spacing={3} className="challenges-list">
       {challenges.length == 0 && (
@@ -33,6 +47,9 @@ const ChallengesPreviw = ({ challenges, sm=6 }: ChallengesListProps) => {
                   <Link href={`/challenges/${ch.id}`} passHref>
                     <Button>Start</Button>
                   </Link>
+                  {isAdmin && (
+                    <Button background="#f22" style={{paddingLeft: '10px'}} onClick={() => removeChallenge(ch.id)} loading={loading == ch.id}>Remove</Button>
+                  )}
                 </Box>
               </CardContent>
             </Card>

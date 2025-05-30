@@ -17,14 +17,20 @@ const ChallengesList = ({ points, level, challenges, admin }: ChallengesListProp
 
   return (
     <Container maxWidth="md" className="challenges-container">
-      {!admin &&
+      {admin  ? (
+        <Box className="header-box" display="flex" justifyContent="space-between" alignItems="center" p={2}>
+          <Link href='/challenges/create'>
+            <Button>Create challenge</Button>
+          </Link>
+        </Box>
+      ) :
         <Box className="header-box" display="flex" justifyContent="space-between" alignItems="center" p={2}>
           <Typography variant="h5" fontWeight="bold">Level {intToString(level!)}</Typography>
           <Typography variant="h5" fontWeight="bold">Points {intToString(points!)}</Typography>
         </Box>
       }
 
-      <ChallengesPreviw challenges={challenges} />
+      <ChallengesPreviw challenges={challenges} isAdmin={admin} />
     </Container>
   )
 }
